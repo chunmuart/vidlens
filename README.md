@@ -1,201 +1,152 @@
 # VidLens
 
-面向长视频内容理解的 Video Agent 平台。VidLens 将视频转写、关键证据和用户目标组织成可追溯的结构化分析报告。
+长视频内容理解平台。输入一段视频和一个问题，输出一份**每句话都能追溯到具体时间点**的分析报告。
 
-> 本地启动方式见下文；线上演示需自行按 `deploy/` 部署，仓库不附带公网地址。
+课程回放、会议录像、技术分享这类长视频有两个现实问题：一小时的内容，人只能记住前十分钟；而直接丢给大模型做总结，模型会在没听清的地方编造，且你无从验证。
 
-公网演示环境未配置真实模型和 ASR 密钥时使用 Mock Provider，用于验证完整业务、异步任务和工具调用链路，不代表真实模型准确率。
+VidLens 的做法是把视频拆成「证据」再作答：ASR 转写音频、OCR 提取画面文字，按时间轴融合成带来源标记的证据流；回答问题时先检索证据，再要求模型只能基于证据作答，无证据即拒答。
 
-## 核心能力
-
-- JWT 登录与用户资源隔离
-- 大文件分片上传、断点查询与 MD5 内容指纹
-- BV 号元数据预览、公开 B 站视频异步导入与来源追踪；预览优先使用官方公开 API，下载保留 `yt-dlp` 并提供 DASH 音视频回退
-- 分片原子写入、用户级内容去重和上传异常恢复
-- MySQL 持久化与 Redis 重复任务锁
-- RocketMQ 异步分析任务与独立 Worker
-- FFmpeg 音频提取、`faster-whisper base/int8` 本地 ASR、远程 ASR 兼容和 PaddleOCR 关键帧证据
-- 可替换的 AI Provider 与离线 Mock 演示
-- LangGraph 结构化 Agent 图：事实题由 LLM Planner 生成证据槽位；视频总结走确定性代表性时间轴采样；Verifier 区分直接证据、综合概括、有依据推断和无答案，Writer 使用 Evidence ID 成文，独立 Critic 检查完整性、矛盾、外部推断和拒答
-- Coverage-Aware Agentic RAG：lexical + 本地 BGE dense + RRF，并对多问句、枚举和分别题建立证据需求计划、分需求检索、邻接扩展与充分性门禁
-- Qdrant 持久化向量索引，按视频和 ASR/OCR 来源过滤，支持快照复用、变化重建、媒体删除清理和故障降级
-- 合成/真实检索评测集，输出 Recall@K、MRR、多证据完整命中、无答案误召回、延迟和逐题结果
-- 模型工具调用与离线确定性工具流水线，统一执行元数据、时间轴检索、证据窗口、引用校验和报告生成
-- 动态分析计划、逐工具 Trace、图执行元数据、证据引用评估、继续追问和任务状态查询
-- 按用户/视频/目标隔离的 Agent 短期记忆，持久化追问会话；每次追问会重新检索原始 ASR/OCR，而不是只依赖上一份报告；有依据推断强制标注“视频没有明确说明”；关闭侧栏或刷新页面后可恢复报告与对话，主页视频卡片展示会话摘要
-- 带用户 Token 隔离的 VidLens MCP Server，提供 14 个工具和 4 个资源模板
-- 课程笔记、会议复盘、操作指南和证据审计 4 个可复用 Agent Skill
-- Alembic 数据库迁移、失败重试、重复消息幂等和 Pytest 接口测试
-
-## 架构
-
-```text
-Vue 3 前端
-    |
-FastAPI API 服务
-    |-- MySQL：用户 / 视频 / 上传会话 / 导入任务 / 分析任务
-    |-- Redis：活跃任务锁
-    |-- RocketMQ：分析任务消息
-    |-- Qdrant：视频证据向量 / Payload Filter / 持久化索引
-    |-- 共享媒体存储
-    |
-RocketMQ Worker
-    |-- yt-dlp 公开视频导入 / FFmpeg / faster-whisper base
-    |-- PaddleOCR 隔离子进程 / ASR-OCR 时间轴融合
-    |-- LangGraph Structured Planner / Evidence Ledger / Verifier / Writer / Critic
-    |-- Coverage-Aware Retriever / Contextual Hybrid / Qdrant / 真实检索评测
-    |-- AI Provider（模型工具调用或离线工具流水线）
-    `-- 结构化证据报告
-
-MCP Server
-    |-- Bearer Token 转发与用户隔离
-    |-- 14 个视频工具 / 4 个资源模板
-    `-- Codex / Claude / 其他 MCP 客户端
+```
+视频 ──┬─ FFmpeg 抽音频 → ASR 转写 ─┐
+       └─ 抽关键帧 → OCR 文字识别 ─┴─→ 时间轴融合 → 证据库 → 检索 → Agent → 带引用的报告
 ```
 
-## 快速启动
+---
 
-需要 Docker Desktop。
+## 一、三个核心问题与我的解法
+
+### 1. 长耗时任务不能塞进 HTTP 请求
+
+一段 40 分钟的视频，ASR 要跑几分钟，OCR 再几分钟，加上 LLM 分析，整个链路是分钟级的。同步接口必然超时，用户刷新就前功尽弃。
+
+**做法**：`POST /analysis/ai` 只做一件事——落库建任务、返回 task_id，然后把任务投进 RocketMQ。独立的 Worker 消费消息、跑重活、逐步更新进度，前端轮询 `GET /analysis/analysis-status` 恢复状态。
+
+**取舍**：引入 MQ 的代价是部署多一个组件、多一条排查链路（消息是否投递、Worker 是否存活、消息是否重复）。换来的是接口毫秒级返回、Worker 可以单独限流限内存、失败可重试。对分钟级任务，这个交换是值得的；如果是秒级任务，我会直接同步做。
+
+### 2. 大文件在弱网下传不完
+
+GB 级视频一次性上传，网络一抖就全部重来。
+
+**做法**：`init-upload` 创建上传会话 → `upload-chunk` 分片上传（服务端记录每片状态）→ `complete-upload` 合并校验。断点重连时先查 `upload-status`，只补传缺失的分片。同时用 MD5 作为内容指纹做用户级去重，同一用户重复上传直接命中已有记录。
+
+**取舍**：分片带来合并时的一致性问题（如何保证分片原子写入、合并幂等），所以合并阶段加了 MD5 全校验——宁可慢一步，也不让半截文件进入分析队列。
+
+### 3. 检索不准，模型就会开始编
+
+这是这类产品真正的难点。朴素 RAG 做「问题 → topK → 塞进 prompt」，在视频场景下会系统性失效：
+
+- 专有名词、缩写、精确数字用向量检索经常召回不到——实际标注数据里就有一道题专门考「某技术名词在模型里是几个 token」，靠语义相似度是捞不到这类精确信息的
+- 一道题往往需要多个证据点（「分别讲了哪三点」「A 和 B 有什么区别」），单次 topK 天然覆盖不全
+
+**做法**（`backend/vidlens/retrieval.py`）：
+
+1. **双路召回**：lexical（关键词）+ 本地 BGE 稠密向量，用 **RRF** 融合。选 RRF 而不是加权求和，是因为两路分数量纲不同，按排名融合不需要调权重。
+2. **需求拆解**：先用 `plan_evidence_requirements` 判断问题类型（SINGLE / MULTI_PART / EXHAUSTIVE_LIST / COMPARISON / SEQUENCE / TEMPORAL / SYNTHESIS），拆成若干证据需求，每个需求单独检索。
+3. **邻接扩展 + 充分性门禁**：检索到证据后向时间轴前后扩展找上下文；再判断是否真的覆盖了所有需求，不满足就继续检索或明确拒答。
+
+**取舍**：这套「Coverage-Aware」策略比朴素 RAG 慢（开发集上查询均值约 8ms → 15ms），且在留出集上并没有泛化（见下文）。但它把「答错了却看不出来」变成了「答不出来就说答不出来」，对可信度优先的场景，我认为后者更重要。
+
+---
+
+## 二、Agent 与幻觉控制
+
+`backend/vidlens/agent_structured.py` 里的分析 Agent 走五段式流程，而不是自由 ReAct：
+
+```
+Planner → Retriever → Verifier → Writer → Critic
+```
+
+- **Planner**：把问题拆成结构化槽位（要回答什么、每条需求依赖什么证据）
+- **Retriever**：按槽位检索，构建 Evidence Ledger（证据账本）
+- **Verifier**：独立判断每条结论是否被证据支持，分四级
+- **Writer**：只能使用 Ledger 中的证据 ID 成文
+- **Critic**：检查完整性、矛盾、外部推断、是否该拒答
+
+其中最关键的是 **supportLevel 四级分档**：
+
+| 级别 | 含义 | 处理方式 |
+|---|---|---|
+| `DIRECT` | 视频里逐字说了 | 正常回答 + 引用 |
+| `SYNTHESIS` | 由多条证据概括得出 | 正常回答，标注为概括 |
+| `GROUNDED_INFERENCE` | 视频没明说，但可由证据合理推出 | **程序强制**追加「视频没有明确说明」 |
+| `NONE` | 证据不支持 | 拒答 |
+
+**为什么不用 prompt 让模型自己标注**：模型对「自己是否在推理」的判断并不稳定。所以这四级判定由 Verifier 给出，但「追加声明」和「拒答」这两个动作由程序执行——不依赖模型自觉。
+
+另有一条 `agent_graph.py`（LangGraph 状态机：`plan → prefetch → model_step ⇄ tool_execution → finalize`），用于需要多轮动态工具调用的场景。两条链路并存是为了能对比和回滚，通过 `AGENT_PIPELINE_VERSION` 切换。
+
+---
+
+## 三、评测：我如何知道它真的有效
+
+这一块我认为比功能本身更能说明问题。
+
+评测指标：Recall@1/3/8、MRR、多证据完整命中率、无答案误召回率、分 ASR/OCR 来源的命中、延迟。脚本在 `backend/scripts/`，数据集在 `backend/evals/`。
+
+**开发集上的结果**：加入 Contextual 策略后，Recall@8 从 0.867 提升到 1.000，多证据完整命中率从 0.800 提升到 1.000；后续 Coverage-Aware v2 把 MRR 从 0.850 提到 0.875、Recall@8 从 0.775 提到 1.000。
+
+**留出集上的结果——这才是重点**：在一条**从未用于调参**的视频集上，Coverage-Aware v2 的 MRR 从 lexical 的 0.568 掉到 0.465，Recall@8 从 0.682 掉到 0.591，且 5 道不可回答题全部未在检索层拒答。
+
+也就是说：**开发集上的提升没有泛化**。我做了一个容易被忽略但很重要的决定——承认这个结果，冻结该留出集不再重跑，而不是换一个指标或继续在这个集合上调参。同时定位到根因不是证据抽取（282 段证据的金标覆盖率是 1.000，说明抽取层没丢东西），而是检索覆盖与拒答泛化。
+
+这个结论被我写进了 README 而不是删掉，因为它才是我对这个系统真实水平的判断。
+
+---
+
+## 四、工程细节
+
+**用户隔离**：JWT 登录，所有媒体、证据、报告按 `user_id` 强制过滤。向量检索同样带 `video_id` 与 `source` 的 payload filter——这是安全底线，不是性能优化：不加过滤，一次检索就可能把别的视频的证据串进来。
+
+**证据融合**：ASR 与 OCR 各带 `(start_ms, end_ms, text, source)`，按时间排序合并。两条流任意一条为空系统仍可用；时间戳漂移靠邻接扩展兜底。
+
+**OCR 隔离子进程**：Paddle 的 oneDNN 线程模型会和主进程冲突并推高内存峰值，所以 OCR 放在独立子进程里跑、跑完回收；ASR 完成后先释放 Whisper 模型再启动 OCR，峰值内存因此能压到 4C8G 单机可承受的范围。
+
+**MCP Server**（`backend/vidlens/mcp_server.py`）：14 个工具 + 4 个资源模板，透传用户 JWT，所以 MCP 客户端只能访问该用户自己的视频。提供 Streamable HTTP 与 stdio 两种传输。
+
+**可替换的 AI Provider**：未配置真实模型密钥时自动退回确定性 Mock Provider，保证整条业务链路（上传 → 队列 → Worker → 报告）在无网络时也能跑通和测试。
+
+---
+
+## 五、技术栈
+
+| 层 | 选型 | 理由 |
+|---|---|---|
+| API | FastAPI | 原生 async，适合大量 IO 等待（ASR 调用、向量检索） |
+| 存储 | MySQL + Alembic | 结构化数据需事务；迁移需版本化 |
+| 队列 | RocketMQ | 长耗时任务异步化，消费失败可重试 |
+| 锁 | Redis | 防重复提交，瞬时互斥 |
+| 向量 | Qdrant | 跨进程共享、payload 过滤、快照复用 |
+| ASR | faster-whisper (int8) | 本地推理，CPU 可跑，成本可控 |
+| OCR | PaddleOCR | 中文场景识别效果好，可 CPU 推理 |
+| Agent | LangGraph + 自研五段式 | 前者管动态路由，后者管可控可审计 |
+| 前端 | Vue 3 | — |
+
+---
+
+## 六、本地运行
+
+需要 Docker Desktop 与 Node.js 22+。
 
 ```bash
-docker compose up --build
+cp backend/.env.example backend/.env      # 填入 AI_API_KEY；留空则走 Mock
+docker compose up --build                 # API :9090，Worker、MySQL、Redis、RocketMQ、Qdrant
+
+cd client && npm install && npm run dev   # 前端 :5173
 ```
 
-本地 Compose 默认由 Worker 启用 `faster-whisper base/int8`、PaddleOCR 和 Contextual Qdrant Hybrid Retrieval。首次使用会把约 141 MB 的 ASR 模型、约 21 MB 的 `PP-OCRv5_mobile_det/rec` 模型和约 23 MB 的 INT8 BGE ONNX 模型下载到独立 `vidlens_models` volume，后续启动及重复检索复用缓存；Qdrant 索引保存在独立 `vidlens_qdrant` volume。ASR 完成后会释放 Whisper 模型，再由 OCR 子进程执行推理，规避 Paddle oneDNN 的线程限制并控制内存峰值。
+首次启动会下载 ASR / OCR / BGE 模型（约 185MB）到独立 volume，后续复用。接口文档见 `http://localhost:9090/docs`。
 
-根目录 `.env.example` 已预置 DeepSeek OpenAI-compatible 配置，复制为 `.env` 后手动填写新生成的 `AI_API_KEY` 即可启用 `deepseek-v4-flash`；密钥为空时使用确定性 Mock Provider。
-
-API 默认地址：`http://localhost:9090`
-
-OpenAPI 文档：`http://localhost:9090/docs`
-
-MCP Streamable HTTP 地址：`http://localhost:8001/mcp`
-
-前端需要 Node.js 22+：
+后端测试：
 
 ```bash
-cd client
-npm install
-npm run dev
+cd backend && pytest -q
 ```
 
-前端默认访问 `http://localhost:9090`，页面地址为 `http://localhost:5173`。
+---
 
-前端采用面向视频分析工作台的 Soft UI 视觉系统。设计令牌、组件状态、响应式规则和新增功能检查清单见 [前端 Soft UI 设计与开发规范](./docs/前端Soft-UI设计与开发规范.md)。新增页面或组件前应先阅读该文档，避免引入与现有主题冲突的颜色、阴影和交互规则。
+## 七、已知不足
 
-GitHub 提交、本地 Compose 构建、Docker Hub/GHCR 镜像发布和服务器更新的完整命令见 [GitHub 与 Docker 发布指南](./docs/GitHub与Docker发布指南.md)。
-
-## 本地后端开发
-
-推荐 Python 3.11+。
-
-```bash
-cd backend
-python -m venv .venv
-# Windows 激活虚拟环境
-.venv\Scripts\activate
-pip install -r requirements.txt
-copy .env.example .env
-python -m alembic upgrade head
-uvicorn vidlens.main:app --reload --port 9090
-```
-
-直接运行 Python 后端时，本地 ASR 默认关闭，可在 `.env` 中设置 `LOCAL_ASR_ENABLED=true`；也可以配置 OpenAI 兼容的远程 ASR。没有配置真实 LLM 时，报告生成使用确定性的抽取式 Mock Provider，但时间轴证据仍可来自真实本地 ASR。完整配置见 [backend/.env.example](./backend/.env.example)。
-
-## MCP Server 与 Skills
-
-MCP Server 支持远程 Streamable HTTP 和本地 stdio。HTTP 模式直接使用网站登录后获得的 JWT Bearer Token，因此 MCP 只能访问该用户自己的视频。Docker 启动后连接 `http://localhost:8001/mcp`；服务器部署地址为 `https://你的域名/mcp`。
-
-本地 stdio 模式：
-
-```bash
-cd backend
-# PowerShell：将网站登录接口返回的 token 仅放入当前终端环境变量
-$env:VIDLENS_MCP_TOKEN="你的用户令牌"
-$env:VIDLENS_API_URL="http://127.0.0.1:9090"
-python -m vidlens.mcp_server --transport stdio
-```
-
-仓库中的 Skills 位于 [`skills/`](./skills/)，分别处理课程笔记、会议复盘、操作指南和证据审计。每个 Skill 都声明 `vidlens` MCP 依赖，并规定证据不足、任务未完成和引用校验失败时的处理方式。
-
-## 测试
-
-```bash
-cd backend
-pytest -q
-```
-
-最近一次完整后端回归为 `106 passed, 2 skipped`；两个 skip 是需要外部 Qdrant 服务条件的集成项。覆盖上传与鉴权、任务重试、ASR/OCR、Retriever Profile、Qdrant 运行/降级、离线评测、结构化 Agent 槽位、代表性视频总结、Grounded Inference 提示、Verifier 审计、Critic 有界收尾和 EvalOps 指标。
-
-证据 RAG 基线命令：
-
-```bash
-cd backend
-python scripts/evaluate_evidence_rag.py
-```
-
-合成基线使用 9 条 ASR/OCR 片段，Top-3 的 Recall@3、MRR 和 Hit Rate 均为 1.0。V1 真实集包含 2 条视频和 16 道人工标注问题，当前只作为开发集调试时间指代、邻接扩展和拒答阈值；此前的 2 视频 12 题已用于方案选择，也不再是严格未见留出集。评测统一输出 Recall@1/3/8、MRR、多证据完整命中、ASR/OCR 分项、无答案正检索率和延迟。
-
-离线 A/B 与生产运行使用同一个固定版本的本地 BGE；模型文件不提交仓库、不打入镜像，由运行时下载到模型 volume：
-
-```bash
-cd backend
-pip install -r requirements-eval.txt
-python scripts/evaluate_retrieval_ab.py \
-  --dataset evals/heldout_retrieval_eval.json \
-  --snapshot /path/to/heldout-evidence-snapshots.json \
-  --output /path/to/heldout-retrieval-ab.json \
-  --model-dir /path/to/bge-small-zh-v1.5 \
-  --allow-model-download
-```
-
-模型固定为 `Xenova/bge-small-zh-v1.5` 的 revision `75c43b069aac4d136ba6bc1122f995fedcfd2781` 和 INT8 ONNX 文件。V1 开发集加入 Contextual 策略后，Recall@8 从 `0.8667` 提升到 `1.0000`，多证据完整命中率从 `0.8000` 提升到 `1.0000`；这些数字只代表开发集调参结果。最终未见留出集（2 条新视频、14 题，其中 9 道可回答）上，lexical 的 MRR/Recall@8 为 `0.5972/0.7778`，Hybrid 与 Contextual/Qdrant 的 MRR/Recall@8 为 `0.7222/0.7778`，Hybrid 相对 lexical 的 MRR 绝对提升 `0.1250`；dense 的 Recall@8 最高为 `0.8333`，但早期排序较差。Qdrant 已作为可选持久化后端接入，最终集与内存 Contextual 的质量指标一致，查询均值约 `12.51 ms`，说明它解决的是持久化、Payload Filter 和跨进程访问，不是自动的准确率提升。
-
-最终未见留出集还暴露出明确边界：7/9 道可回答题在 Qdrant Contextual Profile 下命中，2 道多证据题未完整召回；5 道不可回答题全部产生正检索，abstention precision/recall/F1 均为 `0`。11 段金标证据在 ASR/OCR 快照中全部存在，因此本轮失败属于检索覆盖/拒答泛化问题，不是证据抽取缺失。最终留出集只用于一次冻结验证，不能据此继续调参。
-
-随后只使用 V1 16 题与此前 12 题作为开发数据实现 `coverage-aware-qdrant-hybrid-v2`。在旧 12 题开发集上，相对 legacy Contextual，MRR `0.8500 -> 0.8750`、Recall@8 `0.7750 -> 1.0000`、多证据完整命中@8 `0.7000 -> 1.0000`，2 道不可回答题均拒答且没有可回答题误拒；平均查询耗时约 `8.20 -> 14.96 ms`。V1 开发集质量指标保持 MRR `0.8633`、Recall@8/完整命中@8 `1.0000`，查询均值约 `7.37 -> 8.83 ms`。这些都是经过多轮规则调整的开发集结果，最终 14 题没有重跑，不能声称新策略已经泛化。
-
-开发/生产示例现在默认 `coverage-aware-qdrant-hybrid-v2`；需要回滚时可将 `EVIDENCE_RETRIEVER_PROFILE` 改回 `contextual-qdrant-hybrid-v1`。新 Profile 对普通模型名的 ASR/OCR 变体保留语义候选，只在当前视频缺少领域锚点、比较对象或全大写关键缩写时直接拒答，并把 `coveragePlan/evidenceSufficiency` 交给 LangGraph 收尾门禁。
-
-Coverage-Aware v2 随后在另一组冻结最终未见集（2 条新视频、16 题，其中 11 道可回答、5 道不可回答）上只运行一次。282 段 ASR/OCR 快照中的金标抽取覆盖率为 `1.0000`，但 lexical 的 MRR/Recall@8 为 `0.5682/0.6818`，Coverage-Aware 与 Qdrant Coverage 只有 `0.4651/0.5909`；11 道可回答题中 6 道完整命中，5 道不可回答题均未在检索层拒答。开发集上的提升没有泛化，`fullyCovered` 还错误地把每道可回答题都视为单一且已满足的 requirement。真实 DeepSeek 只做预算受控抽样：7/16 题完成、人工语义复核 3/7 通过，40 次请求累计 408,045 Token 后停止。该最终集已封存，不用于后续调参或重跑。
-
-默认 Agent 已升级为 `video-evidence-agent-v5.2-grounded-synthesis`。v5.2 保留 v5.1 的结构化槽位、Evidence Ledger、Verifier 审计和 Critic 有界收尾；同时将“视频主要讲了什么/总结视频”等开放式概括路由到单个 `SYNTHESIS + REPRESENTATIVE` 槽位，按时间轴均匀抽取最多 18 条 ASR/OCR，避免把时间戳或行动建议错误扩张成必须事实槽位。Verifier 的 `supportLevel` 区分 `DIRECT/SYNTHESIS/GROUNDED_INFERENCE/NONE`：仅由视频证据可推出的答案允许回答，但程序强制追加“视频没有明确说明”；完全没有证据的精确事实仍拒答。追问会重新检索原始时间轴，避免上一份拒答报告导致后续永久失去视频上下文。可通过 `AGENT_PIPELINE_VERSION=legacy-v4` 回滚旧工具循环。
-
-在完全相同的两段合成证据和比较问题上，真实 DeepSeek v4/v5 均 4 次请求且回答正确；v5 Prompt Token `7802 -> 4018`、Total Token `8459 -> 4828`，分别下降约 `48.5%/42.9%`，Tool Call `5 -> 4`，总 Provider 延迟 `7127 -> 7422 ms`。这是单次开发冒烟，不是性能压测；v4 有 6528 Cache Hit Token 而 v5 首次运行无缓存，且费用单价未配置，不能据此宣称实际账单下降。另一个“标题相关但未给答案”的合成场景中，v5 以 4 次请求、4062 Token 完成零引用明确拒答。
-
-在允许调参的 V1 两视频 16 题开发集上，v5.1 全量运行达到 `16/16` 任务完成、`9/16` 保守字符串规则命中、引用支持率 `1.0`，87 次 Provider 请求累计 158,894 Token；没有基础设施、限流或 Agent 未收尾失败。后续定向修复了技术名保留和单目标顺序题，但没有再次运行完整 16 题，因此不得把局部结果外推为新的全量准确率。残余失败主要来自 OCR 价格抽取错误、`token/Qwen/关羽` 被 ASR 识别为“偷懒/千万/关于”后的跨片段实体恢复，以及 Verifier 偶发结构化布尔值与说明文字冲突。V1 是开发集，不代表最终未见泛化；Coverage-Aware v2 最终集继续冻结且未重跑。
-
-## 服务器部署
-
-项目提供面向 `4 核 8 GB` 单机的本地 ASR/OCR 生产模板，完整运行 MySQL、Redis、RocketMQ、Qdrant、API、Worker、MCP、前端 Nginx 和 Caddy HTTPS。Worker 默认限制为 `2.5 GiB` 并串行处理任务，Qdrant 限制为 `768 MiB`；`2 核 8 GB` 也能运行单用户演示，但数分钟视频的 CPU 处理时间会明显增加。生产环境只对公网开放 `80/443`，数据库、缓存、消息队列、Qdrant 和 API 均位于 Docker 内部网络。
-
-```bash
-cp deploy/.env.production.example deploy/.env.production
-# 修改域名、数据库密码、Redis 密码和 JWT_SECRET
-docker compose --env-file deploy/.env.production -f docker-compose.prod.yml config --quiet
-docker compose --env-file deploy/.env.production -f docker-compose.prod.yml up -d --build
-```
-
-详细的域名解析、安全组、首次启动、更新、备份和排错步骤见 [deploy/README.md](./deploy/README.md)。
-
-生产模式会强制检查 MySQL、Alembic、CORS 和 JWT 密钥配置；上传或 BV 导入完成后使用 FFprobe 校验真实视频轨道与时长，并对登录、上传、导入和分析接口执行限流。BV 导入只接受固定格式的 BV 号并构造 Bilibili 官方视频地址，不接受任意 URL。
-
-## 项目结构
-
-```text
-backend/                       Python/FastAPI 后端与 MCP Server
-backend/alembic/               数据库迁移脚本
-client/                        Vue 3 前端
-skills/                        4 个 VidLens Agent Skill
-docker-compose.yml             MySQL、Redis、RocketMQ、Qdrant、API、Worker 与 MCP
-docker-compose.prod.yml        4 核 8 GB 本地 ASR 服务器生产编排
-deploy/                        HTTPS、生产环境模板、备份与部署文档
-```
-
-## 后续改进
-
-1. 不再使用 Coverage-Aware v2 最终集调参；以 V1、旧 12 题、合成/变形测试和线上 shadow case 扩充 Planner/Verifier 回归。
-2. 为 Evidence Ledger 增加跨片段关系类型与更严格的枚举完备性校验，但继续限制最多 6 个槽位和 18 条压缩证据。
-3. 在真实任务 Trace 中长期观察 `byPhase` Token、上下文字符数、修订率和拒答率；费用门禁为可选评测参数，默认 Provider 调用不设总预算。
-4. 暂不引入 Reranker；当前先验证槽位规划、充分性和 Critic 是否在 shadow case 中稳定。
-5. 在 GitHub Actions 中增加真实 Qdrant/MySQL/Redis/RocketMQ 集成测试与 Agent 契约回归。
+- Coverage-Aware 检索在留出集上未泛化（见第三节），当前默认策略仍需在更多真实视频上验证
+- 拒答泛化是主要短板：不可回答题在检索层几乎不拒答，拒答实际只发生在 Verifier 层
+- 长视频（>1h）的处理耗时尚不理想，Worker 为串行处理
+- 评测集规模偏小（留出集 2 条视频、16 题），统计意义有限，结论需谨慎外推
