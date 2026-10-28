@@ -42,6 +42,7 @@ from vidlens.budget import (
     record_completion_usage,
 )
 from vidlens.checkpoint import AgentCheckpoint, checkpoint_enabled, evidence_fingerprint
+from vidlens.context_window import ContextPolicy, assemble, compress_for_summary
 from vidlens.lease import LockHeartbeat
 from vidlens.trace_spans import attach_trace_spans
 from vidlens.agent import AgentToolbox, build_agent_plan, is_summary_goal
@@ -2957,18 +2958,6 @@ def get_or_create_agent_session(
     return session
 
 
-def recent_agent_messages(db: Session, session_id: str) -> list[dict[str, str]]:
-    limit = max(2, min(int(env("AGENT_MEMORY_MAX_MESSAGES", "12")), 30))
-    rows = list(db.scalars(
-        select(AgentMessage)
-        .where(AgentMessage.session_id == session_id)
-        .order_by(AgentMessage.id.desc())
-        .limit(limit)
-    ).all())
-    rows.reverse()
-    return [{"role": row.role, "content": row.content} for row in rows]
-
-
 def agent_history_messages(db: Session, session_id: str) -> list[dict[str, str]]:
     limit = max(20, min(int(env("AGENT_HISTORY_MAX_MESSAGES", "200")), 500))
     rows = list(db.scalars(
@@ -2981,12 +2970,13 @@ def agent_history_messages(db: Session, session_id: str) -> list[dict[str, str]]
     return [{"role": row.role, "content": row.content} for row in rows]
 
 
-def update_agent_memory_summary(session: AgentSession, messages: list[dict[str, str]]) -> None:
-    rendered = "\n".join(
-        f"{item['role']}: {str(item['content'])[:1200]}"
-        for item in messages[-12:]
-    )
-    session.summary = rendered[-6000:]
+def update_agent_memory_summary(
+    session: AgentSession,
+    messages: list[dict[str, str]],
+    *,
+    policy: ContextPolicy | None = None,
+) -> None:
+    session.summary = compress_for_summary(messages, policy=policy)
     session.updated_at = datetime.now(timezone.utc)
 
 
@@ -3003,16 +2993,30 @@ def follow_up(id: int, question: str = Query(min_length=1, max_length=500), user
             media_id=id,
             goal=task.goal if task else "基于最新报告继续追问",
         )
-        history = recent_agent_messages(db, session.id)
+        history = agent_history_messages(db, session.id)
+        policy = ContextPolicy.from_env()
+        context = assemble(
+            history,
+            policy=policy,
+            fallback_summary=session.summary or "",
+        )
         question_text = question.strip()
         toolbox = agent_toolbox(db, media, ensure_evidence=False)
         follow_up_evidence = toolbox.evidence_for_question(question_text, max_segments=18)
         answer = provider().follow_up(
             media.ai_summary,
             question_text,
-            history=history,
-            memory_summary=session.summary or "",
+            history=context.messages,
+            memory_summary=context.summary,
             evidence_timeline=evidence_context(follow_up_evidence),
+        )
+        log.info(
+            "follow_up_context session_id=%s messages=%s summary_chars=%s dropped=%s truncated=%s",
+            session.id,
+            len(context.messages),
+            len(context.summary),
+            context.dropped_messages,
+            context.truncated,
         )
         db.add_all([
             AgentMessage(session_id=session.id, user_id=user.id, role="user", content=question_text),
@@ -3022,7 +3026,7 @@ def follow_up(id: int, question: str = Query(min_length=1, max_length=500), user
             *history,
             {"role": "user", "content": question_text},
             {"role": "assistant", "content": answer},
-        ])
+        ], policy=policy)
         db.commit()
         return answer
 

@@ -1226,3 +1226,84 @@ def test_bilibili_import_is_idempotent_and_enters_media_library(monkeypatch: pyt
         )
         assert existing.status_code == 200
         assert existing.json()["mediaId"] == media[0]["id"]
+
+
+def test_follow_up_uses_budgeted_context_and_rolling_summary(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    captured: dict[str, object] = {}
+
+    class ContextProvider(main.Provider):
+        def analyze(self, transcript: str, goal: str) -> dict:
+            return {}
+
+        def follow_up(
+            self,
+            report: str,
+            question: str,
+            *,
+            history: list[dict[str, str]] | None = None,
+            memory_summary: str = "",
+            evidence_timeline: str = "",
+        ) -> str:
+            captured["history"] = list(history or [])
+            captured["memory_summary"] = memory_summary
+            return "回答"
+
+    monkeypatch.setattr(main, "provider", lambda: ContextProvider())
+
+    with TestClient(main.app) as client:
+        headers = register(client, "ctxwin")
+        media_id = upload(client, headers, b"context-window-video")
+        with main.SessionLocal() as db:
+            media = db.get(main.Media, media_id)
+            media.ai_summary = "已有报告"
+            goal = "基于最新报告继续追问"
+            session = main.AgentSession(
+                id=str(main.uuid.uuid4()),
+                user_id=media.user_id,
+                media_id=media_id,
+                goal=goal,
+                goal_hash=main.hashlib.sha256(goal.encode("utf-8")).hexdigest(),
+            )
+            db.add(session)
+            db.flush()
+            for index in range(1, 11):
+                db.add_all([
+                    main.AgentMessage(
+                        session_id=session.id,
+                        user_id=media.user_id,
+                        role="user",
+                        content=f"历史问题 {index}",
+                    ),
+                    main.AgentMessage(
+                        session_id=session.id,
+                        user_id=media.user_id,
+                        role="assistant",
+                        content=f"历史回答 {index}",
+                    ),
+                ])
+            db.commit()
+
+        response = client.post(
+            "/analysis/follow-up",
+            params={"id": media_id, "question": "新问题"},
+            headers=headers,
+        )
+        assert response.status_code == 200
+
+        history = captured["history"]
+        assert isinstance(history, list)
+        assert len(history) == 8
+        assert any(item["content"] == "历史问题 10" for item in history)
+        assert "历史问题 1" in str(captured["memory_summary"])
+        assert "当时回答：历史回答 1" in str(captured["memory_summary"])
+
+        memory = client.get(
+            "/analysis/agent-memory",
+            params={"id": media_id},
+            headers=headers,
+        ).json()
+        assert "问：" in memory["summary"]
+        assert "历史问题 10" in memory["summary"]
+        assert "新问题" in memory["summary"]
