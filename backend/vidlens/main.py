@@ -37,6 +37,7 @@ from vidlens.agent_metrics import summarize as summarize_agent_metrics
 from vidlens.budget import BudgetLimits, BudgetTracker
 from vidlens.checkpoint import AgentCheckpoint, checkpoint_enabled, evidence_fingerprint
 from vidlens.lease import LockHeartbeat
+from vidlens.trace_spans import attach_trace_spans
 from vidlens.agent import AgentToolbox, build_agent_plan, is_summary_goal
 from vidlens.agent_graph import run_langgraph_agent
 from vidlens.agent_structured import (
@@ -1764,6 +1765,13 @@ def clear_task_checkpoint(task_id: str) -> None:
         log.exception("task_checkpoint_cleanup_failed task_id=%s", task_id)
 
 
+def attach_spans_safely(trace: dict[str, Any], task_id: str) -> None:
+    try:
+        attach_trace_spans(trace)
+    except Exception:  # noqa: BLE001 -- trace enrichment must not fail the task
+        log.exception("trace_spans_failed task_id=%s", task_id)
+
+
 def record_dead_letter(db: Session, task: AnalysisTask, exc: BaseException) -> None:
     """把重试耗尽的失败任务落一条死信。重复调用不会产生重复行。"""
     try:
@@ -1997,6 +2005,7 @@ def process_analysis(task_id: str) -> str:
                 "providerRequests": provider_requests,
                 "checkpoint": checkpoint.summary() if checkpoint else {"enabled": False},
             }
+            attach_spans_safely(trace, task_id)
 
             task.result = format_report(result)
             task.answerable = bool(result.get("answerable", True))
@@ -2052,6 +2061,7 @@ def process_analysis(task_id: str) -> str:
                 "lastErrorType": type(exc).__name__,
                 "checkpoint": checkpoint.summary() if checkpoint else {"enabled": False},
             }
+            attach_spans_safely(failure_trace, task_id)
             task.trace_json = json.dumps(failure_trace, ensure_ascii=False)
             if not should_retry:
                 task.active_key = None
