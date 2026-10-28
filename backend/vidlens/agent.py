@@ -6,6 +6,8 @@ import time
 from collections.abc import Callable
 from typing import Any
 
+from vidlens.budget import BudgetTracker
+from vidlens.failure_policy import FailureAction, classify_failure, describe_failure
 from vidlens.retrieval import EvidenceRetriever, SearchRetriever
 
 
@@ -89,6 +91,7 @@ class AgentToolbox:
         normalize_report: ReportNormalizer,
         evaluate_report: ReportEvaluator,
         retriever: SearchRetriever | None = None,
+        budget: BudgetTracker | None = None,
     ) -> None:
         self.metadata = dict(metadata)
         self.segments = [self._public_segment(item, index) for index, item in enumerate(segments)]
@@ -96,6 +99,8 @@ class AgentToolbox:
         self.normalize_report = normalize_report
         self.evaluate_report = evaluate_report
         self._trace: list[dict[str, Any]] = []
+        # 可选预算跟踪器：工具执行前检查一次，主要约束“总耗时”
+        self.budget = budget
         self._goal_coverage_plan: dict[str, Any] | None = None
         self._goal_evidence_sufficiency: dict[str, Any] | None = None
 
@@ -244,6 +249,21 @@ class AgentToolbox:
     def execute(self, name: str, arguments: dict[str, Any] | None = None) -> dict[str, Any]:
         arguments = arguments or {}
         started = time.perf_counter()
+        if self.budget is not None:
+            # 预算已超时就不再执行工具，直接给出可识别的失败结果
+            try:
+                self.budget.check()
+            except Exception as exc:  # BudgetExceeded
+                self._trace.append({
+                    "index": len(self._trace) + 1,
+                    "tool": name,
+                    "arguments": self._preview(arguments),
+                    "resultPreview": "预算超限，未执行",
+                    "durationMs": 0,
+                    "success": False,
+                    "errorClass": "BUDGET",
+                })
+                return {"ok": False, "error": str(exc), "errorClass": "BUDGET", "retryable": False}
         try:
             handlers = {
                 "get_video_metadata": self._get_video_metadata,
@@ -258,7 +278,12 @@ class AgentToolbox:
             result = handlers[name](**arguments)
             success = True
         except (TypeError, ValueError) as exc:
-            result = {"ok": False, "error": str(exc)}
+            result = {"ok": False, **describe_failure(exc, attempt=1, max_attempts=1)}
+            success = False
+        except Exception as exc:  # noqa: BLE001 —— 只就地吞掉可重试类异常，其余保持原样抛出
+            if classify_failure(exc) is not FailureAction.RETRY:
+                raise
+            result = {"ok": False, **describe_failure(exc)}
             success = False
         duration_ms = max(0, int((time.perf_counter() - started) * 1000))
         self._trace.append({
@@ -268,6 +293,7 @@ class AgentToolbox:
             "resultPreview": self._preview(result),
             "durationMs": duration_ms,
             "success": success,
+            **({"errorClass": result.get("errorClass")} if isinstance(result, dict) and result.get("errorClass") else {}),
         })
         return result
 

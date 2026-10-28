@@ -33,6 +33,9 @@ from sqlalchemy.dialects.mysql import LONGTEXT
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sessionmaker
 
+from vidlens.agent_metrics import summarize as summarize_agent_metrics
+from vidlens.budget import BudgetLimits, BudgetTracker
+from vidlens.lease import LockHeartbeat
 from vidlens.agent import AgentToolbox, build_agent_plan, is_summary_goal
 from vidlens.agent_graph import run_langgraph_agent
 from vidlens.agent_structured import AgentQualityGateError, run_structured_evidence_agent
@@ -1415,11 +1418,14 @@ def agent_toolbox(
         "uploadedAt": media.upload_time.isoformat() if media.upload_time else None,
         "hasAnalysisReport": bool(media.ai_summary),
     }
+    # 预算默认全部为 0（不限制），只有配置了 AGENT_MAX_* 才生效
+    budget = BudgetTracker(BudgetLimits.from_env()).start()
     return AgentToolbox(
         metadata=metadata,
         segments=segments,
         normalize_report=normalize_analysis_result,
         evaluate_report=evaluate_result,
+        budget=budget,
         retriever=build_runtime_retriever(metadata, segments),
     )
 
@@ -1633,6 +1639,57 @@ def enforce_rate_limit(key: str, limit: int, window_seconds: int) -> None:
             raise HTTPException(status_code=429, detail="请求过于频繁，请稍后再试", headers={"Retry-After": str(retry_after)})
 
 
+class AnalysisDeadLetter(Base):
+    """死信表：重试耗尽的失败任务，保留现场供人工排查/重放。
+
+    不参与业务查询，只用于「事后能捞出来」。
+    """
+
+    __tablename__ = "analysis_dead_letters"
+    __table_args__ = (
+        UniqueConstraint("task_id", name="uq_dead_letter_task"),
+        Index("ix_dead_letter_created", "created_at"),
+    )
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    task_id: Mapped[str] = mapped_column(String(36), index=True)
+    media_id: Mapped[Optional[int]] = mapped_column(Integer, nullable=True, index=True)
+    user_id: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    goal: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
+    stage: Mapped[Optional[str]] = mapped_column(String(32), nullable=True)
+    attempts: Mapped[int] = mapped_column(Integer, default=0)
+    error: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    payload: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+
+
+def record_dead_letter(db: Session, task: AnalysisTask, exc: BaseException) -> None:
+    """把重试耗尽的失败任务落一条死信。重复调用不会产生重复行。"""
+    try:
+        existing = db.scalar(select(AnalysisDeadLetter).where(AnalysisDeadLetter.task_id == task.id))
+        if existing is not None:
+            return
+        payload = {
+            "state": task.state,
+            "stage": task.stage,
+            "progressMessage": task.progress_message,
+            "attemptCount": task.attempt_count,
+            "maxAttempts": task.max_attempts,
+            "mediaId": task.media_id,
+        }
+        db.add(AnalysisDeadLetter(
+            task_id=task.id,
+            media_id=task.media_id,
+            user_id=task.user_id,
+            goal=task.goal,
+            stage=task.stage,
+            attempts=task.attempt_count,
+            error=f"{exc.__class__.__name__}: {exc}"[:4000],
+            payload=json.dumps(payload, ensure_ascii=False),
+        ))
+    except Exception:  # noqa: BLE001 —— 死信写入失败不能影响主流程
+        log.exception("dead_letter_write_failed task_id=%s", task.id)
+
+
 def active_task_key(media_id: int, goal: str) -> str:
     digest = hashlib.sha256(goal.encode("utf-8")).hexdigest()[:24]
     return f"analysis:active:{media_id}:{digest}"
@@ -1691,6 +1748,31 @@ def publish_analysis(task_id: str) -> None:
     publish_task_message(task_id, "analysis", "analysis", run_analysis_locally)
 
 
+def analysis_lock_ttl_seconds() -> int:
+    """锁 TTL。任务只要还在推进，`LockHeartbeat` 就会把它续回去。"""
+    try:
+        return max(60, int(env("ANALYSIS_LOCK_TTL_SECONDS", "7200")))
+    except (TypeError, ValueError):
+        return 7200
+
+
+def build_lock_heartbeat(task: AnalysisTask) -> LockHeartbeat | None:
+    """为正在执行的任务建一个续期器；未配置 Redis 时返回 None。"""
+    try:
+        client = redis_client()
+        if not client:
+            return None
+        return LockHeartbeat(
+            client,
+            active_task_key(task.media_id, task.goal),
+            task.id,
+            ttl_seconds=analysis_lock_ttl_seconds(),
+        )
+    except Exception:  # noqa: BLE001 —— 续期是增强能力，不能影响主流程
+        log.exception("lock_heartbeat_init_failed task_id=%s", getattr(task, "id", "?"))
+        return None
+
+
 def process_analysis(task_id: str) -> str:
     with SessionLocal() as db:
         now = datetime.now(timezone.utc)
@@ -1724,8 +1806,12 @@ def process_analysis(task_id: str) -> str:
         previous_provider_requests = list(previous_trace.get("providerRequests") or [])
         analysis_provider: Provider | None = None
         toolbox: AgentToolbox | None = None
+        heartbeat = build_lock_heartbeat(task)
         try:
             def report_progress(stage: str, current: int, total: int, message: str) -> None:
+                if heartbeat is not None:
+                    # 有进度就续一次锁：任务卡死时不再有进度，锁自然过期
+                    heartbeat.touch()
                 try:
                     persist_analysis_progress(task_id, stage, current, total, message)
                 except Exception:
@@ -1768,6 +1854,20 @@ def process_analysis(task_id: str) -> str:
                 raise ValueError(generated.get("error") or "Agent 未生成有效报告")
             result = generated["report"]
             evaluation = generated["evaluation"]
+            try:
+                supported = int(evaluation.get("supportedCitationCount") or 0)
+                total_citations = int(evaluation.get("citationCount") or 0)
+                evaluation = {
+                    **evaluation,
+                    "agentMetrics": summarize_agent_metrics(
+                        payloads=[result],
+                        citation_supports=[True] * supported
+                        + [False] * max(0, total_citations - supported),
+                        statuses=["COMPLETED"],
+                    ),
+                }
+            except Exception:  # noqa: BLE001 —— 指标是附加信息，失败不影响报告
+                log.exception("agent_metrics_failed task_id=%s", task_id)
             evaluation_duration = toolbox.duration_for("verify_citations", "generate_report")
             current_provider_requests = [
                 {**item, "attempt": task.attempt_count}
@@ -1851,6 +1951,8 @@ def process_analysis(task_id: str) -> str:
             media = db.get(Media, task.media_id)
             if media:
                 media.status = "PROCESSING" if should_retry else "FAILED"
+            if not should_retry:
+                record_dead_letter(db, task, exc)
             db.commit()
             if not should_retry:
                 release_active_lock(task.media_id, task.goal, task.id)
