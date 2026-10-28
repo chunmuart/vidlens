@@ -11,6 +11,7 @@ from langgraph.graph import END, START, StateGraph
 
 from vidlens.agent import AgentToolbox, build_agent_plan, is_summary_goal
 from vidlens.agent_graph import extract_goal_timestamps_ms
+from vidlens.checkpoint import AgentCheckpoint
 from vidlens.retrieval import plan_evidence_requirements
 
 
@@ -983,19 +984,88 @@ def _route_after_critic(state: StructuredAgentState) -> str:
     return END
 
 
+def _route_from_start(state: StructuredAgentState) -> str:
+    if state.get("evidence_ledger"):
+        return "verify_evidence_ledger"
+    if state.get("evidence_plan"):
+        return "retrieve_evidence_slots"
+    return "structured_planner"
+
+
+def _restore_checkpoint_state(checkpoint: AgentCheckpoint | None) -> dict[str, Any]:
+    """Return the graph state restored from a previous attempt, or ``{}``."""
+    if checkpoint is None:
+        return {}
+    restored_plan = checkpoint.load("planner")
+    if not (
+        isinstance(restored_plan, dict)
+        and isinstance(restored_plan.get("plan"), dict)
+        and isinstance(restored_plan.get("evidencePlan"), dict)
+    ):
+        return {}
+    state: dict[str, Any] = {
+        "plan": restored_plan["plan"],
+        "evidence_plan": restored_plan["evidencePlan"],
+        "planner_mode": str(restored_plan.get("plannerMode") or "CHECKPOINT"),
+        "model_calls": max(0, int(restored_plan.get("modelCalls") or 0)),
+        "context_chars": dict(restored_plan.get("contextChars") or {}),
+    }
+    restored_ledger = checkpoint.load("retriever")
+    if isinstance(restored_ledger, dict) and isinstance(restored_ledger.get("evidenceLedger"), dict):
+        state["evidence_ledger"] = restored_ledger["evidenceLedger"]
+    return state
+
+
 def run_structured_evidence_agent(
     provider: Any,
     toolbox: AgentToolbox,
     goal: str,
+    *,
+    checkpoint: AgentCheckpoint | None = None,
 ) -> dict[str, Any]:
+    if checkpoint is None:
+        checkpoint = getattr(toolbox, "checkpoint", None)
+    restored = _restore_checkpoint_state(checkpoint)
+
+    def planner_node(state: StructuredAgentState) -> dict[str, Any]:
+        result = _plan_node(provider, state)
+        if checkpoint is not None:
+            checkpoint.save("planner", {
+                "plan": result.get("plan"),
+                "evidencePlan": result.get("evidence_plan"),
+                "plannerMode": result.get("planner_mode"),
+                "modelCalls": max(
+                    0,
+                    int(result.get("model_calls", 0)) - int(state.get("model_calls", 0)),
+                ),
+                "contextChars": {
+                    "planner": int((result.get("context_chars") or {}).get("planner", 0)),
+                },
+            })
+        return result
+
+    def retrieve_node(state: StructuredAgentState) -> dict[str, Any]:
+        result = _retrieve_node(toolbox, state)
+        if checkpoint is not None:
+            checkpoint.save("retriever", {"evidenceLedger": result.get("evidence_ledger")})
+        return result
+
     workflow = StateGraph(StructuredAgentState)
-    workflow.add_node("structured_planner", lambda state: _plan_node(provider, state))
-    workflow.add_node("retrieve_evidence_slots", lambda state: _retrieve_node(toolbox, state))
+    workflow.add_node("structured_planner", planner_node)
+    workflow.add_node("retrieve_evidence_slots", retrieve_node)
     workflow.add_node("verify_evidence_ledger", lambda state: _verify_node(provider, state))
     workflow.add_node("write_grounded_report", lambda state: _write_node(provider, state))
     workflow.add_node("critic_review", lambda state: _critic_node(provider, toolbox, state))
     workflow.add_node("revise_report", lambda state: _write_node(provider, state, revision=True))
-    workflow.add_edge(START, "structured_planner")
+    workflow.add_conditional_edges(
+        START,
+        _route_from_start,
+        {
+            "structured_planner": "structured_planner",
+            "retrieve_evidence_slots": "retrieve_evidence_slots",
+            "verify_evidence_ledger": "verify_evidence_ledger",
+        },
+    )
     workflow.add_edge("structured_planner", "retrieve_evidence_slots")
     workflow.add_edge("retrieve_evidence_slots", "verify_evidence_ledger")
     workflow.add_edge("verify_evidence_ledger", "write_grounded_report")
@@ -1005,7 +1075,12 @@ def run_structured_evidence_agent(
     graph = workflow.compile()
 
     final_state = graph.invoke(
-        {"goal": " ".join(str(goal).split()), "revision_count": 0, "model_calls": 0},
+        {
+            "goal": " ".join(str(goal).split()),
+            "revision_count": 0,
+            "model_calls": 0,
+            **restored,
+        },
         config={"recursion_limit": 12},
     )
     last_report = final_state.get("last_report")
@@ -1026,6 +1101,7 @@ def run_structured_evidence_agent(
         final_state["acceptance_mode"] = "SAFE_REFUSAL_AFTER_CRITIC_REVISION"
         last_report = fallback_report
     ledger = final_state.get("evidence_ledger") or {}
+    checkpoint_summary = checkpoint.summary() if checkpoint is not None else {"enabled": False}
     return {
         **last_report,
         "agentGraph": {
@@ -1053,5 +1129,6 @@ def run_structured_evidence_agent(
             "revisionCount": int(final_state.get("revision_count", 0)),
             "modelCalls": int(final_state.get("model_calls", 0)),
             "contextChars": final_state.get("context_chars", {}),
+            "checkpoint": checkpoint_summary,
         },
     }

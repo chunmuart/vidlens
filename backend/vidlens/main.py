@@ -35,10 +35,15 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sess
 
 from vidlens.agent_metrics import summarize as summarize_agent_metrics
 from vidlens.budget import BudgetLimits, BudgetTracker
+from vidlens.checkpoint import AgentCheckpoint, checkpoint_enabled, evidence_fingerprint
 from vidlens.lease import LockHeartbeat
 from vidlens.agent import AgentToolbox, build_agent_plan, is_summary_goal
 from vidlens.agent_graph import run_langgraph_agent
-from vidlens.agent_structured import AgentQualityGateError, run_structured_evidence_agent
+from vidlens.agent_structured import (
+    AgentQualityGateError,
+    PROMPT_VERSION,
+    run_structured_evidence_agent,
+)
 from vidlens.bilibili import (
     BilibiliImportError,
     download_bilibili_video,
@@ -790,7 +795,12 @@ class OpenAICompatibleProvider(Provider):
     def run_agent(self, toolbox: AgentToolbox, goal: str) -> dict[str, Any]:
         pipeline = env("AGENT_PIPELINE_VERSION", "structured-v5").strip().lower()
         if pipeline in {"structured-v5", "v5", "structured"}:
-            return run_structured_evidence_agent(self, toolbox, goal)
+            return run_structured_evidence_agent(
+                self,
+                toolbox,
+                goal,
+                checkpoint=getattr(toolbox, "checkpoint", None),
+            )
         max_steps = max(3, min(int(env("AGENT_MAX_TOOL_STEPS", "8")), 12))
         return run_langgraph_agent(self, toolbox, goal, max_steps=max_steps)
 
@@ -1662,6 +1672,98 @@ class AnalysisDeadLetter(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
 
 
+class AnalysisTaskCheckpoint(Base):
+    """Opt-in Agent stage checkpoint, one row per task.
+
+    Only the Planner and Retriever stages are persisted; a half-reviewed report
+    is never reused. ``CHECKPOINT_ENABLED=0`` means no row is ever read or written.
+    """
+
+    __tablename__ = "analysis_task_checkpoints"
+    __table_args__ = (UniqueConstraint("task_id", name="uq_task_checkpoint_task"),)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    task_id: Mapped[str] = mapped_column(String(36))
+    payload: Mapped[str] = mapped_column(Text().with_variant(LONGTEXT(), "mysql"))
+    evidence_fingerprint: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
+    prompt_version: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
+    attempt: Mapped[int] = mapped_column(Integer, default=0)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+
+
+def load_task_checkpoint(task_id: str) -> dict[str, Any] | None:
+    with SessionLocal() as db:
+        row = db.scalar(
+            select(AnalysisTaskCheckpoint).where(AnalysisTaskCheckpoint.task_id == task_id)
+        )
+        if row is None or not row.payload:
+            return None
+        try:
+            payload = json.loads(row.payload)
+        except (TypeError, ValueError, json.JSONDecodeError):
+            log.warning("task_checkpoint_corrupt task_id=%s", task_id)
+            return None
+        return payload if isinstance(payload, dict) else None
+
+
+def persist_task_checkpoint(task_id: str, snapshot: dict[str, Any]) -> None:
+    with SessionLocal() as db:
+        row = db.scalar(
+            select(AnalysisTaskCheckpoint).where(AnalysisTaskCheckpoint.task_id == task_id)
+        )
+        now = datetime.now(timezone.utc)
+        if row is None:
+            row = AnalysisTaskCheckpoint(task_id=task_id, created_at=now)
+            db.add(row)
+        row.payload = json.dumps(snapshot, ensure_ascii=False, default=str)
+        row.evidence_fingerprint = str(snapshot.get("evidenceFingerprint") or "")[:64] or None
+        row.prompt_version = str(snapshot.get("promptVersion") or "")[:64] or None
+        try:
+            row.attempt = max(0, int(snapshot.get("attempt") or 0))
+        except (TypeError, ValueError):
+            row.attempt = 0
+        row.updated_at = now
+        db.commit()
+
+
+def delete_task_checkpoint(task_id: str) -> None:
+    with SessionLocal() as db:
+        db.execute(
+            delete(AnalysisTaskCheckpoint).where(AnalysisTaskCheckpoint.task_id == task_id)
+        )
+        db.commit()
+
+
+def build_agent_checkpoint(
+    task: AnalysisTask,
+    segments: list[dict[str, Any]],
+) -> AgentCheckpoint | None:
+    """Build the checkpoint handle for one attempt; ``None`` when the flag is off."""
+    if not checkpoint_enabled():
+        return None
+    try:
+        data = load_task_checkpoint(task.id)
+    except Exception:  # noqa: BLE001 -- checkpoint read is best-effort
+        log.exception("task_checkpoint_load_failed task_id=%s", task.id)
+        data = None
+    return AgentCheckpoint(
+        enabled=True,
+        goal=task.goal,
+        prompt_version=PROMPT_VERSION,
+        evidence_fingerprint=evidence_fingerprint(segments),
+        attempt=task.attempt_count,
+        data=data,
+        persist=lambda snapshot: persist_task_checkpoint(task.id, snapshot),
+    )
+
+
+def clear_task_checkpoint(task_id: str) -> None:
+    try:
+        delete_task_checkpoint(task_id)
+    except Exception:  # noqa: BLE001 -- cleanup must not fail a completed task
+        log.exception("task_checkpoint_cleanup_failed task_id=%s", task_id)
+
+
 def record_dead_letter(db: Session, task: AnalysisTask, exc: BaseException) -> None:
     """把重试耗尽的失败任务落一条死信。重复调用不会产生重复行。"""
     try:
@@ -1806,6 +1908,7 @@ def process_analysis(task_id: str) -> str:
         previous_provider_requests = list(previous_trace.get("providerRequests") or [])
         analysis_provider: Provider | None = None
         toolbox: AgentToolbox | None = None
+        checkpoint: AgentCheckpoint | None = None
         heartbeat = build_lock_heartbeat(task)
         try:
             def report_progress(stage: str, current: int, total: int, message: str) -> None:
@@ -1842,6 +1945,8 @@ def process_analysis(task_id: str) -> str:
                 db.commit()
                 report_progress("AGENT", 0, 0, "证据已就绪，Agent 生成中")
             toolbox = agent_toolbox(db, media, progress_callback=None if evidence_reused else report_progress)
+            checkpoint = build_agent_checkpoint(task, toolbox.segments)
+            toolbox.checkpoint = checkpoint
             evidence_duration = int((time.perf_counter() - evidence_started) * 1000)
             db.commit()
 
@@ -1890,6 +1995,7 @@ def process_analysis(task_id: str) -> str:
                 "graph": generated.get("agentGraph"),
                 "providerUsage": summarize_provider_usage(provider_requests),
                 "providerRequests": provider_requests,
+                "checkpoint": checkpoint.summary() if checkpoint else {"enabled": False},
             }
 
             task.result = format_report(result)
@@ -1910,6 +2016,7 @@ def process_analysis(task_id: str) -> str:
             media.status = "COMPLETED"
             db.commit()
             release_active_lock(task.media_id, task.goal, task.id)
+            clear_task_checkpoint(task_id)
             return "COMPLETED"
         except Exception as exc:
             db.rollback()
@@ -1943,6 +2050,7 @@ def process_analysis(task_id: str) -> str:
                 "providerUsage": summarize_provider_usage(provider_requests),
                 "providerRequests": provider_requests,
                 "lastErrorType": type(exc).__name__,
+                "checkpoint": checkpoint.summary() if checkpoint else {"enabled": False},
             }
             task.trace_json = json.dumps(failure_trace, ensure_ascii=False)
             if not should_retry:
@@ -2568,6 +2676,7 @@ def delete_media(id: int, user: User = Depends(current_user)) -> str:
         db.execute(delete(AgentSession).where(AgentSession.media_id == id))
         if task_ids:
             db.execute(delete(AnalysisFeedback).where(AnalysisFeedback.task_id.in_(task_ids)))
+            db.execute(delete(AnalysisTaskCheckpoint).where(AnalysisTaskCheckpoint.task_id.in_(task_ids)))
         db.execute(delete(AnalysisTask).where(AnalysisTask.media_id == id))
         db.execute(delete(EvidenceSegment).where(EvidenceSegment.media_id == id))
         db.execute(delete(MediaImportTask).where(MediaImportTask.media_id == id))

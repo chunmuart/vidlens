@@ -92,6 +92,7 @@ class AgentToolbox:
         evaluate_report: ReportEvaluator,
         retriever: SearchRetriever | None = None,
         budget: BudgetTracker | None = None,
+        checkpoint: Any | None = None,
     ) -> None:
         self.metadata = dict(metadata)
         self.segments = [self._public_segment(item, index) for index, item in enumerate(segments)]
@@ -101,6 +102,8 @@ class AgentToolbox:
         self._trace: list[dict[str, Any]] = []
         # 可选预算跟踪器：工具执行前检查一次，主要约束“总耗时”
         self.budget = budget
+        # 可选阶段 checkpoint；默认 None，关闭时结构化 Agent 不读不写
+        self.checkpoint = checkpoint
         self._goal_coverage_plan: dict[str, Any] | None = None
         self._goal_evidence_sufficiency: dict[str, Any] | None = None
 
