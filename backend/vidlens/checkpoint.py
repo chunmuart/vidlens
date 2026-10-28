@@ -1,13 +1,11 @@
-"""Opt-in Agent stage checkpoints.
+"""可选的 Agent 阶段 checkpoint。
 
-Only the Planner and Retriever stages are persisted. Both are deterministic
-given ``(goal, prompt version, evidence snapshot)``, so replaying them after a
-transient failure is safe. Verifier/Writer/Critic output is deliberately not
-checkpointed: a half-reviewed report must not be reused without a fresh
-verification pass.
+只持久化 Planner 和 Retriever 两个阶段。给定（目标、prompt 版本、证据快照）
+后这两个阶段是确定性的，所以瞬时失败后重放是安全的。Verifier/Writer/Critic
+的产物故意不存：半份已评审的报告不能在未重新验证的情况下复用。
 
-``CHECKPOINT_ENABLED`` defaults to ``0``. When disabled, ``load()`` returns
-``None`` and ``save()`` is a no-op, so no database read or write happens.
+`CHECKPOINT_ENABLED` 默认是 `0`。关闭时 `load()` 返回 `None`、`save()` 是空操作，
+不会发生任何数据库读写。
 """
 
 from __future__ import annotations
@@ -34,10 +32,10 @@ def checkpoint_enabled(environ: Mapping[str, str] | None = None) -> bool:
 
 
 def evidence_fingerprint(segments: list[dict[str, Any]]) -> str:
-    """Stable hash of the evidence content, independent of database row IDs.
+    """证据内容的稳定哈希，不依赖数据库行 ID。
 
-    ``replace_evidence`` re-inserts rows with new numeric IDs while keeping the
-    same content; excluding ``segmentId`` lets a checkpoint survive that.
+    `replace_evidence` 会删除后重新插入证据、生成新的数字 ID，但内容不变；
+    指纹排除 `segmentId`，就是为了让 checkpoint 在这种重建后仍然可用。
     """
     canonical = sorted(
         (
@@ -61,7 +59,7 @@ def evidence_fingerprint(segments: list[dict[str, Any]]) -> str:
 
 
 class AgentCheckpoint:
-    """One task's checkpoint snapshot, with validation on load."""
+    """一个任务的 checkpoint 快照，加载时做完整性校验。"""
 
     def __init__(
         self,
@@ -138,7 +136,7 @@ class AgentCheckpoint:
             return
         try:
             self._persist(self.snapshot())
-        except Exception:  # noqa: BLE001 -- a checkpoint failure must not fail the task
+        except Exception:  # noqa: BLE001 —— checkpoint 写失败不能拖垮主任务
             log.exception("agent_checkpoint_persist_failed stage=%s", stage)
 
     def snapshot(self) -> dict[str, Any]:

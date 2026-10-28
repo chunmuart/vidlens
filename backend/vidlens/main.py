@@ -1697,10 +1697,10 @@ class AnalysisDeadLetter(Base):
 
 
 class AnalysisTaskCheckpoint(Base):
-    """Opt-in Agent stage checkpoint, one row per task.
+    """可选的 Agent 阶段 checkpoint，每个任务一行。
 
-    Only the Planner and Retriever stages are persisted; a half-reviewed report
-    is never reused. ``CHECKPOINT_ENABLED=0`` means no row is ever read or written.
+    只持久化 Planner 和 Retriever；半份已评审报告不会被复用。
+    ``CHECKPOINT_ENABLED=0`` 时不会读取或写入任何行。
     """
 
     __tablename__ = "analysis_task_checkpoints"
@@ -1762,7 +1762,7 @@ def build_agent_checkpoint(
     task: AnalysisTask,
     segments: list[dict[str, Any]],
 ) -> AgentCheckpoint | None:
-    """Build the checkpoint handle for one attempt; ``None`` when the flag is off."""
+    """为本次尝试构建 checkpoint 句柄；开关关闭时返回 None。"""
     if not checkpoint_enabled():
         return None
     try:

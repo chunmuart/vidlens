@@ -1,12 +1,10 @@
-"""Build a zero-dependency span tree from an existing analysis trace.
+"""从已有分析 trace 构建零依赖 span 树。
 
-The trace already records stage durations, tool calls, and provider request
-metadata. This module only reshapes that data; it does not measure anything
-new and does not change any existing trace field.
+trace 里已经有阶段耗时、工具调用和模型请求元数据。本模块只做结构重排，
+不新增任何测量，也不修改 trace 的已有字段。
 
-The result is a logical tree, not a wall-clock flame graph:
-``stageDurationMs`` has no start timestamps, so child offsets are laid out
-sequentially and marked with ``offsetApproximation`` where needed.
+结果是逻辑树，不是墙钟火焰图：`stageDurationMs` 没有起始时间戳，
+所以子 span 的偏移按顺序铺开，并在需要时标记 `offsetApproximation`。
 """
 
 from __future__ import annotations
@@ -101,7 +99,7 @@ def build_trace_spans(trace: Mapping[str, Any]) -> list[dict[str, Any]]:
             )
         )
     if critic_ms:
-        # CRITIC is measured inside EXECUTOR; place it at the end of that span.
+        # CRITIC 的耗时包含在 EXECUTOR 里，放在 executor 尾部
         spans.append(
             _span(
                 "critic",
@@ -173,6 +171,6 @@ def build_trace_spans(trace: Mapping[str, Any]) -> list[dict[str, Any]]:
 
 
 def attach_trace_spans(trace: dict[str, Any]) -> dict[str, Any]:
-    """Add ``trace["spans"]`` only; every existing key is left untouched."""
+    """只增加 `trace["spans"]`，已有字段一律不动。"""
     trace["spans"] = build_trace_spans(trace)
     return trace

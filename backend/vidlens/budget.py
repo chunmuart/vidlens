@@ -158,7 +158,7 @@ def record_completion_usage(
     total_tokens: int | None = None,
     cost_usd: float | None = None,
 ) -> None:
-    """Record one successful model call and enforce the token/cost gates."""
+    """记录一次成功的模型调用，并检查 token/cost 两道闸。"""
     tracker.add_tokens(
         prompt_tokens=prompt_tokens,
         completion_tokens=completion_tokens,
@@ -169,7 +169,7 @@ def record_completion_usage(
 
 
 def budget_refusal_payload(exc: BudgetExceeded) -> dict[str, Any]:
-    """A safe, explicitly non-answerable report used when a budget stops the run."""
+    """预算中止时使用的安全拒答报告，明确不可回答。"""
     return {
         "answerable": False,
         "finalAnswer": "本次分析因预算超限提前结束，无法从视频确定答案。",
