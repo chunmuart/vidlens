@@ -196,6 +196,17 @@
               </span>
               <span class="history-preview">{{ agentHistoryPreview(item) }}</span>
             </button>
+            <button
+                v-else
+                class="card-agent-history is-empty"
+                @click="openAgent(item)"
+            >
+              <span class="history-summary-line">
+                <strong>尚未分析</strong>
+                <span>点击开始</span>
+              </span>
+              <span class="history-preview">还没有分析报告或追问记录</span>
+            </button>
 
             <div class="action-dock">
               <button class="dock-item" @click="downloadAudio(item)">
@@ -1767,7 +1778,7 @@ html, body, #app {
 .section-header h3 { font-size: 1.5rem; font-weight: 700; }
 .count-chip { background: var(--border-tech); padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-family: monospace; }
 .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-.project-card { background: var(--bg-card); border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); border: 1px solid var(--border-tech); overflow: hidden; transition: transform 0.2s; position: relative; }
+.project-card { background: var(--bg-card); border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); border: 1px solid var(--border-tech); overflow: hidden; transition: transform 0.2s; position: relative; display: flex; flex-direction: column; }
 .project-card:hover { transform: translateY(-2px); border-color: var(--accent-lime); }
 .card-meta { display: flex; gap: 1.5rem; padding: 1.5rem; align-items: center; border-bottom: 1px solid var(--border-tech); background: rgba(18, 21, 18, 0.5); }
 .meta-icon { width: 56px; height: 56px; background: rgba(197, 249, 70, 0.05); border: 1px solid var(--accent-lime); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--accent-lime); }
@@ -1778,8 +1789,9 @@ html, body, #app {
 .status-indicator.completed { color: var(--accent-lime); border: 1px solid var(--accent-lime); background: rgba(197, 249, 70, 0.1); }
 .status-indicator.processing { color: var(--accent-purple); border: 1px solid var(--accent-purple); animation: blink 1s infinite; }
 
-.action-dock { display: grid; grid-template-columns: 1fr 1fr 1.5fr; gap: 12px; padding: 12px; background: rgba(5, 8, 5, 0.5); }
+.action-dock { display: grid; grid-template-columns: 1fr 1fr 1.5fr; gap: 12px; padding: 12px; background: rgba(5, 8, 5, 0.5); margin-top: auto; }
 .dock-item { position: relative; border: 1px solid var(--border-tech); background: var(--bg-card); border-radius: 8px; padding: 16px; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: all 0.3s; color: var(--text-sub); font-family: monospace; overflow: hidden; }
+.dock-item .item-label { white-space: nowrap; }
 .dock-item:hover:not(:disabled) { color: var(--accent-lime); border-color: var(--accent-lime); background: rgba(197, 249, 70, 0.05); }
 .dock-item:disabled { opacity: 0.3; cursor: not-allowed; }
 .dock-item.ai-core { border-color: var(--accent-purple); color: var(--accent-purple); }

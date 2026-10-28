@@ -457,6 +457,14 @@ body {
 .app-stage .history-preview,
 .app-stage .history-summary-line span { color: var(--text-sub) !important; }
 
+.app-stage .card-agent-history.is-empty {
+  border-top-style: dashed !important;
+  background: transparent !important;
+}
+.app-stage .card-agent-history.is-empty:hover { background: #f4f6f8 !important; }
+.app-stage .card-agent-history.is-empty .history-summary-line strong { color: var(--text-sub) !important; }
+.app-stage .card-agent-history.is-empty .history-preview { opacity: 0.72; }
+
 .app-stage .action-dock {
   grid-template-columns: 1fr 1fr 1.25fr !important;
   gap: 10px !important;
