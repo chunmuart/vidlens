@@ -150,6 +150,36 @@ class BudgetTracker:
         }
 
 
+def record_completion_usage(
+    tracker: BudgetTracker,
+    *,
+    prompt_tokens: int = 0,
+    completion_tokens: int = 0,
+    total_tokens: int | None = None,
+    cost_usd: float | None = None,
+) -> None:
+    """Record one successful model call and enforce the token/cost gates."""
+    tracker.add_tokens(
+        prompt_tokens=prompt_tokens,
+        completion_tokens=completion_tokens,
+        total_tokens=total_tokens,
+        cost_usd=cost_usd,
+    )
+    tracker.check()
+
+
+def budget_refusal_payload(exc: BudgetExceeded) -> dict[str, Any]:
+    """A safe, explicitly non-answerable report used when a budget stops the run."""
+    return {
+        "answerable": False,
+        "finalAnswer": "本次分析因预算超限提前结束，无法从视频确定答案。",
+        "title": "视频分析未完成（预算超限）",
+        "conclusions": [f"预算超限：{exc.limit}"],
+        "evidence": [],
+        "suggestions": ["可在配置中提高 AGENT_MAX_* 预算后重试。"],
+    }
+
+
 def _env_int(env: Mapping[str, str], key: str) -> int:
     raw = str(env.get(key, "0") or "0").strip()
     try:

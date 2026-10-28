@@ -34,7 +34,13 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sessionmaker
 
 from vidlens.agent_metrics import summarize as summarize_agent_metrics
-from vidlens.budget import BudgetLimits, BudgetTracker
+from vidlens.budget import (
+    BudgetExceeded,
+    BudgetLimits,
+    BudgetTracker,
+    budget_refusal_payload,
+    record_completion_usage,
+)
 from vidlens.checkpoint import AgentCheckpoint, checkpoint_enabled, evidence_fingerprint
 from vidlens.lease import LockHeartbeat
 from vidlens.trace_spans import attach_trace_spans
@@ -640,8 +646,16 @@ class OpenAICompatibleProvider(Provider):
         if tools:
             payload["tools"] = tools
             payload["tool_choice"] = tool_choice or "auto"
+        budget = getattr(self, "budget", None)
+        if budget is not None:
+            # 请求前先查一次，再加一轮并复查，避免明知超限还发起调用
+            budget.check()
+            budget.add_round()
+            budget.check()
         started = time.perf_counter()
         response: Any = None
+        tokens: dict[str, Any] = {}
+        estimated_cost: float | None = None
         try:
             response = httpx.post(
                 self.url,
@@ -654,6 +668,7 @@ class OpenAICompatibleProvider(Provider):
             message = body["choices"][0]["message"]
             usage = body.get("usage") if isinstance(body.get("usage"), dict) else {}
             tokens = self._usage_tokens(usage)
+            estimated_cost = self._token_cost(tokens)
             headers = getattr(response, "headers", {}) or {}
             self._record_provider_usage({
                 "provider": self.__class__.__name__,
@@ -663,12 +678,11 @@ class OpenAICompatibleProvider(Provider):
                 "statusCode": int(getattr(response, "status_code", 200)),
                 "latencyMs": max(0, int((time.perf_counter() - started) * 1000)),
                 **tokens,
-                "estimatedCostUsd": self._token_cost(tokens),
+                "estimatedCostUsd": estimated_cost,
                 "toolCallCount": len(message.get("tool_calls") or []),
                 "requestId": str(headers.get("x-request-id") or headers.get("x-requestid") or "")[:200] or None,
                 "errorType": None,
             })
-            return message
         except Exception as exc:
             self._record_provider_usage({
                 "provider": self.__class__.__name__,
@@ -689,6 +703,15 @@ class OpenAICompatibleProvider(Provider):
                 "errorType": type(exc).__name__,
             })
             raise
+        if budget is not None:
+            record_completion_usage(
+                budget,
+                prompt_tokens=int(tokens.get("promptTokens") or 0),
+                completion_tokens=int(tokens.get("completionTokens") or 0),
+                total_tokens=int(tokens.get("totalTokens") or 0),
+                cost_usd=estimated_cost,
+            )
+        return message
 
     def _chat(self, prompt: str) -> str:
         message = self._completion([{"role": "user", "content": prompt}])
@@ -1959,14 +1982,34 @@ def process_analysis(task_id: str) -> str:
             db.commit()
 
             analysis_provider = provider()
+            analysis_provider.budget = toolbox.budget
             report_progress("AGENT", 0, 1, "Agent 生成中")
             analysis_started = time.perf_counter()
-            generated = analysis_provider.run_agent(toolbox, task.goal)
+            try:
+                generated = analysis_provider.run_agent(toolbox, task.goal)
+            except BudgetExceeded as exc:
+                # 预算超限不重试：返回明确的拒答式部分结果，并记录是哪道闸
+                budget_result = toolbox.normalize_report(budget_refusal_payload(exc))
+                budget_evaluation = {
+                    **toolbox.evaluate_report(budget_result, toolbox.segments),
+                    "budgetExceeded": True,
+                    "budgetLimit": exc.limit,
+                    "budgetUsed": exc.used,
+                    "budgetLimitValue": exc.limit_value,
+                }
+                generated = {
+                    "ok": True,
+                    "report": budget_result,
+                    "evaluation": budget_evaluation,
+                    "accepted": True,
+                    "budgetExceeded": True,
+                }
             analysis_duration = int((time.perf_counter() - analysis_started) * 1000)
             if not generated.get("ok") or not generated.get("report"):
                 raise ValueError(generated.get("error") or "Agent 未生成有效报告")
             result = generated["report"]
             evaluation = generated["evaluation"]
+            budget_exceeded = bool(generated.get("budgetExceeded"))
             try:
                 supported = int(evaluation.get("supportedCitationCount") or 0)
                 total_citations = int(evaluation.get("citationCount") or 0)
@@ -2004,6 +2047,8 @@ def process_analysis(task_id: str) -> str:
                 "providerUsage": summarize_provider_usage(provider_requests),
                 "providerRequests": provider_requests,
                 "checkpoint": checkpoint.summary() if checkpoint else {"enabled": False},
+                "budgetExceeded": budget_exceeded,
+                "budget": toolbox.budget.snapshot() if toolbox.budget else None,
             }
             attach_spans_safely(trace, task_id)
 
@@ -2060,6 +2105,7 @@ def process_analysis(task_id: str) -> str:
                 "providerRequests": provider_requests,
                 "lastErrorType": type(exc).__name__,
                 "checkpoint": checkpoint.summary() if checkpoint else {"enabled": False},
+                "budget": toolbox.budget.snapshot() if toolbox and toolbox.budget else None,
             }
             attach_spans_safely(failure_trace, task_id)
             task.trace_json = json.dumps(failure_trace, ensure_ascii=False)
