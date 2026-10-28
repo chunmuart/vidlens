@@ -296,7 +296,7 @@
                   <div class="markdown-content conversation-answer" v-html="renderMarkdown(turn.answer)"></div>
                 </article>
               </section>
-              <div v-if="sidebar.plan?.tasks?.length || traceStages.length || traceToolCalls.length" class="agent-inspector">
+              <div v-if="sidebar.plan?.tasks?.length || traceStages.length || traceToolCalls.length || traceSpans.length || agentBudget || agentCheckpoint" class="agent-inspector">
                 <div v-if="sidebar.plan?.tasks?.length" class="agent-meta-block">
                   <span class="meta-label">Planner 任务</span>
                   <ol><li v-for="task in sidebar.plan.tasks" :key="task">{{ task }}</li></ol>
@@ -321,6 +321,60 @@
                         {{ call.success ? '成功' : '失败' }} · {{ call.durationMs }}ms
                       </span>
                     </div>
+                  </div>
+                </div>
+                <div v-if="traceSpans.length" class="agent-meta-block trace-block">
+                  <div class="trace-block-head">
+                    <span class="meta-label">Trace 瀑布图 · {{ traceSpans.length }} spans</span>
+                    <span class="trace-total">{{ formatSpanMs(traceSpanTotalMs) }}</span>
+                  </div>
+                  <div class="trace-legend">
+                    <span><i class="trace-dot is-root"></i>总览</span>
+                    <span><i class="trace-dot is-stage"></i>阶段</span>
+                    <span><i class="trace-dot is-tool"></i>工具</span>
+                    <span><i class="trace-dot is-provider"></i>模型</span>
+                    <span><i class="trace-dot is-critic"></i>Critic</span>
+                  </div>
+                  <div class="trace-waterfall" role="list">
+                    <div v-for="span in traceSpans" :key="span.index" class="trace-span-row" role="listitem">
+                      <span class="trace-span-name" :style="{ paddingLeft: `${span.depth * 12}px` }" :title="span.name">{{ span.displayName }}</span>
+                      <div class="trace-span-track">
+                        <div class="trace-span-bar" :class="`is-${span.kind}`" :style="{ left: `${span.leftPercent}%`, width: `${span.widthPercent}%` }" :title="span.tooltip"></div>
+                      </div>
+                      <span class="trace-span-duration">{{ formatSpanMs(span.durationMs) }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div v-else-if="sidebar.trace" class="agent-meta-block">
+                  <span class="meta-label">Trace 瀑布图</span>
+                  <p class="trace-empty">该历史任务没有 span 数据；重新分析后可见。</p>
+                </div>
+                <div v-if="agentBudget || agentCheckpoint || agentProviderUsage || budgetExceeded" class="agent-meta-block observability-block">
+                  <span class="meta-label">Agent 观测</span>
+                  <div class="observability-grid">
+                    <div v-if="agentBudget" class="observability-card">
+                      <span>预算用量</span>
+                      <strong>{{ agentBudget.rounds }} 轮 · {{ formatCount(agentBudget.tokens) }} tokens</strong>
+                      <small>{{ formatSpanMs(agentBudget.elapsedMs) }} · {{ formatCost(agentBudget.costUsd) }}</small>
+                    </div>
+                    <div v-if="agentCheckpoint" class="observability-card">
+                      <span>Checkpoint</span>
+                      <strong>{{ agentCheckpoint.enabled ? '已启用' : '未启用' }}</strong>
+                      <small>{{ checkpointSummary }}</small>
+                    </div>
+                    <div v-if="agentProviderUsage" class="observability-card">
+                      <span>Provider</span>
+                      <strong>{{ agentProviderUsage.requestCount }} 次 · {{ formatCount(agentProviderUsage.totalTokens) }} tokens</strong>
+                      <small>P95 {{ formatSpanMs(agentProviderUsage.latencyMsP95) }}<template v-if="agentProviderUsage.estimatedCostUsd != null"> · {{ formatCost(agentProviderUsage.estimatedCostUsd) }}</template></small>
+                    </div>
+                    <div v-if="budgetExceeded" class="observability-card is-warning">
+                      <span>预算闸</span>
+                      <strong>已触发</strong>
+                      <small>{{ budgetLimitText }}</small>
+                    </div>
+                  </div>
+                  <div v-if="providerPhases.length" class="provider-phase-list">
+                    <span v-for="phase in providerPhases" :key="phase.phase">{{ phase.phase }} · {{ phase.requests }} 次 / {{ formatCount(phase.tokens) }} tokens</span>
                   </div>
                 </div>
                 <div v-if="sidebar.evaluation && Object.keys(sidebar.evaluation).length" class="quality-row">
@@ -448,6 +502,111 @@ const sidebarBodyRef = ref(null)
 const followUpRefs = ref([])
 const traceStages = computed(() => Object.entries(sidebar.value.trace?.stageDurationMs || {}))
 const traceToolCalls = computed(() => sidebar.value.trace?.toolCalls || [])
+const traceSpans = computed(() => {
+  const spans = sidebar.value.trace?.spans
+  if (!Array.isArray(spans) || !spans.length) return []
+  const byName = new Map(spans.map(span => [span.name, span]))
+  const depthOf = (span) => {
+    let depth = 0
+    let current = span
+    const seen = new Set()
+    while (current?.parent && byName.has(current.parent) && !seen.has(current.parent) && depth < 8) {
+      seen.add(current.parent)
+      depth += 1
+      current = byName.get(current.parent)
+    }
+    return depth
+  }
+  const root = spans.find(span => !span.parent) || spans[0]
+  const total = Math.max(1, Number(root?.durationMs) || 0)
+  return spans.map((span, index) => {
+    const start = Math.max(0, Number(span.startOffsetMs) || 0)
+    const duration = Math.max(0, Number(span.durationMs) || 0)
+    const leftPercent = Math.min(99.4, (start / total) * 100)
+    const widthPercent = Math.max(0.6, Math.min(100 - leftPercent, (duration / total) * 100))
+    const name = String(span.name || 'span')
+    const kind = name === 'analysis'
+      ? 'root'
+      : name === 'critic'
+        ? 'critic'
+        : name.startsWith('tool.')
+          ? 'tool'
+          : name === 'provider' || name.startsWith('provider.')
+            ? 'provider'
+            : 'stage'
+    const attrs = span.attributes || {}
+    const displayName = name.startsWith('tool.')
+      ? (attrs.tool || name.slice(5).replace(/#\d+$/, ''))
+      : name.startsWith('provider.')
+        ? name.replace(/^provider\./, '').replace(/#\d+$/, '')
+        : name
+    const tooltipParts = [name, `${start}–${start + duration}ms`]
+    if (attrs.tool) tooltipParts.push(`tool=${attrs.tool}`)
+    if (attrs.phase) tooltipParts.push(`phase=${attrs.phase}`)
+    if (attrs.totalTokens) tooltipParts.push(`${attrs.totalTokens} tokens`)
+    if (attrs.errorClass) tooltipParts.push(`error=${attrs.errorClass}`)
+    return {
+      ...span,
+      index,
+      name,
+      displayName,
+      depth: depthOf(span),
+      kind,
+      leftPercent,
+      widthPercent,
+      durationMs: duration,
+      startOffsetMs: start,
+      tooltip: tooltipParts.join(' · ')
+    }
+  })
+})
+const traceSpanTotalMs = computed(() => {
+  const spans = sidebar.value.trace?.spans
+  if (!Array.isArray(spans) || !spans.length) return 0
+  const root = spans.find(span => !span.parent) || spans[0]
+  return Math.max(0, Number(root?.durationMs) || 0)
+})
+const agentBudget = computed(() => sidebar.value.trace?.budget || null)
+const agentCheckpoint = computed(() => sidebar.value.trace?.checkpoint || sidebar.value.trace?.graph?.checkpoint || null)
+const agentProviderUsage = computed(() => sidebar.value.trace?.providerUsage || null)
+const budgetExceeded = computed(() => Boolean(
+  sidebar.value.trace?.budgetExceeded || sidebar.value.evaluation?.budgetExceeded
+))
+const checkpointSummary = computed(() => {
+  const checkpoint = agentCheckpoint.value
+  if (!checkpoint) return ''
+  if (!checkpoint.enabled) return '未启用'
+  const restored = checkpoint.restoredStages || []
+  const saved = checkpoint.savedStages || []
+  if (restored.length) return `恢复 ${restored.join(' → ')}`
+  if (saved.length) return `已保存 ${saved.join(' → ')}`
+  return '已启用，本次未命中'
+})
+const budgetLimitText = computed(() => {
+  const evaluation = sidebar.value.evaluation || {}
+  if (evaluation.budgetLimit) return `${evaluation.budgetLimit} 超限`
+  const limits = agentBudget.value?.limits || {}
+  const active = Object.entries(limits).filter(([, value]) => Number(value) > 0)
+  return active.length ? active.map(([key, value]) => `${key}=${value}`).join(' · ') : '未设置上限'
+})
+const providerPhases = computed(() => Object.entries(agentProviderUsage.value?.byPhase || {}).map(([phase, stats]) => ({
+  phase,
+  requests: Number(stats.requestCount || 0),
+  tokens: Number(stats.totalTokens || 0)
+})))
+const formatSpanMs = (value) => {
+  const ms = Math.max(0, Number(value) || 0)
+  if (ms >= 1000) return `${(ms / 1000).toFixed(2)}s`
+  return `${Math.round(ms)}ms`
+}
+const formatCount = (value) => Number(value || 0).toLocaleString('zh-CN')
+const formatCost = (value) => {
+  const number = Number(value)
+  if (!Number.isFinite(number)) return '—'
+  if (number === 0) return '$0'
+  if (number < 0.01) return `$${number.toFixed(6)}`
+  return `$${number.toFixed(4)}`
+}
 const MARKDOWN_TAGS = new Set([
   'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'P', 'BR', 'HR', 'BLOCKQUOTE',
   'UL', 'OL', 'LI', 'STRONG', 'EM', 'DEL', 'CODE', 'PRE', 'A',
@@ -1696,6 +1855,38 @@ html, body, #app {
 .tool-call-item span { flex: 0 0 auto; color: #9da6b2; font-size: 11px; }
 .tool-call-item span.is-success { color: var(--accent-lime); }
 .tool-call-item span.is-failed { color: #ff6b6b; }
+.trace-block-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.trace-block-head .meta-label { margin-bottom: 0; }
+.trace-total { color: var(--text-sub); font-family: monospace; font-size: 0.72rem; font-variant-numeric: tabular-nums; }
+.trace-legend { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0 8px; color: var(--text-sub); font-size: 0.7rem; }
+.trace-legend span { display: inline-flex; align-items: center; gap: 5px; }
+.trace-dot { width: 7px; height: 7px; border-radius: 999px; display: inline-block; background: #64748b; }
+.trace-dot.is-root { background: #8b5cf6; }
+.trace-dot.is-stage { background: #38bdf8; }
+.trace-dot.is-tool { background: #22c55e; }
+.trace-dot.is-provider { background: #f59e0b; }
+.trace-dot.is-critic { background: #ef4444; }
+.trace-waterfall { display: grid; gap: 5px; }
+.trace-span-row { display: grid; grid-template-columns: minmax(110px, 1.1fr) minmax(160px, 3fr) 56px; align-items: center; gap: 8px; font-family: monospace; font-size: 0.72rem; }
+.trace-span-name { color: var(--text-sub); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.trace-span-track { position: relative; height: 9px; border: 1px solid var(--border-tech); border-radius: 2px; background: rgba(255,255,255,0.02); overflow: hidden; }
+.trace-span-bar { position: absolute; top: 1px; bottom: 1px; min-width: 2px; border-radius: 1px; background: #64748b; }
+.trace-span-bar.is-root { background: #8b5cf6; }
+.trace-span-bar.is-stage { background: #38bdf8; }
+.trace-span-bar.is-tool { background: #22c55e; }
+.trace-span-bar.is-provider { background: #f59e0b; }
+.trace-span-bar.is-critic { background: #ef4444; }
+.trace-span-duration { color: var(--text-sub); text-align: right; font-variant-numeric: tabular-nums; }
+.trace-empty { margin: 8px 0 0; color: var(--text-sub); font-size: 0.78rem; }
+.observability-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-top: 10px; }
+.observability-card { display: flex; flex-direction: column; gap: 3px; padding: 9px 10px; border: 1px solid var(--border-tech); border-radius: 4px; background: rgba(255,255,255,0.02); }
+.observability-card span { color: var(--text-sub); font-size: 0.7rem; letter-spacing: 0.4px; }
+.observability-card strong { color: var(--text-main); font-size: 0.8rem; font-weight: 600; }
+.observability-card small { color: var(--text-sub); font-size: 0.7rem; line-height: 1.5; }
+.observability-card.is-warning { border-color: rgba(239, 68, 68, 0.5); }
+.observability-card.is-warning strong { color: #ef4444; }
+.provider-phase-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
+.provider-phase-list span { border: 1px solid var(--border-tech); border-radius: 4px; padding: 4px 6px; color: var(--text-sub); font-size: 0.7rem; font-family: monospace; }
 .follow-up-box { display: grid; grid-template-columns: 1fr auto; gap: 10px; margin-top: 24px; }
 .follow-up-box textarea { min-height: 76px; }
 .follow-up-box button {
@@ -2278,6 +2469,28 @@ html, body, #app {
 }
 
 .app-stage .tool-call-item code { color: #34414a !important; }
+
+.app-stage .trace-span-track {
+  background: rgba(23, 33, 41, 0.06) !important;
+}
+
+.app-stage .observability-card {
+  background: #ffffff !important;
+}
+
+.app-stage .observability-card strong {
+  color: var(--text-main) !important;
+}
+
+.app-stage .observability-card.is-warning strong {
+  color: #d92d20 !important;
+}
+
+.app-stage .trace-span-name,
+.app-stage .trace-span-duration,
+.app-stage .trace-empty {
+  color: var(--text-sub) !important;
+}
 
 .app-stage .goal-presets button,
 .app-stage .feedback-row button,
