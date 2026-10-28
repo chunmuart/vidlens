@@ -12,6 +12,7 @@ __pycache__/
 data/
 node_modules/
 dist/
+.runtime/
 deploy/.env.production
 backups/
 backend/vendor/*.deb
