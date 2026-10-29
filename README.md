@@ -136,6 +136,24 @@ cd client && npm install && npm run dev   # 前端 :5173
 
 首次启动会下载 ASR / OCR / BGE 模型（约 185MB）到独立 volume，后续复用。接口文档见 `http://localhost:9090/docs`。
 
+### Windows 一键启动（不使用 Docker）
+
+适合已经准备好本机 Python/Node 环境的情况：
+
+- 后端虚拟环境：`backend\.venv`（Python 3.11+）
+- 前端依赖：`client\node_modules`（Node 22+）
+- FFprobe：`cd .runtime\ffmpeg && npm install @ffprobe-installer/win32-x64`
+- AI 配置：设置 `VIDLENS_ENV_FILE` 指向包含 `LLM_BASE_URL / LLM_API_KEY / LLM_MODEL`（或 `AI_*`）的 env 文件；否则脚本会依次尝试 `C:\code\shoppilot\.env` 和 `backend\.env`
+
+双击 `start-vidlens.cmd` 会启动前后端并打开 `http://127.0.0.1:5174`。
+
+```powershell
+.\start-vidlens.cmd -Restart    # 重启前后端
+.\start-vidlens.cmd -NoBrowser  # 不自动打开浏览器
+```
+
+详细步骤见 [`docs/Windows本地运行说明.md`](docs/Windows本地运行说明.md)。
+
 后端测试：
 
 ```bash
