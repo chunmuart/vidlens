@@ -1,7 +1,8 @@
 ﻿# VidLens Windows 本地一键启动脚本
 param(
     [switch]$Restart,
-    [switch]$NoBrowser
+    [switch]$NoBrowser,
+    [switch]$WithVector
 )
 
 $ErrorActionPreference = "Stop"
@@ -142,8 +143,51 @@ $env:AUTO_CREATE_SCHEMA = "true"
 $env:REDIS_URL = "redis://127.0.0.1:6379/0"
 $env:ROCKETMQ_NAMESERVER = ""
 $env:CORS_ALLOWED_ORIGINS = "http://localhost:$FrontendPort,http://127.0.0.1:$FrontendPort"
-$env:EVIDENCE_RETRIEVER_PROFILE = "coverage-aware-lexical-v3"
-$env:EVIDENCE_EMBEDDING_ALLOW_DOWNLOAD = "false"
+$qdrantPid = $null
+if ($WithVector) {
+    $QdrantDir = Join-Path $RuntimeRoot "qdrant"
+    $QdrantExe = Join-Path $QdrantDir "qdrant.exe"
+    $EmbeddingDir = Join-Path $RuntimeRoot "models\bge-small-zh"
+    if (-not (Test-Path -LiteralPath $QdrantExe)) {
+        throw "未找到 Qdrant：$QdrantExe。请把 qdrant-x86_64-pc-windows-msvc.zip 解压到该目录，或去掉 -WithVector。"
+    }
+    if (-not (Test-Path -LiteralPath (Join-Path $EmbeddingDir "onnx\model_quantized.onnx"))) {
+        throw "未找到 BGE 模型：$EmbeddingDir\onnx\model_quantized.onnx"
+    }
+    $qdrantPid = Get-ListeningProcessId -Port 6333
+    if (-not $qdrantPid) {
+        $qdrantProcess = Start-Process `
+            -FilePath $QdrantExe `
+            -WorkingDirectory $QdrantDir `
+            -WindowStyle Hidden `
+            -RedirectStandardOutput (Join-Path $LogRoot "qdrant.out.log") `
+            -RedirectStandardError (Join-Path $LogRoot "qdrant.err.log") `
+            -PassThru
+        $qdrantPid = $qdrantProcess.Id
+    }
+    $qdrantReady = $false
+    for ($attempt = 0; $attempt -lt 30; $attempt++) {
+        try {
+            $qdrantHealth = Invoke-RestMethod -Uri "http://127.0.0.1:6333/collections" -TimeoutSec 2
+            if ($qdrantHealth.status -eq "ok") {
+                $qdrantReady = $true
+                break
+            }
+        } catch {
+            Start-Sleep -Seconds 1
+        }
+    }
+    if (-not $qdrantReady) {
+        throw "Qdrant 未在 30 秒内就绪。查看 $LogRoot\qdrant.err.log"
+    }
+    $env:QDRANT_URL = "http://127.0.0.1:6333"
+    $env:EVIDENCE_RETRIEVER_PROFILE = "coverage-aware-qdrant-hybrid-v2"
+    $env:EVIDENCE_EMBEDDING_MODEL_DIR = $EmbeddingDir
+    $env:EVIDENCE_EMBEDDING_ALLOW_DOWNLOAD = "false"
+} else {
+    $env:EVIDENCE_RETRIEVER_PROFILE = "coverage-aware-lexical-v3"
+    $env:EVIDENCE_EMBEDDING_ALLOW_DOWNLOAD = "false"
+}
 $env:LOCAL_ASR_ENABLED = "true"
 $env:OCR_ENABLED = "true"
 $env:HF_ENDPOINT = "https://hf-mirror.com"
@@ -219,6 +263,7 @@ $frontendPid = Get-ListeningProcessId -Port $FrontendPort
 [pscustomobject]@{
     backendPid = $backendPid
     frontendPid = $frontendPid
+    qdrantPid = $qdrantPid
     backendUrl = "http://127.0.0.1:$BackendPort"
     frontendUrl = "http://127.0.0.1:$FrontendPort"
     apiProvider = "Configured / $($aiConfig.Model)"
@@ -228,6 +273,11 @@ Write-Output "VidLens started."
 Write-Output "Frontend: http://127.0.0.1:$FrontendPort"
 Write-Output "API docs: http://127.0.0.1:$BackendPort/docs"
 Write-Output "AI config: $($aiConfig.Path) / $($aiConfig.Model)"
+if ($WithVector) {
+    Write-Output "Retrieval: coverage-aware-qdrant-hybrid-v2 (Qdrant 127.0.0.1:6333)"
+} else {
+    Write-Output "Retrieval: coverage-aware-lexical-v3 (lexical only)"
+}
 if (-not $NoBrowser) {
     try {
         Start-Process "http://127.0.0.1:$FrontendPort"
