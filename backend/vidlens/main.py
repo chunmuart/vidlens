@@ -1508,6 +1508,9 @@ def normalize_analysis_result(result: dict[str, Any]) -> dict[str, Any]:
             evidence_id = str(item.get("evidenceId") or "").strip()[:64]
             if evidence_id:
                 citation["evidenceId"] = evidence_id
+            matched_terms = [str(term) for term in item.get("matchedTerms") or []][:8]
+            if matched_terms:
+                citation["matchedTerms"] = matched_terms
             evidence.append(citation)
     raw_answerable = result.get("answerable")
     if isinstance(raw_answerable, bool):
@@ -1610,7 +1613,11 @@ def format_report(result: dict[str, Any]) -> str:
     evidence = result.get("evidence", [])
     for item in evidence:
         timestamp = format_timestamp(int(item.get("timestampMs", 0)))
-        lines.append(f"- [{timestamp}] {item.get('source', 'ASR')}：{item.get('content', '')}")
+        line = f"- [{timestamp}] {item.get('source', 'ASR')}：{item.get('content', '')}"
+        matched_terms = [str(term) for term in item.get("matchedTerms") or []][:4]
+        if matched_terms:
+            line += f"（命中检索词：{'、'.join(matched_terms)}）"
+        lines.append(line)
     if not evidence:
         lines.append("- 未发现可支持该问题答案的视频证据。")
     lines.extend(["", "### 行动建议"])

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 import re
 from collections.abc import Callable
 from dataclasses import dataclass, field
@@ -28,6 +29,19 @@ class EvidenceRetriever:
 
     def __init__(self, segments: list[dict[str, Any]]) -> None:
         self.segments = [dict(item) for item in segments]
+        # 只在当前视频的证据集合内统计：词越稀有，区分度越高
+        self._document_frequency: dict[str, int] = {}
+        for item in self.segments:
+            for term in self.terms(str(item.get("content", ""))):
+                self._document_frequency[term] = self._document_frequency.get(term, 0) + 1
+        self._documents = max(1, len(self.segments))
+
+    def _idf_weights(self, terms: set[str]) -> dict[str, float]:
+        """IDF 平滑：log((N+1)/(df+1)) + 1，出现过的词权重不低于 1。"""
+        return {
+            term: math.log((self._documents + 1) / (self._document_frequency.get(term, 0) + 1)) + 1.0
+            for term in terms
+        }
 
     @staticmethod
     def terms(value: str) -> set[str]:
@@ -41,19 +55,39 @@ class EvidenceRetriever:
         return ascii_words | chinese_pairs
 
     @classmethod
-    def score(cls, query: str, content: str) -> dict[str, float]:
+    def score(
+        cls,
+        query: str,
+        content: str,
+        *,
+        terms: set[str] | None = None,
+        weights: dict[str, float] | None = None,
+    ) -> dict[str, Any]:
         compact_query = re.sub(r"\s+", "", query.lower())
         compact_content = re.sub(r"\s+", "", content.lower())
+        empty = {
+            "score": 0.0,
+            "termCoverage": 0.0,
+            "exactBonus": 0.0,
+            "matchedTerms": [],
+            "missedTerms": [],
+        }
         if not compact_query or not compact_content:
-            return {"score": 0.0, "termCoverage": 0.0, "exactBonus": 0.0}
-        terms = cls.terms(query)
-        matched = sum(1 for term in terms if term in compact_content)
-        term_coverage = matched / max(1, len(terms))
+            return empty
+        query_terms = set(terms) if terms is not None else cls.terms(query)
+        matched_terms = sorted(term for term in query_terms if term in compact_content)
+        missed_terms = sorted(term for term in query_terms if term not in compact_content)
+        weight_map = weights or {}
+        total_weight = sum(weight_map.get(term, 1.0) for term in query_terms) or 1.0
+        hit_weight = sum(weight_map.get(term, 1.0) for term in matched_terms)
+        term_coverage = hit_weight / total_weight
         exact_bonus = 1.0 if compact_query in compact_content else 0.0
         return {
             "score": round(exact_bonus + term_coverage, 4),
             "termCoverage": round(term_coverage, 4),
             "exactBonus": exact_bonus,
+            "matchedTerms": matched_terms[:8],
+            "missedTerms": missed_terms[:8],
         }
 
     @classmethod
@@ -77,15 +111,24 @@ class EvidenceRetriever:
             for item in self.segments
             if not allowed_sources or str(item.get("source", "")).upper() in allowed_sources
         ]
+        query_terms = self.terms(normalized_query)
+        weights = self._idf_weights(query_terms)
         ranked = []
         for item in candidates:
-            details = self.score(normalized_query, str(item.get("content", "")))
+            details = self.score(
+                normalized_query,
+                str(item.get("content", "")),
+                terms=query_terms,
+                weights=weights,
+            )
             ranked.append({
                 **item,
                 "score": details["score"],
                 "scoreDetails": {
                     "termCoverage": details["termCoverage"],
                     "exactBonus": details["exactBonus"],
+                    "matchedTerms": details["matchedTerms"],
+                    "missedTerms": details["missedTerms"],
                 },
             })
         ranked.sort(

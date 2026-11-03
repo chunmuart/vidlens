@@ -478,6 +478,10 @@ def _retrieve_node(toolbox: AgentToolbox, state: StructuredAgentState) -> dict[s
                 "endMs": max(0, int(item.get("endMs", item.get("startMs", 0)))),
                 "content": " ".join(str(item.get("content", "")).split())[:MAX_EVIDENCE_CONTENT],
                 "requirementIds": [],
+                # 检索命中的词：只在原始检索结果里有，邻接扩展带出的片段为空
+                "matchedTerms": list(
+                    (item.get("scoreDetails") or {}).get("matchedTerms") or []
+                ),
             }
         stored = by_segment.get(key)
         if not stored:
@@ -862,6 +866,7 @@ def _resolved_citations(draft: dict[str, Any], ledger: dict[str, Any]) -> list[d
             "timestampMs": int(item.get("startMs", 0)),
             "source": str(item.get("source", "ASR")),
             "content": str(item.get("content", "")),
+            "matchedTerms": list(item.get("matchedTerms") or []),
         })
     return citations
 
