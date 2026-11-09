@@ -31,27 +31,44 @@ def _flag(name: str, default: bool = False) -> bool:
     return value.strip().lower() in {"1", "true", "yes", "on"}
 
 
+def _env(name: str, default: str) -> str:
+    """空值视为未设置，避免 .env 中 `KEY=` 覆盖掉默认值。"""
+    value = os.getenv(name)
+    return default if value is None or not value.strip() else value.strip()
+
+
+def _env_float(name: str, default: float) -> float:
+    try:
+        return float(_env(name, str(default)))
+    except ValueError:
+        log.warning("invalid_number_env name=%s value=%r fallback=%s", name, os.getenv(name), default)
+        return default
+
+
 def _contextual_lexical(segments: list[dict[str, Any]]) -> SearchRetriever:
     return ContextualEvidenceRetriever(segments, EvidenceRetriever(segments))
 
 
 def _coverage_lexical(segments: list[dict[str, Any]]) -> SearchRetriever:
-    return CoverageAwareEvidenceRetriever(segments, _contextual_lexical(segments))
+    # 纯词法档位没有稠密分，弃答由 coverage 层的锚点门控负责，
+    # 而不是 Contextual 层的 dense+lexical 双低门槛。
+    return CoverageAwareEvidenceRetriever(
+        segments,
+        _contextual_lexical(segments),
+        enable_anchor_gate=_flag("EVIDENCE_ABSTENTION_ENABLED", True),
+    )
 
 
 def _embedding() -> Any:
     from vidlens.embedding_retrieval import LocalOnnxEmbeddingBackend
 
     global _embedding_backend, _embedding_key
-    model_dir = Path(os.getenv(
-        "EVIDENCE_EMBEDDING_MODEL_DIR",
-        "/data/models/retrieval/bge-small-zh-v1.5",
-    ))
+    model_dir = Path(_env("EVIDENCE_EMBEDDING_MODEL_DIR", "/data/models/retrieval/bge-small-zh-v1.5"))
     key = (
         str(model_dir.resolve()),
         _flag("EVIDENCE_EMBEDDING_ALLOW_DOWNLOAD", False),
-        int(os.getenv("EVIDENCE_EMBEDDING_CPU_THREADS", "2")),
-        int(os.getenv("EVIDENCE_EMBEDDING_BATCH_SIZE", "32")),
+        int(_env("EVIDENCE_EMBEDDING_CPU_THREADS", "2")),
+        int(_env("EVIDENCE_EMBEDDING_BATCH_SIZE", "32")),
     )
     with _lock:
         if _embedding_backend is None or _embedding_key != key:
@@ -70,10 +87,10 @@ def _store() -> Any:
     from vidlens.qdrant_retrieval import QdrantEvidenceStore
 
     global _qdrant_store, _qdrant_key
-    url = os.getenv("QDRANT_URL", "http://qdrant:6333").rstrip("/")
+    url = _env("QDRANT_URL", "http://qdrant:6333").rstrip("/")
     api_key = os.getenv("QDRANT_API_KEY", "").strip() or None
-    collection = os.getenv("QDRANT_COLLECTION", "vidlens_evidence_v1").strip()
-    timeout = float(os.getenv("QDRANT_TIMEOUT_SECONDS", "10"))
+    collection = _env("QDRANT_COLLECTION", "vidlens_evidence_v1")
+    timeout = _env_float("QDRANT_TIMEOUT_SECONDS", 10.0)
     key = (url, api_key, collection, timeout)
     with _lock:
         if _qdrant_store is None or _qdrant_key != key:
@@ -114,15 +131,16 @@ def build_runtime_retriever(
         contextual = ContextualEvidenceRetriever(
             segments,
             base,
-            enable_abstention=(
-                _flag("EVIDENCE_ABSTENTION_ENABLED", True)
-                and profile == "contextual-qdrant-hybrid-v1"
-            ),
-            min_dense_score=float(os.getenv("EVIDENCE_MIN_DENSE_SCORE", "0.45")),
-            min_lexical_score=float(os.getenv("EVIDENCE_MIN_LEXICAL_SCORE", "0.18")),
+            enable_abstention=_flag("EVIDENCE_ABSTENTION_ENABLED", True),
+            min_dense_score=_env_float("EVIDENCE_MIN_DENSE_SCORE", 0.45),
+            min_lexical_score=_env_float("EVIDENCE_MIN_LEXICAL_SCORE", 0.18),
         )
         if profile in {"coverage-qdrant-hybrid-v2", "coverage-aware-qdrant-hybrid-v2"}:
-            return CoverageAwareEvidenceRetriever(segments, contextual)
+            return CoverageAwareEvidenceRetriever(
+                segments,
+                contextual,
+                enable_anchor_gate=_flag("EVIDENCE_ABSTENTION_ENABLED", True),
+            )
         return contextual
     except Exception:
         if not _flag("EVIDENCE_RETRIEVAL_FALLBACK_ENABLED", True):

@@ -232,3 +232,15 @@ def test_title_case_model_anchor_can_fall_back_to_asr_variant() -> None:
         "SUFFICIENT_CANDIDATES_WITH_ANCHOR_VARIANCE"
     )
     assert result["evidenceSufficiency"]["missingRequiredAnchors"][0]["normalized"] == "qwen"
+
+
+def test_lexical_profile_keeps_normal_question_retrievable() -> None:
+    # 自然语言问题的中文 bigram 覆盖率天然偏低，词法档位不能拿覆盖率当弃答阈值，
+    # 否则「索引有什么作用？」这类正常追问会被误杀。
+    segments = [segment("index", "ASR", 12000, 16000, "数据库索引能够加快查询并帮助定位重复数据")]
+    retriever = CoverageAwareEvidenceRetriever(segments, EvidenceRetriever(segments))
+
+    result = retriever.search("索引有什么作用？")
+
+    assert result["matches"]
+    assert [item["segmentId"] for item in result["matches"]] == ["index"]

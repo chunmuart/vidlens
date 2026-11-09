@@ -161,6 +161,32 @@ def test_runtime_coverage_profile_uses_qdrant_and_coverage_fallback(monkeypatch)
     )
 
 
+def test_runtime_abstention_flag_controls_lexical_and_hybrid_layers(monkeypatch) -> None:
+    monkeypatch.setenv("EVIDENCE_ABSTENTION_ENABLED", "true")
+    lexical_on = runtime_retrieval._coverage_lexical(SEGMENTS)
+    monkeypatch.setenv("EVIDENCE_ABSTENTION_ENABLED", "false")
+    lexical_off = runtime_retrieval._coverage_lexical(SEGMENTS)
+
+    assert lexical_on.enable_anchor_gate is True
+    assert lexical_off.enable_anchor_gate is False
+
+    backend = FakeEmbeddingBackend()
+    store = memory_store("abstention_flag")
+    monkeypatch.setenv("EVIDENCE_RETRIEVER_PROFILE", "coverage-aware-qdrant-hybrid-v2")
+    monkeypatch.setattr(runtime_retrieval, "_embedding", lambda: backend)
+    monkeypatch.setattr(runtime_retrieval, "_store", lambda: store)
+
+    monkeypatch.setenv("EVIDENCE_ABSTENTION_ENABLED", "true")
+    hybrid_on = runtime_retrieval.build_runtime_retriever({"mediaId": 31}, SEGMENTS)
+    monkeypatch.setenv("EVIDENCE_ABSTENTION_ENABLED", "false")
+    hybrid_off = runtime_retrieval.build_runtime_retriever({"mediaId": 32}, SEGMENTS)
+
+    assert hybrid_on.base.enable_abstention is True
+    assert hybrid_on.enable_anchor_gate is True
+    assert hybrid_off.base.enable_abstention is False
+    assert hybrid_off.enable_anchor_gate is False
+
+
 def test_qdrant_profile_uses_offline_metrics_contract() -> None:
     backend = FakeEmbeddingBackend()
     snapshots = {"video-1": SEGMENTS}

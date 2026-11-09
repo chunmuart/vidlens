@@ -293,10 +293,6 @@ class AuthRequest(BaseModel):
     nickname: str = ""
 
 
-class AnalysisRequest(BaseModel):
-    goal: str = Field(default="概括视频主要内容和核心观点，并引用有代表性的时间戳证据", max_length=500)
-
-
 class BilibiliRequest(BaseModel):
     bvid: str = Field(min_length=3, max_length=200)
 

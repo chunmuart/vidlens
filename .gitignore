@@ -13,6 +13,7 @@ data/
 node_modules/
 dist/
 .runtime/
+.test-runtime/
 deploy/.env.production
 backups/
 backend/vendor/*.deb
