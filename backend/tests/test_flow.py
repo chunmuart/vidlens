@@ -4,6 +4,7 @@ import json
 import os
 import shutil
 import sys
+import tempfile
 import time
 import types
 from datetime import datetime, timedelta, timezone
@@ -13,7 +14,7 @@ import httpx
 import pytest
 from fastapi.testclient import TestClient
 
-DEFAULT_TEST_ROOT = "F:/temp/codex-vidlens/test-flow" if os.name == "nt" else "/tmp/codex-vidlens/test-flow"
+DEFAULT_TEST_ROOT = str(Path(tempfile.gettempdir()) / "codex-vidlens" / "test-flow")
 TEST_ROOT = Path(os.environ.get("VIDLENS_TEST_ROOT", DEFAULT_TEST_ROOT))
 TEST_ROOT.mkdir(parents=True, exist_ok=True)
 os.environ["DATABASE_URL"] = f"sqlite:///{(TEST_ROOT / 'test.db').as_posix()}"
@@ -60,7 +61,15 @@ def upload(client: TestClient, headers: dict[str, str], content: bytes, filename
 
 @pytest.fixture(autouse=True)
 def reset_database(monkeypatch: pytest.MonkeyPatch) -> None:
-    for variable in ("AI_BASE_URL", "AI_API_KEY", "AI_MODEL"):
+    # 测试不依赖本机 .env：OCR/ASR 默认关闭，需要时由具体用例显式打开
+    for variable in (
+        "AI_BASE_URL",
+        "AI_API_KEY",
+        "AI_MODEL",
+        "OCR_ENABLED",
+        "ASR_BASE_URL",
+        "LOCAL_ASR_ENABLED",
+    ):
         monkeypatch.delenv(variable, raising=False)
     main.Base.metadata.drop_all(main.engine)
     main.Base.metadata.create_all(main.engine)
