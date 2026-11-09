@@ -2,7 +2,8 @@
 param(
     [switch]$Restart,
     [switch]$NoBrowser,
-    [switch]$WithVector
+    [switch]$WithVector,
+    [switch]$WithMQ
 )
 
 $ErrorActionPreference = "Stop"
@@ -141,7 +142,21 @@ $env:DATABASE_URL = "sqlite:///./data/vidlens.db"
 $env:APP_ENV = "development"
 $env:AUTO_CREATE_SCHEMA = "true"
 $env:REDIS_URL = "redis://127.0.0.1:6379/0"
-$env:ROCKETMQ_NAMESERVER = ""
+if ($WithMQ) {
+    $nameserver = "127.0.0.1:9876"
+    try {
+        $nameserverHealth = Invoke-RestMethod -Uri "http://127.0.0.1:9876" -TimeoutSec 2 -ErrorAction Stop
+    } catch {
+        # NameServer 对 HTTP 不返回 JSON，能连上就说明端口通
+    }
+    $mqReady = Get-NetTCPConnection -LocalPort 9876 -State Listen -ErrorAction SilentlyContinue
+    if (-not $mqReady) {
+        throw "未检测到 RocketMQ NameServer（9876）。请先启动 mqnamesrv.cmd，或去掉 -WithMQ。"
+    }
+    $env:ROCKETMQ_NAMESERVER = $nameserver
+} else {
+    $env:ROCKETMQ_NAMESERVER = ""
+}
 $env:CORS_ALLOWED_ORIGINS = "http://localhost:$FrontendPort,http://127.0.0.1:$FrontendPort"
 $qdrantPid = $null
 if ($WithVector) {
@@ -230,6 +245,26 @@ if (-not $healthy) {
 }
 $backendPid = Get-ListeningProcessId -Port $BackendPort
 
+$workerPid = $null
+if ($WithMQ) {
+    $existingWorker = Get-CimInstance Win32_Process -Filter "Name='python.exe'" -ErrorAction SilentlyContinue |
+        Where-Object { $_.CommandLine -like "*vidlens.worker*" } |
+        Select-Object -First 1
+    if ($existingWorker) {
+        $workerPid = [int]$existingWorker.ProcessId
+    } else {
+        $workerProcess = Start-Process `
+            -FilePath $BackendPython `
+            -ArgumentList @("-m", "vidlens.worker") `
+            -WorkingDirectory $BackendRoot `
+            -RedirectStandardOutput (Join-Path $LogRoot "worker.out.log") `
+            -RedirectStandardError (Join-Path $LogRoot "worker.err.log") `
+            -WindowStyle Hidden `
+            -PassThru
+        $workerPid = $workerProcess.Id
+    }
+}
+
 $frontendPid = Get-ListeningProcessId -Port $FrontendPort
 if (-not $frontendPid) {
     $frontendProcess = Start-Process `
@@ -264,6 +299,7 @@ $frontendPid = Get-ListeningProcessId -Port $FrontendPort
     backendPid = $backendPid
     frontendPid = $frontendPid
     qdrantPid = $qdrantPid
+    workerPid = $workerPid
     backendUrl = "http://127.0.0.1:$BackendPort"
     frontendUrl = "http://127.0.0.1:$FrontendPort"
     apiProvider = "Configured / $($aiConfig.Model)"
@@ -277,6 +313,11 @@ if ($WithVector) {
     Write-Output "Retrieval: coverage-aware-qdrant-hybrid-v2 (Qdrant 127.0.0.1:6333)"
 } else {
     Write-Output "Retrieval: coverage-aware-lexical-v3 (lexical only)"
+}
+if ($WithMQ) {
+    Write-Output "Queue: RocketMQ 127.0.0.1:9876 (worker pid $workerPid)"
+} else {
+    Write-Output "Queue: local ThreadPoolExecutor (no RocketMQ)"
 }
 if (-not $NoBrowser) {
     try {
