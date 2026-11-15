@@ -13,6 +13,7 @@
 from __future__ import annotations
 
 import json
+import math
 from typing import Any, Iterable, Mapping, Sequence
 
 
@@ -23,13 +24,7 @@ def _ratio(numerator: int, denominator: int) -> float | None:
 
 
 def _is_structured(payload: Any) -> bool:
-    """判断一份报告是不是结构化的。
-
-    接受两种输入：dict，或能被 json.loads 解析成 dict 的字符串。
-    列表和其它类型一律视为不合法——报告必须是一个对象。
-    """
-    if isinstance(payload, Mapping):
-        return True
+    """验证规范化报告的必要字段和引用结构，不代替答案语义验证。"""
     if isinstance(payload, (bytes, bytearray)):
         try:
             payload = payload.decode("utf-8")
@@ -40,10 +35,46 @@ def _is_structured(payload: Any) -> bool:
         if not text:
             return False
         try:
-            return isinstance(json.loads(text), dict)
+            payload = json.loads(text)
         except (TypeError, ValueError):
             return False
-    return False
+    if not isinstance(payload, Mapping) or not isinstance(payload.get("answerable"), bool):
+        return False
+    for key in ("finalAnswer", "title"):
+        if not isinstance(payload.get(key), str) or not payload[key].strip():
+            return False
+    for key in ("conclusions", "suggestions"):
+        items = payload.get(key)
+        if not isinstance(items, list) or any(not isinstance(item, str) or not item.strip() for item in items):
+            return False
+    if not payload["conclusions"]:
+        return False
+    evidence = payload.get("evidence")
+    if not isinstance(evidence, list):
+        return False
+    if payload["answerable"] != bool(evidence):
+        return False
+    for item in evidence:
+        if not isinstance(item, Mapping):
+            return False
+        if not isinstance(item.get("source"), str) or item["source"] not in {"ASR", "OCR"}:
+            return False
+        if not isinstance(item.get("content"), str) or not item["content"].strip():
+            return False
+        start = item.get("timestampMs", item.get("startMs"))
+        end = item.get("endMs", start)
+        for value in (start, end):
+            if isinstance(value, bool) or not isinstance(value, (int, float)):
+                return False
+            try:
+                finite = math.isfinite(value)
+            except OverflowError:
+                return False
+            if not finite or value < 0:
+                return False
+        if end < start:
+            return False
+    return True
 
 
 def structured_valid_rate(payloads: Iterable[Any]) -> float | None:
@@ -73,6 +104,7 @@ def abstention_metrics(samples: Iterable[Sequence[Any]]) -> dict[str, Any]:
         missedAbstain   该拒却没拒（系统开始编）
         precision       拒答的准确率 = correctAbstain / 所有拒答
         recall          该拒的覆盖率 = correctAbstain / 所有不可回答题
+        falseRejectRate 误拒率 = falseReject / 所有可回答题
     """
     correct = false_reject = missed = answered_ok = 0
     total = 0
@@ -93,15 +125,18 @@ def abstention_metrics(samples: Iterable[Sequence[Any]]) -> dict[str, Any]:
 
     abstained_total = correct + false_reject
     unanswerable_total = correct + missed
+    answerable_total = answered_ok + false_reject
     return {
         "samples": total,
+        "answerableCaseCount": answerable_total,
+        "unanswerableCaseCount": unanswerable_total,
         "correctAbstain": correct,
         "falseReject": false_reject,
         "missedAbstain": missed,
         "answeredOk": answered_ok,
         "abstentionPrecision": _ratio(correct, abstained_total),
         "abstentionRecall": _ratio(correct, unanswerable_total),
-        "falseRejectRate": _ratio(false_reject, total),
+        "falseRejectRate": _ratio(false_reject, answerable_total),
         "missedAbstainRate": _ratio(missed, unanswerable_total),
     }
 

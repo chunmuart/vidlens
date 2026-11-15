@@ -3,8 +3,11 @@ from __future__ import annotations
 import json
 from typing import Any
 
+import pytest
+
 from vidlens.agent import AgentToolbox
 from vidlens.agent_structured import (
+    _critic_node,
     _normalize_evidence_plan,
     _normalize_verification,
     _retrieve_node,
@@ -237,7 +240,7 @@ def test_structured_agent_covers_each_comparison_slot_with_evidence_ids() -> Non
 
     graph = result["agentGraph"]
     assert result["accepted"] is True
-    assert graph["promptVersion"] == "video-evidence-agent-v5.2-grounded-synthesis"
+    assert graph["promptVersion"] == "video-evidence-agent-v5.4-full-ledger-audit"
     assert graph["evidencePlan"]["answerMode"] == "COMPARISON"
     assert graph["evidenceVerification"]["fullyCovered"] is True
     assert len(graph["evidenceVerification"]["completeRequirementIds"]) == 2
@@ -283,7 +286,7 @@ class AlwaysRejectCriticProvider(ComparisonProvider):
         })
 
 
-def test_structured_agent_accepts_deterministic_gate_after_bounded_revision() -> None:
+def test_structured_agent_refuses_when_critic_still_rejects_after_one_revision() -> None:
     provider = AlwaysRejectCriticProvider()
 
     result = run_structured_evidence_agent(
@@ -295,7 +298,11 @@ def test_structured_agent_accepts_deterministic_gate_after_bounded_revision() ->
     assert result["accepted"] is True
     assert result["agentGraph"]["revisionCount"] == 1
     assert result["agentGraph"]["modelCalls"] == 6
-    assert result["agentGraph"]["acceptanceMode"] == "DETERMINISTIC_AFTER_CRITIC_REVISION"
+    assert result["agentGraph"]["acceptanceMode"] == "SAFE_REFUSAL_AFTER_CRITIC_REVISION"
+    assert result["agentGraph"]["repairCount"] == 1
+    assert result["agentGraph"]["criticReview"]["modelGatePassed"] is False
+    assert result["report"]["answerable"] is False
+    assert result["report"]["evidence"] == []
 
 
 def test_single_direct_plan_cannot_be_upgraded_to_all_relevant() -> None:
@@ -380,7 +387,13 @@ def test_single_target_sequence_is_not_expanded_into_full_enumeration() -> None:
     assert plan["requirements"][0]["completionPolicy"] == "DIRECT"
 
 
-def test_verifier_repairs_self_contradictory_structured_output() -> None:
+@pytest.mark.parametrize("explanation", [
+    "E001 说‘我老婆这么问我’，这直接回答了问题，因此证据直接支持了答案。",
+    "E001 只是提到了主题，不能认为证据直接支持答案。",
+    "E001 并不意味着这直接回答了问题。",
+    "不能依据 E001 就声称答案正确、证据充分。",
+])
+def test_verifier_explanation_cannot_override_an_explicit_rejection(explanation: str) -> None:
     plan = {
         "requirements": [{
             "requirementId": "R1",
@@ -396,7 +409,7 @@ def test_verifier_repairs_self_contradictory_structured_output() -> None:
             "supported": False,
             "complete": False,
             "evidenceIds": [],
-            "missingInformation": "E001 说‘我老婆这么问我’，这直接回答了问题，因此证据直接支持了答案。",
+            "missingInformation": explanation,
             "contradictionEvidenceIds": [],
         }],
         "overallSufficient": False,
@@ -406,9 +419,82 @@ def test_verifier_repairs_self_contradictory_structured_output() -> None:
 
     verification = _normalize_verification(raw, plan, ledger)
 
-    assert verification["overallSufficient"] is True
-    assert verification["requirements"][0]["evidenceIds"] == ["E001"]
-    assert verification["requirements"][0]["consistencyRepaired"] is True
+    assert verification["overallSufficient"] is False
+    assert verification["shouldRefuse"] is True
+    assert verification["requirements"][0]["supported"] is False
+    assert verification["requirements"][0]["complete"] is False
+    assert verification["requirements"][0]["evidenceIds"] == []
+    assert verification["requirements"][0]["missingInformation"] == explanation
+
+
+@pytest.mark.parametrize("field,value", [
+    ("supported", "false"), ("supported", "true"), ("supported", 1),
+    ("complete", "false"), ("complete", "true"), ("complete", 1),
+])
+def test_verifier_requires_actual_boolean_verdicts(field: str, value: Any) -> None:
+    raw = {"requirementId": "R1", "supported": True, "complete": True,
+           "evidenceIds": ["E001"], field: value}
+    result = _normalize_verification(
+        {"requirements": [raw]},
+        {"requirements": [{"requirementId": "R1", "required": True}]},
+        {"evidence": [{"evidenceId": "E001", "content": "直接答案。"}]},
+    )
+    assert result["overallSufficient"] is False
+    assert result["shouldRefuse"] is True
+
+
+@pytest.mark.parametrize("counterevidence", [
+    "但该方案只在小数据量下更快。",
+    "在大数据量下，该方案反而更慢。",
+])
+def test_critic_receives_uncited_limits_and_contradictions(counterevidence: str) -> None:
+    ledger = {"evidence": [
+        {"evidenceId": "E001", "source": "ASR", "startMs": 1000,
+         "content": "该方案速度更快。"},
+        {"evidenceId": "E002", "source": "OCR", "startMs": 2000,
+         "content": counterevidence},
+    ]}
+    payloads: list[dict[str, Any]] = []
+
+    class CounterevidenceCritic:
+        def _completion(self, messages, tools=None, tool_choice=None):
+            assert tool_choice["function"]["name"] == "submit_critic_review"
+            payload = json.loads(messages[-1]["content"])
+            payloads.append(payload)
+            # Simulate a semantic reviewer rejecting the visible qualification.
+            assert payload["ledger"]["evidence"][1]["content"] == counterevidence
+            return tool_response("submit_critic_review", {
+                "approved": False, "answerabilityCorrect": True,
+                "allRequiredSlotsCovered": True, "contradictionFree": False,
+                "externalKnowledgeFree": True, "citationIdsValid": True,
+                "missingRequirementIds": [], "unsupportedClaims": [],
+                "contradictions": [counterevidence],
+                "revisionInstruction": "补充数据量限制，避免无条件声称更快。",
+            })
+
+    current_toolbox = toolbox([])
+    result = _critic_node(CounterevidenceCritic(), current_toolbox, {
+        "goal": "该方案在所有数据量下都更快吗？",
+        "evidence_plan": {"requirements": [{"requirementId": "R1", "required": True}]},
+        "evidence_ledger": ledger,
+        "verification": {
+            "overallSufficient": True, "requiredRequirementIds": ["R1"],
+            "requirements": [{"requirementId": "R1", "evidenceIds": ["E001"]}],
+        },
+        "draft_report": {
+            "answerable": True, "finalAnswer": "该方案在所有数据量下都更快。",
+            "evidenceIds": ["E001"],
+        },
+    })
+
+    assert len(payloads) == 1
+    assert [item["evidenceId"] for item in payloads[0]["citedEvidence"]] == ["E001"]
+    assert [item["evidenceId"] for item in payloads[0]["ledger"]["evidence"]] == ["E001", "E002"]
+    assert result["critic_review"]["deterministicGatePassed"] is True
+    assert result["critic_review"]["modelGatePassed"] is False
+    assert result["accepted"] is False
+    assert result["last_report"] is None
+    assert not any(item["tool"] == "generate_report" for item in current_toolbox.trace())
 
 
 class RefusalProvider:
@@ -701,3 +787,268 @@ def test_structured_agent_rejects_unknown_evidence_ids_even_when_model_critic_ap
     assert result["report"]["answerable"] is False
     assert result["report"]["evidence"] == []
     assert result["agentGraph"]["acceptanceMode"] == "SAFE_REFUSAL_AFTER_CRITIC_REVISION"
+
+
+def evidence(segment_id: str, content: str = "证据", *, source: str = "ASR", at: int = 0) -> dict[str, Any]:
+    return {
+        "segmentId": segment_id, "source": source,
+        "startMs": at, "endMs": at + 1000, "content": content,
+    }
+
+
+def requirement(requirement_id: str, *, query: str = "", sources: list[str] | None = None) -> dict[str, Any]:
+    return {
+        "requirementId": requirement_id, "subQuestion": query or requirement_id,
+        "retrievalQuery": query or requirement_id, "evidenceRole": "DIRECT",
+        "completionPolicy": "DIRECT", "expectedSources": sources or ["ASR", "OCR"],
+        "required": True,
+    }
+
+
+class FixedCandidates:
+    def __init__(self, matches: dict[str, list[dict[str, Any]]], windows: dict[int, list[dict[str, Any]]]) -> None:
+        self.matches = matches
+        self.windows = windows
+
+    def execute(self, name: str, arguments: dict[str, Any]) -> dict[str, Any]:
+        if name == "search_timeline":
+            return {"matches": self.matches.get(arguments["query"], [])}
+        if name == "get_evidence_window":
+            return {"segments": self.windows.get(arguments["timestamp_ms"], [])}
+        raise AssertionError(name)
+
+
+def test_direct_candidates_are_shared_fairly_before_any_slot_adds_neighbors() -> None:
+    requirements = [requirement(f"R{index}") for index in range(6)]
+    matches = {
+        f"R{index}": [evidence(f"R{index}-{rank}", at=index * 100000) for rank in range(8)]
+        for index in range(6)
+    }
+    windows = {
+        index * 100000: [evidence(f"neighbor-{index}-{rank}") for rank in range(16)]
+        for index in range(6)
+    }
+
+    ledger = _retrieve_node(FixedCandidates(matches, windows), {
+        "goal": "分别解释六个问题",
+        "evidence_plan": {"answerMode": "MULTI_PART", "requirements": requirements},
+    })["evidence_ledger"]
+
+    assert len(ledger["evidence"]) == 18
+    assert [item["segmentId"] for item in ledger["evidence"][:6]] == [f"R{index}-0" for index in range(6)]
+    assert all(len(item["candidateEvidenceIds"]) == 3 for item in ledger["requirements"])
+    assert not any(item["segmentId"].startswith("neighbor-") for item in ledger["evidence"])
+
+
+def test_shared_evidence_uses_one_id_and_remains_linked_to_both_requirements() -> None:
+    shared = evidence("shared")
+    current_toolbox = FixedCandidates({"R1": [shared], "R2": [shared]}, {})
+
+    ledger = _retrieve_node(current_toolbox, {
+        "goal": "两个问题",
+        "evidence_plan": {"answerMode": "MULTI_PART", "requirements": [requirement("R1"), requirement("R2")]},
+    })["evidence_ledger"]
+
+    assert len(ledger["evidence"]) == 1
+    assert ledger["evidence"][0]["requirementIds"] == ["R1", "R2"]
+    assert [item["candidateEvidenceIds"] for item in ledger["requirements"]] == [["E001"], ["E001"]]
+
+
+def test_time_and_source_candidates_get_space_even_after_a_large_first_requirement() -> None:
+    first = requirement("R1")
+    timed = {**requirement("R2", query="00:30画面的数字", sources=["OCR"]), "completionPolicy": "TEMPORAL_WINDOW"}
+    current_toolbox = FixedCandidates(
+        {"R1": [evidence(f"asr-{index}") for index in range(8)], "00:30画面的数字": []},
+        {0: [evidence(f"extra-{index}") for index in range(16)], 30000: [
+            evidence("wrong-source", source="ASR", at=30000),
+            evidence("actual-screen", "42", source="OCR", at=30000),
+        ]},
+    )
+
+    ledger = _retrieve_node(current_toolbox, {
+        "goal": "分别解释原理和00:30的画面数字",
+        "evidence_plan": {"answerMode": "MULTI_PART", "requirements": [first, timed]},
+    })["evidence_ledger"]
+
+    by_id = {item["evidenceId"]: item for item in ledger["evidence"]}
+    selected = [by_id[item] for item in ledger["requirements"][1]["candidateEvidenceIds"]]
+    assert [item["segmentId"] for item in selected] == ["actual-screen"]
+    assert selected[0]["startMs"] == 30000
+
+
+class RepairOwnerProvider(RefusalProvider):
+    def __init__(self, *, reject_answer: bool = False) -> None:
+        self.reject_answer = reject_answer
+        self.ledgers: list[dict[str, Any]] = []
+        self.critic_calls = 0
+
+    def _completion(self, messages, tools=None, tool_choice=None):
+        name = tool_choice["function"]["name"]
+        if name == "submit_evidence_verification":
+            ledger = json.loads(messages[-1]["content"])["ledger"]
+            self.ledgers.append(ledger)
+            owner = next((item for item in ledger["evidence"] if "负责人是林" in item["content"]), None)
+            return tool_response(name, {
+                "requirements": [{
+                    "requirementId": "owner", "supported": owner is not None, "complete": owner is not None,
+                    "supportLevel": "DIRECT" if owner else "NONE",
+                    "evidenceIds": [owner["evidenceId"]] if owner else [],
+                    "missingInformation": "" if owner else "需要负责人姓名",
+                    "contradictionEvidenceIds": [],
+                }],
+                "overallSufficient": owner is not None, "shouldRefuse": owner is None,
+                "refusalReason": "" if owner else "视频未说明负责人",
+            })
+        if name == "submit_grounded_report":
+            verification = json.loads(messages[-1]["content"])["verification"]
+            if verification["overallSufficient"]:
+                return tool_response(name, {
+                    "answerable": True, "finalAnswer": "日志系统负责人是林。", "title": "负责人",
+                    "conclusions": ["负责人是林。"],
+                    "evidenceIds": verification["requirements"][0]["evidenceIds"], "suggestions": [],
+                })
+        if name == "submit_critic_review":
+            self.critic_calls += 1
+            rejected = self.reject_answer
+            return tool_response(name, {
+                "approved": not rejected, "answerabilityCorrect": True, "allRequiredSlotsCovered": True,
+                "contradictionFree": True, "externalKnowledgeFree": not rejected, "citationIdsValid": True,
+                "missingRequirementIds": [], "unsupportedClaims": ["姓名无依据"] if rejected else [],
+                "contradictions": [], "revisionInstruction": "删除无依据姓名" if rejected else "",
+            })
+        return super()._completion(messages, tools, tool_choice)
+
+
+class SecondSearchFindsOwner:
+    def __init__(self, *, answer_exists: bool = True) -> None:
+        self.answer_exists = answer_exists
+        self.queries: list[str] = []
+
+    def search(self, query, top_k=8, sources=None):
+        self.queries.append(query)
+        if len(self.queries) > 1 and self.answer_exists:
+            return {"matches": [evidence("owner-name", "日志系统负责人是林。", at=600000)]}
+        return {"matches": [evidence("title", "日志系统事故复盘", source="OCR")]}
+
+
+def owner_toolbox(retriever: SecondSearchFindsOwner) -> AgentToolbox:
+    current_toolbox = toolbox([
+        evidence("title", "日志系统事故复盘", source="OCR"),
+        *([evidence("owner-name", "日志系统负责人是林。", at=600000)] if retriever.answer_exists else []),
+    ])
+    current_toolbox.retriever = retriever
+    return current_toolbox
+
+
+def test_missing_evidence_is_searched_once_and_existing_evidence_ids_stay_stable() -> None:
+    provider = RepairOwnerProvider()
+    retriever = SecondSearchFindsOwner()
+
+    result = run_structured_evidence_agent(provider, owner_toolbox(retriever), "日志系统负责人是谁？")
+
+    graph = result["agentGraph"]
+    assert result["report"]["answerable"] is True
+    assert graph["repairCount"] == graph["retrievalRepairCount"] == 1
+    assert graph["repairDetails"]["requirementIds"] == ["owner"]
+    assert graph["repairDetails"]["newEvidenceCount"] == 1
+    assert graph["modelCalls"] == 5
+    assert len(retriever.queries) == 2
+    assert "需要负责人姓名" in retriever.queries[1]
+    first_ids = {item["segmentId"]: item["evidenceId"] for item in provider.ledgers[0]["evidence"]}
+    second_ids = {item["segmentId"]: item["evidenceId"] for item in provider.ledgers[1]["evidence"]}
+    assert first_ids["title"] == second_ids["title"]
+    assert second_ids["owner-name"] != first_ids["title"]
+
+
+def test_still_missing_after_one_search_refuses_without_another_repair() -> None:
+    provider = RepairOwnerProvider()
+    retriever = SecondSearchFindsOwner(answer_exists=False)
+
+    result = run_structured_evidence_agent(provider, owner_toolbox(retriever), "日志系统负责人是谁？")
+
+    assert result["report"]["answerable"] is False
+    assert result["report"]["evidence"] == []
+    assert result["agentGraph"]["repairCount"] == 1
+    assert len(retriever.queries) == 2
+    assert len(provider.ledgers) == 2
+
+
+def test_critic_cannot_start_a_revision_after_verifier_spent_the_repair_allowance() -> None:
+    provider = RepairOwnerProvider(reject_answer=True)
+    retriever = SecondSearchFindsOwner()
+
+    result = run_structured_evidence_agent(provider, owner_toolbox(retriever), "日志系统负责人是谁？")
+
+    assert result["report"]["answerable"] is False
+    assert result["agentGraph"]["repairCount"] == 1
+    assert result["agentGraph"]["revisionCount"] == 0
+    assert result["agentGraph"]["criticReview"]["modelGatePassed"] is False
+    assert result["agentGraph"]["criticReview"]["deterministicGatePassed"] is True
+    assert provider.critic_calls == 1
+    assert len(retriever.queries) == 2
+
+
+def test_critic_missing_requirement_can_use_the_single_targeted_search() -> None:
+    class MissingOnceProvider(ComparisonProvider):
+        def _completion(self, messages, tools=None, tool_choice=None):
+            if tool_choice["function"]["name"] != "submit_critic_review":
+                return super()._completion(messages, tools, tool_choice)
+            self.critic_calls += 1
+            missing = self.critic_calls == 1
+            return tool_response("submit_critic_review", {
+                "approved": not missing, "answerabilityCorrect": True,
+                "allRequiredSlotsCovered": not missing, "contradictionFree": True,
+                "externalKnowledgeFree": True, "citationIdsValid": True,
+                "missingRequirementIds": ["java-side"] if missing else [],
+                "unsupportedClaims": [], "contradictions": [],
+                "revisionInstruction": "补充Java的适用场景" if missing else "",
+            })
+
+    provider = MissingOnceProvider()
+    current_toolbox = toolbox(comparison_segments())
+
+    result = run_structured_evidence_agent(provider, current_toolbox, "Python 与 Java 分别适合什么场景？")
+
+    assert result["report"]["answerable"] is True
+    graph = result["agentGraph"]
+    assert graph["repairCount"] == graph["retrievalRepairCount"] == 1
+    assert graph["repairDetails"]["requirementIds"] == ["java-side"]
+    assert graph["revisionCount"] == 0
+    assert graph["modelCalls"] == 7
+    assert provider.critic_calls == 2
+    searches = [item for item in current_toolbox.trace() if item["tool"] == "search_timeline"]
+    assert len(searches) == 3  # Two initial slots, only the missing Java slot again.
+
+
+def test_deictic_audit_rejection_consumes_the_allowance_and_cannot_keep_the_first_verdict() -> None:
+    class DeicticOwnerProvider(RefusalProvider):
+        verifier_calls = 0
+
+        def _completion(self, messages, tools=None, tool_choice=None):
+            if tool_choice["function"]["name"] == "submit_evidence_verification":
+                self.verifier_calls += 1
+                if self.verifier_calls == 1:
+                    return tool_response("submit_evidence_verification", {
+                        "requirements": [{
+                            "requirementId": "owner", "supported": True, "complete": True,
+                            "evidenceIds": ["E001"], "missingInformation": "",
+                            "contradictionEvidenceIds": [],
+                        }],
+                        "overallSufficient": True, "shouldRefuse": False, "refusalReason": "",
+                    })
+            return super()._completion(messages, tools, tool_choice)
+
+    current_toolbox = toolbox([
+        evidence("deictic", "日志系统负责人就是这个人。"),
+        evidence("context", "日志系统事故复盘", at=1000),
+    ])
+    provider = DeicticOwnerProvider()
+
+    result = run_structured_evidence_agent(provider, current_toolbox, "日志系统负责人是谁？")
+
+    assert result["report"]["answerable"] is False
+    assert result["agentGraph"]["evidenceVerification"]["overallSufficient"] is False
+    assert result["agentGraph"]["repairCount"] == 1
+    assert result["agentGraph"]["repairKind"] == "VERIFIER_AUDIT"
+    assert result["agentGraph"]["retrievalRepairCount"] == 0
+    assert provider.verifier_calls == 2

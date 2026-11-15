@@ -68,7 +68,16 @@ def reset_database(monkeypatch: pytest.MonkeyPatch) -> None:
         "AI_MODEL",
         "OCR_ENABLED",
         "ASR_BASE_URL",
+        "ASR_PROVIDER",
+        "ASR_API_KEY",
+        "DASHSCOPE_API_KEY",
+        "OCR_PROVIDER",
+        "OCR_API_KEY",
         "LOCAL_ASR_ENABLED",
+        "AGENT_MAX_ROUNDS",
+        "AGENT_MAX_ESTIMATED_TOKENS",
+        "AGENT_MAX_DURATION_MS",
+        "AGENT_MAX_ESTIMATED_COST",
     ):
         monkeypatch.delenv(variable, raising=False)
     main.Base.metadata.drop_all(main.engine)
@@ -401,11 +410,13 @@ def test_ocr_sampling_always_selects_the_first_frame(monkeypatch: pytest.MonkeyP
 
     def fake_run(command: list[str], **_: object) -> types.SimpleNamespace:
         captured["command"] = command
-        return types.SimpleNamespace(returncode=0, stdout="", stderr="")
+        Path(command[-1].replace("%06d", "000001")).write_bytes(b"frame")
+        return types.SimpleNamespace(returncode=0, stdout="", stderr="[showinfo] n:0 pts:0 pts_time:0")
 
     monkeypatch.setenv("OCR_ENABLED", "true")
     monkeypatch.setenv("OCR_INTERVAL_SECONDS", "30")
     monkeypatch.setattr(main.subprocess, "run", fake_run)
+    monkeypatch.setattr(main, "probe_media_duration", lambda _path: 12.0)
     monkeypatch.setattr(main, "release_local_asr_model", lambda: None)
     monkeypatch.setattr(main, "run_paddle_ocr_frames", lambda _directory: {
         "frameCount": 1,
@@ -1070,18 +1081,29 @@ def test_follow_up_persists_user_scoped_short_term_memory(monkeypatch: pytest.Mo
 
 def test_model_follow_up_forces_disclaimer_for_grounded_inference(monkeypatch: pytest.MonkeyPatch) -> None:
     provider = main.OpenAICompatibleProvider("https://example.com/v1", "test-key", "test-model")
-    monkeypatch.setattr(provider, "_completion", lambda messages, tools=None, tool_choice=None: {
-        "content": None,
-        "tool_calls": [{
-            "function": {
-                "name": "submit_follow_up_answer",
-                "arguments": json.dumps({
-                    "answerBasis": "GROUNDED_INFERENCE",
-                    "answer": "更看重高质量通宝时，普通不期可能更合适。",
-                }, ensure_ascii=False),
-            },
-        }],
-    })
+    calls: list[str] = []
+
+    def completion(messages, tools=None, tool_choice=None):
+        name = tool_choice["function"]["name"]
+        calls.append(name)
+        if name == "submit_follow_up_answer":
+            arguments = {
+                "answerBasis": "GROUNDED_INFERENCE",
+                "answer": "更看重高质量通宝时，普通不期可能更合适。",
+                "evidenceIds": ["E001"],
+            }
+        elif name == "verify_follow_up_answer":
+            payload = json.loads(messages[-1]["content"])
+            assert payload["evidence"][0]["evidenceId"] == "E001"
+            assert payload["evidence"][0]["content"] == "普通不期的高质量通宝概率更高。"
+            arguments = {"supported": True, "complete": True, "contradictionFree": True}
+        else:
+            raise AssertionError(name)
+        return {"tool_calls": [{"function": {
+            "name": name, "arguments": json.dumps(arguments, ensure_ascii=False),
+        }}]}
+
+    monkeypatch.setattr(provider, "_completion", completion)
 
     answer = provider.follow_up(
         "视频比较了普通不期和紧急不期。",
@@ -1090,7 +1112,9 @@ def test_model_follow_up_forces_disclaimer_for_grounded_inference(monkeypatch: p
     )
 
     assert answer.startswith("更看重高质量通宝时")
-    assert answer.endswith("此答案为基于视频证据的推测，视频没有明确说明。")
+    assert "此答案为基于视频证据的推测，视频没有明确说明。" in answer
+    assert answer.endswith("依据：[02:00] ASR E001")
+    assert calls == ["submit_follow_up_answer", "verify_follow_up_answer"]
 
 
 def test_production_mode_rejects_unsafe_configuration(monkeypatch: pytest.MonkeyPatch) -> None:

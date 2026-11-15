@@ -85,6 +85,7 @@ class BudgetTracker:
         self.cost_usd = 0.0
         self._clock = clock or time.monotonic
         self._started: float | None = None
+        self._elapsed_offset_ms = 0
 
     def start(self) -> "BudgetTracker":
         self._started = self._clock()
@@ -93,8 +94,16 @@ class BudgetTracker:
     @property
     def elapsed_ms(self) -> int:
         if self._started is None:
-            return 0
-        return max(0, int((self._clock() - self._started) * 1000))
+            return self._elapsed_offset_ms
+        return self._elapsed_offset_ms + max(0, int((self._clock() - self._started) * 1000))
+
+    def restore(self, snapshot: Mapping[str, Any]) -> "BudgetTracker":
+        """恢复同一任务已记录的用量；重试不能重置预算，排队时间不计入。"""
+        self.rounds = max(self.rounds, _env_int(snapshot, "rounds"))
+        self.tokens = max(self.tokens, _env_int(snapshot, "tokens"))
+        self.cost_usd = max(self.cost_usd, _env_float(snapshot, "costUsd"))
+        self._elapsed_offset_ms = max(self._elapsed_offset_ms, _env_int(snapshot, "elapsedMs"))
+        return self
 
     def add_round(self, count: int = 1) -> "BudgetTracker":
         self.rounds += max(0, int(count))

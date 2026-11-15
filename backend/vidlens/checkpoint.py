@@ -1,7 +1,7 @@
 """可选的 Agent 阶段 checkpoint。
 
-只持久化 Planner 和 Retriever 两个阶段。给定（目标、prompt 版本、证据快照）
-后这两个阶段是确定性的，所以瞬时失败后重放是安全的。Verifier/Writer/Critic
+只持久化 Planner 和 Retriever 两个阶段，在目标、prompt 版本和证据快照
+仍兼容时复用已完成产物。Planner 的模型输出不保证确定性。Verifier/Writer/Critic
 的产物故意不存：半份已评审的报告不能在未重新验证的情况下复用。
 
 `CHECKPOINT_ENABLED` 默认是 `0`。关闭时 `load()` 返回 `None`、`save()` 是空操作，
@@ -19,7 +19,8 @@ from typing import Any, Callable, Mapping
 
 log = logging.getLogger("vidlens.checkpoint")
 
-CHECKPOINT_VERSION = 1
+# v1 的公共元数据可能使旧 Retriever 被错误重新标记为有效，保守地整体失效。
+CHECKPOINT_VERSION = 2
 SUPPORTED_STAGES = ("planner", "retriever")
 
 PersistCallback = Callable[[dict[str, Any]], None]
@@ -120,6 +121,14 @@ class AgentCheckpoint:
     def save(self, stage: str, payload: dict[str, Any]) -> None:
         if not self.enabled or stage not in SUPPORTED_STAGES:
             return
+        # 先清理旧阶段，再写新元数据。不能用新 goal/prompt/fingerprint
+        # 给旧阶段「换标签」，否则写完 Planner 后崩溃会恢复到旧 Retriever。
+        if not self._valid():
+            self._data = {}
+        elif str(self._data.get("evidenceFingerprint") or "") != self.evidence_fingerprint:
+            self._data.pop("retriever", None)
+        if stage == "planner":
+            self._data.pop("retriever", None)
         self._data = {
             **self._data,
             "version": CHECKPOINT_VERSION,

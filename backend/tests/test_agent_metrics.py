@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Agent 层指标单测：结构有效率、引用支持率、拒答（误拒/漏拒）、成功率。"""
 
+import json
 import unittest
 
 from vidlens.agent_metrics import (
@@ -12,14 +13,24 @@ from vidlens.agent_metrics import (
 )
 
 
+VALID_REPORT = {
+    "answerable": True,
+    "finalAnswer": "课程介绍了前序遍历。",
+    "title": "课程结论",
+    "conclusions": ["课程介绍了前序遍历。"],
+    "evidence": [{"timestampMs": 0, "source": "ASR", "content": "前序遍历。"}],
+    "suggestions": [],
+}
+
+
 class StructuredValidRateTest(unittest.TestCase):
     def test_empty_returns_none(self) -> None:
         self.assertIsNone(structured_valid_rate([]))
 
     def test_counts_dicts_and_json_strings(self) -> None:
         payloads = [
-            {"answerable": True},
-            '{"answerable": false, "conclusions": []}',
+            VALID_REPORT,
+            json.dumps({**VALID_REPORT, "answerable": False, "evidence": []}),
             "not json",
             "[1, 2, 3]",          # 列表不算合法报告
             "",                    # 空串不算
@@ -27,7 +38,25 @@ class StructuredValidRateTest(unittest.TestCase):
         self.assertEqual(structured_valid_rate(payloads), 0.4)
 
     def test_bytes_are_decoded(self) -> None:
-        self.assertEqual(structured_valid_rate([b'{"a": 1}']), 1.0)
+        self.assertEqual(structured_valid_rate([json.dumps(VALID_REPORT).encode("utf-8")]), 1.0)
+
+    def test_incomplete_or_wrongly_typed_reports_are_rejected(self) -> None:
+        invalid = [
+            {},
+            {"answerable": True},
+            {**VALID_REPORT, "answerable": "false"},
+            {**VALID_REPORT, "finalAnswer": " "},
+            {**VALID_REPORT, "conclusions": []},
+            {**VALID_REPORT, "suggestions": [1]},
+            {**VALID_REPORT, "evidence": []},
+            {**VALID_REPORT, "answerable": False},
+            {**VALID_REPORT, "evidence": [{"timestampMs": -1, "source": "ASR", "content": "内容"}]},
+            {**VALID_REPORT, "evidence": [{"timestampMs": float("nan"), "source": "ASR", "content": "内容"}]},
+            {**VALID_REPORT, "evidence": [{"timestampMs": 10 ** 1000, "source": "ASR", "content": "内容"}]},
+            {**VALID_REPORT, "evidence": [{"timestampMs": True, "source": "ASR", "content": "内容"}]},
+            {**VALID_REPORT, "evidence": [{"startMs": 100, "endMs": 10, "source": "ASR", "content": "内容"}]},
+        ]
+        self.assertEqual(structured_valid_rate(invalid), 0.0)
 
 
 class CitationSupportRateTest(unittest.TestCase):
@@ -60,7 +89,9 @@ class AbstentionMetricsTest(unittest.TestCase):
         self.assertEqual(result["missedAbstain"], 1)
         self.assertEqual(result["abstentionPrecision"], 0.5)   # 1 / (1+1)
         self.assertEqual(result["abstentionRecall"], 0.5)      # 1 / (1+1)
-        self.assertEqual(result["falseRejectRate"], 0.25)      # 1 / 4
+        self.assertEqual(result["answerableCaseCount"], 2)
+        self.assertEqual(result["unanswerableCaseCount"], 2)
+        self.assertEqual(result["falseRejectRate"], 0.5)       # 1 / 2 个可回答题
 
     def test_all_correct(self) -> None:
         result = abstention_metrics([(True, False), (False, True)])
@@ -68,6 +99,10 @@ class AbstentionMetricsTest(unittest.TestCase):
         self.assertEqual(result["abstentionRecall"], 1.0)
         self.assertEqual(result["falseRejectRate"], 0.0)
         self.assertEqual(result["missedAbstainRate"], 0.0)
+
+    def test_false_reject_rate_uses_only_answerable_cases(self) -> None:
+        result = abstention_metrics([(False, True), (False, False)])
+        self.assertIsNone(result["falseRejectRate"])
 
 
 class TaskSuccessRateTest(unittest.TestCase):
@@ -82,7 +117,7 @@ class TaskSuccessRateTest(unittest.TestCase):
 class SummarizeTest(unittest.TestCase):
     def test_shape_and_values(self) -> None:
         report = summarize(
-            payloads=[{"a": 1}, "bad"],
+            payloads=[VALID_REPORT, "bad"],
             citation_supports=[True, False],
             abstention_samples=[(False, True), (True, False)],
             statuses=["COMPLETED", "FAILED"],

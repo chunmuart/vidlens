@@ -1,4 +1,5 @@
 .idea/
+.claude/
 *.iml
 .env
 .env.*

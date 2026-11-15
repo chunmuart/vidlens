@@ -43,6 +43,9 @@ from vidlens.budget import (
 )
 from vidlens.checkpoint import AgentCheckpoint, checkpoint_enabled, evidence_fingerprint
 from vidlens.context_window import ContextPolicy, assemble, compress_for_summary
+from vidlens.evidence_api import request_dashscope_asr, request_openai_asr, request_ocr_image
+from vidlens.evidence_pipeline import EvidenceArtifacts, atomic_json, read_json, run_evidence_branches
+from vidlens.followup import answer_with_evidence, rewrite_question
 from vidlens.lease import LockHeartbeat
 from vidlens.trace_spans import attach_trace_spans
 from vidlens.agent import AgentToolbox, build_agent_plan, is_summary_goal
@@ -420,6 +423,9 @@ class Provider:
     def analyze(self, transcript: str, goal: str) -> dict[str, Any]:
         raise NotImplementedError
 
+    def rewrite_follow_up(self, question: str, history: list[dict[str, str]], summary: str) -> dict[str, Any]:
+        return {"query": question, "rewritten": False, "needsClarification": False}
+
     def follow_up(
         self,
         report: str,
@@ -581,7 +587,8 @@ class OpenAICompatibleProvider(Provider):
     def _usage_tokens(usage: dict[str, Any]) -> dict[str, Any]:
         prompt_tokens = _safe_int(usage.get("prompt_tokens"))
         completion_tokens = _safe_int(usage.get("completion_tokens"))
-        total_tokens = _safe_int(usage.get("total_tokens"))
+        total_tokens = (_safe_int(usage.get("total_tokens"))
+                        if usage.get("total_tokens") is not None else prompt_tokens + completion_tokens)
         prompt_details = usage.get("prompt_tokens_details")
         prompt_details = prompt_details if isinstance(prompt_details, dict) else {}
         cache_hit_raw = usage.get("prompt_cache_hit_tokens")
@@ -654,11 +661,18 @@ class OpenAICompatibleProvider(Provider):
         tokens: dict[str, Any] = {}
         estimated_cost: float | None = None
         try:
+            request_timeout = max(0.1, float(env("AI_REQUEST_TIMEOUT_SECONDS", "180")))
+            if budget is not None and budget.limits.max_duration_ms > 0:
+                remaining_ms = budget.limits.max_duration_ms - budget.elapsed_ms
+                if remaining_ms <= 0:
+                    raise BudgetExceeded("duration_ms", used=budget.elapsed_ms,
+                                         limit_value=budget.limits.max_duration_ms)
+                request_timeout = min(request_timeout, remaining_ms / 1000)
             response = httpx.post(
                 self.url,
                 headers={"Authorization": f"Bearer {self.api_key}"},
                 json=payload,
-                timeout=max(30, int(env("AI_REQUEST_TIMEOUT_SECONDS", "180"))),
+                timeout=request_timeout,
             )
             response.raise_for_status()
             body = response.json()
@@ -675,6 +689,7 @@ class OpenAICompatibleProvider(Provider):
                 "statusCode": int(getattr(response, "status_code", 200)),
                 "latencyMs": max(0, int((time.perf_counter() - started) * 1000)),
                 **tokens,
+                "rawUsage": usage,
                 "estimatedCostUsd": estimated_cost,
                 "toolCallCount": len(message.get("tool_calls") or []),
                 "requestId": str(headers.get("x-request-id") or headers.get("x-requestid") or "")[:200] or None,
@@ -728,6 +743,9 @@ class OpenAICompatibleProvider(Provider):
             raise ValueError("模型未返回合法 JSON 对象")
         return json.loads(raw[start : end + 1])
 
+    def rewrite_follow_up(self, question: str, history: list[dict[str, str]], summary: str) -> dict[str, Any]:
+        return rewrite_question(self, question, history, summary)
+
     def follow_up(
         self,
         report: str,
@@ -737,80 +755,10 @@ class OpenAICompatibleProvider(Provider):
         memory_summary: str = "",
         evidence_timeline: str = "",
     ) -> str:
-        messages: list[dict[str, Any]] = [{
-            "role": "system",
-            "content": (
-                "你是 VidLens 的多轮视频问答 Agent。只能根据已有报告和对话中出现的证据回答；"
-                "同时优先使用本轮提供的原始 ASR/OCR 时间轴。"
-                "对于‘主要讲了什么、总结视频’等概括题，应综合跨时间位置的代表性证据直接回答。"
-                "如果视频没有逐字说明，但答案能完全由给定视频证据合理推出，可以回答，"
-                "并在结尾明确写‘此答案为基于视频证据的推测，视频没有明确说明。’"
-                "无法由证据推出时才拒答，不得使用视频外知识或编造时间戳。"
-            ),
-        }, {
-            "role": "user",
-            "content": (
-                f"视频分析报告：\n{report[:10000]}\n\n"
-                f"本轮检索到的原始视频证据：\n{evidence_timeline[:10000]}\n\n"
-                f"历史记忆摘要：\n{memory_summary[:3000]}"
-            ),
-        }]
-        for item in (history or [])[-20:]:
-            role = str(item.get("role") or "").lower()
-            if role in {"user", "assistant"}:
-                messages.append({"role": role, "content": str(item.get("content") or "")[:4000]})
-        messages.append({"role": "user", "content": question})
-        follow_up_schema = {
-            "type": "function",
-            "function": {
-                "name": "submit_follow_up_answer",
-                "description": "提交带证据基础分类的视频追问回答。",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "answerBasis": {
-                            "type": "string",
-                            "enum": ["EXPLICIT", "SYNTHESIS", "GROUNDED_INFERENCE", "UNANSWERABLE"],
-                        },
-                        "answer": {"type": "string", "minLength": 1, "maxLength": 4000},
-                    },
-                    "required": ["answerBasis", "answer"],
-                    "additionalProperties": False,
-                },
-            },
-        }
-        messages[0]["content"] += (
-            "回答前必须判断 answerBasis：视频直接陈述答案用 EXPLICIT；概括多条证据用 SYNTHESIS；"
-            "结论并非视频原话、而是由视频证据推导出来时必须用 GROUNDED_INFERENCE；"
-            "证据无法支持时用 UNANSWERABLE。条件假设、偏好选择和‘会更推荐’通常属于 GROUNDED_INFERENCE。"
-        )
-        message = self._completion(
-            messages,
-            [follow_up_schema],
-            tool_choice={"type": "function", "function": {"name": "submit_follow_up_answer"}},
-        )
-        arguments: dict[str, Any] = {}
-        for call in message.get("tool_calls") or []:
-            function = call.get("function") or {}
-            if function.get("name") != "submit_follow_up_answer":
-                continue
-            raw = function.get("arguments") or "{}"
-            try:
-                arguments = raw if isinstance(raw, dict) else json.loads(str(raw))
-            except (TypeError, ValueError, json.JSONDecodeError):
-                arguments = {}
-            break
-        answer = str(arguments.get("answer") or message.get("content") or "").strip()
-        basis = str(arguments.get("answerBasis") or "UNANSWERABLE").upper()
-        inference_cues = re.search(
-            r"如果|假如|意味着|可以推断|由此可见|更适合|会更|可能|推测|推断",
-            question,
-        )
-        disclaimer = "此答案为基于视频证据的推测，视频没有明确说明。"
-        if answer and (basis == "GROUNDED_INFERENCE" or inference_cues) and disclaimer not in answer:
-            answer = answer.rstrip("。") + "。\n\n" + disclaimer
-        if not answer:
-            return "视频证据不足，无法回答这个问题。"
+        # Report/history resolve the topic at the endpoint; only current media
+        # evidence is allowed to support the answer.
+        resolved = getattr(self, "_follow_up_query", question)
+        answer, self._follow_up_review = answer_with_evidence(self, resolved, evidence_timeline)
         return answer
 
     def run_agent(self, toolbox: AgentToolbox, goal: str) -> dict[str, Any]:
@@ -1024,26 +972,64 @@ def extract_audio_file(video_path: Path, audio_path: Path) -> Path:
 
 
 def request_asr(audio_path: Path) -> list[dict[str, Any]]:
-    asr_base_url = env("ASR_BASE_URL")
-    asr_api_key = env("ASR_API_KEY")
-    if not asr_base_url:
-        return []
-    headers = {"Authorization": f"Bearer {asr_api_key}"} if asr_api_key else {}
-    with audio_path.open("rb") as audio:
-        response = httpx.post(
-            asr_base_url.rstrip("/") + "/audio/transcriptions",
-            headers=headers,
-            data={"model": env("ASR_MODEL", "TeleAI/TeleSpeechASR"), "response_format": "verbose_json"},
-            files={"file": (audio_path.name, audio, "audio/mpeg")},
-            timeout=180,
-        )
-    response.raise_for_status()
-    payload = response.json()
-    segments = parse_segment_payload(payload)
-    if segments:
-        return segments
-    text = str(payload.get("text", "")).strip() if isinstance(payload, dict) else ""
-    return [{"source": "ASR", "startMs": 0, "endMs": 0, "content": text}] if text else []
+    result = request_openai_asr(
+        audio_path, base_url=env("ASR_BASE_URL"), api_key=env("ASR_API_KEY"),
+        model=env("ASR_MODEL", "whisper-1"), timeout=float(env("ASR_REQUEST_TIMEOUT_SECONDS", "180")),
+    )
+    return result["segments"]
+
+
+def asr_provider_name() -> str:
+    configured = env("ASR_PROVIDER", "auto").strip().lower()
+    if configured != "auto":
+        if configured not in {"dashscope", "openai", "local", "disabled"}:
+            raise ValueError("ASR_PROVIDER必须是auto/dashscope/openai/local/disabled")
+        return configured
+    return "openai" if env("ASR_BASE_URL") else ("local" if local_asr_enabled() else "disabled")
+
+
+def evidence_configuration(path: Path) -> dict[str, Any]:
+    asr_keys = ("ASR_MODEL", "ASR_BASE_URL", "ASR_LANGUAGE", "LOCAL_ASR_ENABLED", "LOCAL_ASR_MODEL",
+                "LOCAL_ASR_LANGUAGE", "LOCAL_ASR_BEAM_SIZE", "LOCAL_ASR_VAD_FILTER",
+                "LOCAL_ASR_INITIAL_PROMPT", "LOCAL_ASR_HOTWORDS", "ASR_LOCAL_FALLBACK_ENABLED")
+    ocr_keys = ("OCR_ENABLED", "OCR_PROVIDER", "OCR_BASE_URL", "OCR_MODEL", "OCR_MAX_TOKENS", "OCR_INTERVAL_SECONDS",
+                "PADDLEOCR_MAX_FRAMES", "PADDLEOCR_FRAME_MAX_WIDTH", "PADDLEOCR_CONFIDENCE_THRESHOLD",
+                "PADDLEOCR_DEDUP_THRESHOLD", "PADDLEOCR_MIN_TEXT_LENGTH", "PADDLEOCR_DETECTION_MODEL",
+                "PADDLEOCR_RECOGNITION_MODEL")
+    sidecars = {}
+    for suffix in (".segments.json", ".txt"):
+        sidecar = Path(str(path) + suffix)
+        if sidecar.exists():
+            sidecars[suffix] = hashlib.sha256(sidecar.read_bytes()).hexdigest()
+    return {"ASR": {"provider": asr_provider_name(), "sidecars": sidecars,
+                    **{key: env(key) for key in asr_keys}},
+            "OCR": {key: env(key) for key in ocr_keys}}
+
+
+def evidence_artifacts(path: Path) -> EvidenceArtifacts:
+    return EvidenceArtifacts(UPLOAD_ROOT / "evidence-cache", path, evidence_configuration(path))
+
+
+def evidence_manifest(path: Path) -> dict[str, Any]:
+    try:
+        return read_json(evidence_artifacts(path).directory / "latest.json")
+    except (OSError, ValueError):
+        return {}
+
+
+def evidence_cache_matches(segments: list[dict[str, Any]], artifacts: EvidenceArtifacts) -> bool:
+    """文件缓存可能先于数据库提交，复用前同时检查配置和证据内容。"""
+    saved = [artifacts.load(branch) for branch in ("ASR", "OCR")]
+    if not all(item.get("status") in {"SUCCESS", "NO_TEXT", "SKIPPED"} for item in saved):
+        return False
+    cached = [segment for branch in saved for segment in branch.get("segments", [])]
+    if not cached:
+        return bool(segments) and all(item.get("source") == "SYSTEM" for item in segments)
+
+    def identity(items: list[dict[str, Any]]) -> list[tuple[Any, ...]]:
+        return sorted((item["startMs"], item["endMs"], item["source"], item["content"]) for item in items)
+
+    return identity(cached) == identity(segments)
 
 
 def local_asr_enabled() -> bool:
@@ -1084,7 +1070,7 @@ def local_asr_model() -> Any:
 
 
 def warm_local_asr_model() -> None:
-    if local_asr_enabled() and env("LOCAL_ASR_PRELOAD", "true").lower() in {"1", "true", "yes"}:
+    if asr_provider_name() == "local" and env("LOCAL_ASR_PRELOAD", "true").lower() in {"1", "true", "yes"}:
         local_asr_model()
 
 
@@ -1235,140 +1221,187 @@ def run_paddle_ocr_frames(
             payload.get("fatalError"),
             completed.stderr[-4000:],
         )
+        payload["fatalError"] = payload.get("fatalError") or "OCR process exited unsuccessfully"
     return payload
 
 
-def extract_ocr_evidence(
-    path: Path,
-    progress_callback: ProgressCallback | None = None,
-) -> list[dict[str, Any]]:
+def probe_media_duration(path: Path) -> float:
+    completed = subprocess.run(
+        ["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "default=nw=1:nk=1", str(path)],
+        check=True, capture_output=True, text=True, timeout=30,
+    )
+    return max(0.0, float(completed.stdout.strip()))
+
+
+def extract_ocr_result(path: Path, progress_callback: ProgressCallback | None = None) -> dict[str, Any]:
     if env("OCR_ENABLED", "false").lower() not in {"1", "true", "yes"}:
-        return []
-    interval_seconds = max(1, int(env("OCR_INTERVAL_SECONDS", "15")))
-    max_frames = max(1, int(env("PADDLEOCR_MAX_FRAMES", "40")))
+        return {"segments": [], "status": "SKIPPED", "provider": "disabled"}
+    ocr_provider = env("OCR_PROVIDER", "local").strip().lower()
+    if ocr_provider not in {"local", "openai", "dashscope"}:
+        raise ValueError("OCR_PROVIDER必须是local/openai/dashscope")
+    interval_seconds = max(1.0, float(env("OCR_INTERVAL_SECONDS", "15")))
+    max_frames = max(1, min(300, int(env("PADDLEOCR_MAX_FRAMES", "40"))))
     max_width = max(320, int(env("PADDLEOCR_FRAME_MAX_WIDTH", "960")))
     dedup_threshold = min(1.0, max(0.0, float(env("PADDLEOCR_DEDUP_THRESHOLD", "0.88"))))
-    started = time.perf_counter()
+    duration = probe_media_duration(path)
+    if duration <= 0:
+        raise ValueError("无法确定视频时长")
+    # Spread the bounded frame budget across the full video, rather than stop
+    # sampling after the first max_frames * configured_interval seconds.
+    interval_seconds = max(interval_seconds, duration / max_frames)
     temp_root = UPLOAD_ROOT / "tmp"
     temp_root.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="ocr-", dir=temp_root) as directory:
         frame_pattern = str(Path(directory) / "frame-%06d.png")
-        frame_filter = (
-            f"select='isnan(prev_selected_t)+gte(t-prev_selected_t,{interval_seconds})',"
-            f"scale='min({max_width},iw)':-2"
+        frame_filter = (f"select='isnan(prev_selected_t)+gte(t-prev_selected_t,{interval_seconds:g})',"
+                        f"scale='min({max_width},iw)':-2,showinfo")
+        completed = subprocess.run(
+            ["ffmpeg", "-y", "-i", str(path), "-vf", frame_filter, "-fps_mode", "vfr",
+             "-frames:v", str(max_frames), frame_pattern],
+            check=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True,
+            encoding="utf-8", errors="replace", timeout=900,
         )
-        subprocess.run(
-            [
-                "ffmpeg",
-                "-y",
-                "-i",
-                str(path),
-                "-vf",
-                frame_filter,
-                "-fps_mode",
-                "vfr",
-                "-frames:v",
-                str(max_frames),
-                frame_pattern,
-            ],
-            check=True,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-            timeout=900,
-        )
-        frame_count = len(list(Path(directory).glob("frame-*.png")))
-        emit_progress(
-            progress_callback,
-            "OCR",
-            0,
-            frame_count,
-            f"OCR 处理中（0/{frame_count} 帧）" if frame_count else "OCR 未抽取到可处理画面",
-        )
-        if env("LOCAL_ASR_RELEASE_BEFORE_OCR", "true").lower() in {"1", "true", "yes"}:
-            release_local_asr_model()
-        payload = (
-            run_paddle_ocr_frames(Path(directory), progress_callback)
-            if progress_callback is not None
-            else run_paddle_ocr_frames(Path(directory))
-        )
-        for error in payload.get("errors", []):
-            log.warning("paddle_ocr_frame_failed frame=%s error=%s", error.get("frame"), error.get("error"))
-
-        segments: list[dict[str, Any]] = []
+        frames = sorted(Path(directory).glob("frame-*.png"))
+        timestamps = [max(0, int(float(value) * 1000))
+                      for value in re.findall(r"pts_time:([\d.+eE-]+)", completed.stderr or "")]
+        if len(timestamps) < len(frames):
+            raise ValueError("抽帧缺少真实时间戳，未将估算时间当成视频证据")
+        emit_progress(progress_callback, "OCR", 0, len(frames), "正在识别视频画面")
+        if not frames:
+            return {"segments": [], "status": "NO_TEXT", "provider": ocr_provider, "frameCount": 0}
+        usage_events = []
+        if ocr_provider == "local":
+            if env("LOCAL_ASR_RELEASE_BEFORE_OCR", "true").lower() in {"1", "true", "yes"}:
+                release_local_asr_model()
+            payload = (run_paddle_ocr_frames(Path(directory), progress_callback)
+                       if progress_callback is not None else run_paddle_ocr_frames(Path(directory)))
+            if payload.get("fatalError") or payload.get("errors") or int(payload.get("frameCount", 0)) != len(frames):
+                raise RuntimeError("本地OCR处理失败或仅完成部分画面")
+            items = payload.get("results", [])
+        else:
+            items = []
+            # A maximum of one OCR request at a time within the OCR branch;
+            # the ASR branch can run concurrently without a burst of image calls.
+            for index, frame in enumerate(frames):
+                cached_frame = read_json(frame_cache_path(path, frame))
+                if cached_frame.get("status") in {"SUCCESS", "NO_TEXT"}:
+                    result = {**cached_frame, "reused": True}
+                else:
+                    try:
+                        result = request_ocr_image(
+                            frame, base_url=env("OCR_BASE_URL", "https://dashscope.aliyuncs.com/compatible-mode/v1"),
+                            api_key=env("OCR_API_KEY") or env("DASHSCOPE_API_KEY"),
+                            model=env("OCR_MODEL", "qwen3.5-ocr"),
+                            timeout=float(env("OCR_REQUEST_TIMEOUT_SECONDS", "60")),
+                            max_tokens=max(128, int(env("OCR_MAX_TOKENS", "4096"))),
+                        )
+                    except Exception as exc:
+                        exc.completed_request_events = list(usage_events)
+                        raise
+                    atomic_json(frame_cache_path(path, frame), result)
+                items.append({"index": index, "content": result.get("text", "")})
+                usage_events.append({key: value for key, value in result.items() if key != "text"})
+                emit_progress(progress_callback, "OCR", index + 1, len(frames), f"OCR完成{index + 1}/{len(frames)}帧")
+        segments = []
         previous_content = ""
-        for item in payload.get("results", []):
-            index = max(0, int(item.get("index", 0)))
+        for item in items:
+            index = int(item.get("index", -1))
+            if not 0 <= index < len(frames):
+                raise ValueError("OCR返回了无对应画面的索引")
             content = str(item.get("content", "")).strip()
-            if previous_content and _content_similarity(previous_content, content) >= dedup_threshold:
-                continue
-            if content:
-                start_ms = index * interval_seconds * 1000
-                segments.append({
-                    "source": "OCR",
-                    "startMs": start_ms,
-                    "endMs": start_ms + interval_seconds * 1000,
-                    "content": content,
-                })
+            if content and (not previous_content or _content_similarity(previous_content, content) < dedup_threshold):
+                start_ms = timestamps[index]
+                end_ms = timestamps[index + 1] if index + 1 < len(frames) else int(duration * 1000)
+                segments.append({"source": "OCR", "startMs": start_ms,
+                                 "endMs": max(start_ms, end_ms), "content": content})
                 previous_content = content
-        log.info(
-            "paddle_ocr_completed path=%s frames=%s evidence=%s model_load_ms=%s runner_elapsed_ms=%s elapsed_ms=%s",
-            path.name,
-            int(payload.get("frameCount", 0)),
-            len(segments),
-            int(payload.get("modelLoadMs", 0)),
-            int(payload.get("elapsedMs", 0)),
-            int((time.perf_counter() - started) * 1000),
-        )
-        emit_progress(
-            progress_callback,
-            "OCR",
-            int(payload.get("frameCount", 0)),
-            int(payload.get("frameCount", 0)),
-            "OCR 处理完成",
-        )
-        return segments
+        emit_progress(progress_callback, "OCR", len(frames), len(frames), "OCR处理完成")
+        return {"segments": segments, "status": "SUCCESS" if segments else "NO_TEXT",
+                "provider": ocr_provider, "model": env("OCR_MODEL", "qwen3.5-ocr") if ocr_provider != "local" else "PaddleOCR",
+                "frameCount": len(frames), "requestEvents": usage_events,
+                "durationSeconds": duration, "samplingIntervalSeconds": interval_seconds}
 
 
-def collect_evidence(
-    path: Path,
-    progress_callback: ProgressCallback | None = None,
-) -> list[dict[str, Any]]:
-    segments = read_sidecar_evidence(path)
-    if not segments and env("ASR_BASE_URL"):
-        emit_progress(progress_callback, "ASR", 0, 1, "ASR 处理中")
-        temp_dir = UPLOAD_ROOT / "tmp"
-        audio_path = temp_dir / f"{uuid.uuid4()}.mp3"
+def frame_cache_path(video_path: Path, frame_path: Path) -> Path:
+    artifacts = evidence_artifacts(video_path)
+    image_hash = hashlib.sha256(frame_path.read_bytes()).hexdigest()
+    cache_key = hashlib.sha256((artifacts.fingerprint("OCR") + ":" + image_hash).encode()).hexdigest()
+    return artifacts.directory / "ocr-frames" / (cache_key + ".json")
+
+
+def extract_ocr_evidence(path: Path, progress_callback: ProgressCallback | None = None) -> list[dict[str, Any]]:
+    return extract_ocr_result(path, progress_callback)["segments"]
+
+
+def collect_evidence(path: Path, progress_callback: ProgressCallback | None = None) -> list[dict[str, Any]]:
+    artifacts = evidence_artifacts(path)
+    asr_name = asr_provider_name()
+    ocr_local = env("OCR_PROVIDER", "local").strip().lower() == "local" and env("OCR_ENABLED", "false").lower() in {"1", "true", "yes"}
+    local_fallback = env("ASR_LOCAL_FALLBACK_ENABLED", "false").lower() in {"1", "true", "yes"}
+    parallel = env("EVIDENCE_PARALLEL_ENABLED", "true").lower() in {"1", "true", "yes"}
+    parallel = parallel and not (ocr_local and (asr_name == "local" or local_fallback))
+    progress_lock = threading.Lock()
+    branch_progress: dict[str, tuple[int, int, str]] = {}
+
+    def forward(stage: str, current: int, total: int, message: str) -> None:
+        with progress_lock:
+            branch_progress[stage] = (current, total, message)
+            if parallel:
+                done = sum(min(100, int(cur * 100 / maximum)) if maximum else 0
+                           for cur, maximum, _ in branch_progress.values())
+                summary = "；".join(f"{key}：{value[2]}" for key, value in sorted(branch_progress.items()))
+                emit_progress(progress_callback, "ASR_OCR", done, 200, summary)
+            else:
+                emit_progress(progress_callback, stage, current, total, message)
+
+    def asr_job() -> dict[str, Any]:
+        sidecar = read_sidecar_evidence(path)
+        if sidecar:
+            return {"segments": sidecar, "provider": "sidecar", "status": "SUCCESS"}
+        if asr_name == "disabled":
+            return {"segments": [], "status": "SKIPPED", "provider": "disabled"}
+        forward("ASR", 0, 1, "正在转写语音")
+        if asr_name == "local":
+            segments = request_local_asr(path, forward) if progress_callback is not None else request_local_asr(path)
+            return {"segments": segments, "provider": "local", "model": env("LOCAL_ASR_MODEL", "base")}
+        temp_root = UPLOAD_ROOT / "tmp"
+        temp_root.mkdir(parents=True, exist_ok=True)
+        audio_path = temp_root / f"{uuid.uuid4()}.mp3"
         try:
             extract_audio_file(path, audio_path)
-            try:
-                segments = request_asr(audio_path)
-                emit_progress(progress_callback, "ASR", 1, 1, "ASR 处理完成")
-            except Exception:
-                if not local_asr_enabled():
-                    raise
-                log.exception("remote_asr_failed path=%s; falling back to local ASR", path.name)
+            if asr_name == "dashscope":
+                result = request_dashscope_asr(
+                    audio_path, base_url=env("ASR_BASE_URL") or "https://dashscope.aliyuncs.com",
+                    api_key=env("ASR_API_KEY") or env("DASHSCOPE_API_KEY"), model=env("ASR_MODEL") or "fun-asr",
+                    request_timeout=float(env("ASR_REQUEST_TIMEOUT_SECONDS", "60")),
+                    poll_timeout=float(env("ASR_POLL_TIMEOUT_SECONDS", "600")),
+                    poll_interval=float(env("ASR_POLL_INTERVAL_SECONDS", "2")),
+                    resume_task_id=artifacts.pending_task(), on_submitted=artifacts.submitted,
+                )
+            else:
+                result = request_openai_asr(
+                    audio_path, base_url=env("ASR_BASE_URL"), api_key=env("ASR_API_KEY"),
+                    model=env("ASR_MODEL") or "whisper-1", timeout=float(env("ASR_REQUEST_TIMEOUT_SECONDS", "180")),
+                )
+            return result
+        except Exception:
+            if local_fallback and local_asr_enabled():
+                return {"segments": request_local_asr(path, forward) if progress_callback is not None else request_local_asr(path), "provider": "local-fallback",
+                        "model": env("LOCAL_ASR_MODEL", "base"), "degraded": True}
+            raise
         finally:
             audio_path.unlink(missing_ok=True)
-    if not segments and local_asr_enabled():
-        emit_progress(progress_callback, "ASR", 0, 0, "ASR 处理中")
-        segments = (
-            request_local_asr(path, progress_callback)
-            if progress_callback is not None
-            else request_local_asr(path)
-        )
-    segments.extend(
-        extract_ocr_evidence(path, progress_callback)
-        if progress_callback is not None
-        else extract_ocr_evidence(path)
-    )
+
+    def status(branch: str, result: dict[str, Any]) -> None:
+        label = {"SUCCESS": "处理完成", "NO_TEXT": "未识别到文字", "SKIPPED": "已跳过", "FAILED": "失败，成功分路已保存"}[result["status"]]
+        forward(branch, 1, 1, ("已复用，" if result.get("reused") else "") + label)
+
+    segments, _ = run_evidence_branches({"ASR": asr_job, "OCR": lambda: extract_ocr_result(path, forward)},
+                                        artifacts=artifacts, parallel=parallel, on_status=status)
     if not segments:
-        segments.append({
-            "source": "SYSTEM",
-            "startMs": 0,
-            "endMs": 0,
-            "content": f"文件 {path.name} 已上传；配置 ASR/OCR 后可生成真实时间轴证据。",
-        })
-    return sorted(segments, key=lambda item: (item["startMs"], item["source"]))
+        segments = [{"source": "SYSTEM", "startMs": 0, "endMs": 0,
+                     "content": f"文件 {path.name} 无可用语音或画面文字；请检查提取配置和原始内容。"}]
+    return segments
 
 
 def evidence_context(segments: list[dict[str, Any]]) -> str:
@@ -1415,9 +1448,8 @@ def ensure_media_evidence(
     progress_callback: ProgressCallback | None = None,
 ) -> list[dict[str, Any]]:
     segments = stored_evidence(db, media.id)
-    asr_available = bool(env("ASR_BASE_URL")) or local_asr_enabled()
-    has_asr = any(item["source"] == "ASR" for item in segments)
-    if segments and (not asr_available or has_asr):
+    artifacts = evidence_artifacts(Path(media.file_path))
+    if evidence_cache_matches(segments, artifacts):
         return segments
     collected = collect_evidence(Path(media.file_path), progress_callback)
     replace_evidence(db, media.id, collected)
@@ -1944,6 +1976,7 @@ def process_analysis(task_id: str) -> str:
         analysis_provider: Provider | None = None
         toolbox: AgentToolbox | None = None
         checkpoint: AgentCheckpoint | None = None
+        media: Media | None = None
         heartbeat = build_lock_heartbeat(task)
         try:
             def report_progress(stage: str, current: int, total: int, message: str) -> None:
@@ -1972,14 +2005,23 @@ def process_analysis(task_id: str) -> str:
 
             evidence_started = time.perf_counter()
             existing_segments = stored_evidence(db, media.id)
-            asr_available = bool(env("ASR_BASE_URL")) or local_asr_enabled()
-            evidence_reused = bool(existing_segments) and (not asr_available or any(
-                item["source"] == "ASR" for item in existing_segments
-            ))
+            saved_artifacts = evidence_artifacts(Path(media.file_path))
+            evidence_reused = evidence_cache_matches(existing_segments, saved_artifacts)
             if evidence_reused:
                 db.commit()
                 report_progress("AGENT", 0, 0, "证据已就绪，Agent 生成中")
             toolbox = agent_toolbox(db, media, progress_callback=None if evidence_reused else report_progress)
+            # checkpoint减少重复阶段，累计预算限制同一任务所有重试的调用。
+            previous_budget = previous_trace.get("budget")
+            previous_budget = previous_budget if isinstance(previous_budget, dict) else {}
+            previous_usage = summarize_provider_usage(previous_provider_requests)
+            toolbox.budget.restore({
+                "rounds": max(_safe_int(previous_budget.get("rounds")), previous_usage["requestCount"]),
+                "tokens": max(_safe_int(previous_budget.get("tokens")), previous_usage["totalTokens"]),
+                "costUsd": max(_safe_float(previous_budget.get("costUsd")),
+                               _safe_float(previous_usage.get("estimatedCostUsd"))),
+                "elapsedMs": previous_budget.get("elapsedMs", 0),
+            })
             checkpoint = build_agent_checkpoint(task, toolbox.segments)
             toolbox.checkpoint = checkpoint
             evidence_duration = int((time.perf_counter() - evidence_started) * 1000)
@@ -1990,6 +2032,7 @@ def process_analysis(task_id: str) -> str:
             report_progress("AGENT", 0, 1, "Agent 生成中")
             analysis_started = time.perf_counter()
             try:
+                toolbox.budget.check()
                 generated = analysis_provider.run_agent(toolbox, task.goal)
             except BudgetExceeded as exc:
                 # 预算超限不重试：返回明确的拒答式部分结果，并记录是哪道闸
@@ -2045,6 +2088,11 @@ def process_analysis(task_id: str) -> str:
                 "agentMode": analysis_provider.agent_mode,
                 "attempt": task.attempt_count,
                 "evidenceSegmentCount": len(toolbox.segments),
+                "evidenceExtraction": evidence_manifest(Path(media.file_path)),
+                "model": getattr(analysis_provider, "model", None),
+                "promptVersion": PROMPT_VERSION,
+                "evidenceFingerprint": evidence_fingerprint(toolbox.segments),
+                "retrievalProfile": env("EVIDENCE_RETRIEVER_PROFILE", "coverage-aware-lexical-v3"),
                 "toolCallCount": len(toolbox.trace()),
                 "toolCalls": toolbox.trace(),
                 "graph": generated.get("agentGraph"),
@@ -2103,13 +2151,15 @@ def process_analysis(task_id: str) -> str:
                 "provider": analysis_provider.__class__.__name__ if analysis_provider else None,
                 "agentMode": analysis_provider.agent_mode if analysis_provider else None,
                 "attempt": task.attempt_count,
+                "evidenceExtraction": evidence_manifest(Path(media.file_path)) if media else {},
                 "toolCallCount": len(toolbox.trace()) if toolbox else 0,
                 "toolCalls": toolbox.trace() if toolbox else [],
                 "providerUsage": summarize_provider_usage(provider_requests),
                 "providerRequests": provider_requests,
                 "lastErrorType": type(exc).__name__,
                 "checkpoint": checkpoint.summary() if checkpoint else {"enabled": False},
-                "budget": toolbox.budget.snapshot() if toolbox and toolbox.budget else None,
+                "budget": (toolbox.budget.snapshot() if toolbox and toolbox.budget
+                           else previous_trace.get("budget")),
             }
             attach_spans_safely(failure_trace, task_id)
             task.trace_json = json.dumps(failure_trace, ensure_ascii=False)
@@ -2733,6 +2783,8 @@ def delete_media(id: int, user: User = Depends(current_user)) -> str:
         session_ids = list(db.scalars(select(AgentSession.id).where(AgentSession.media_id == id)).all())
         if session_ids:
             db.execute(delete(AgentMessage).where(AgentMessage.session_id.in_(session_ids)))
+            for session_id in session_ids:
+                shutil.rmtree(UPLOAD_ROOT / "followup-traces" / session_id, ignore_errors=True)
         db.execute(delete(AgentSession).where(AgentSession.media_id == id))
         if task_ids:
             db.execute(delete(AnalysisFeedback).where(AnalysisFeedback.task_id.in_(task_ids)))
@@ -2740,6 +2792,8 @@ def delete_media(id: int, user: User = Depends(current_user)) -> str:
         db.execute(delete(AnalysisTask).where(AnalysisTask.media_id == id))
         db.execute(delete(EvidenceSegment).where(EvidenceSegment.media_id == id))
         db.execute(delete(MediaImportTask).where(MediaImportTask.media_id == id))
+        cache_identity = hashlib.sha256(str(Path(media.file_path).resolve()).encode()).hexdigest()
+        shutil.rmtree(UPLOAD_ROOT / "evidence-cache" / cache_identity, ignore_errors=True)
         Path(media.file_path).unlink(missing_ok=True)
         Path(media.file_path + ".txt").unlink(missing_ok=True)
         Path(media.file_path + ".segments.json").unlink(missing_ok=True)
@@ -2989,47 +3043,64 @@ def follow_up(id: int, question: str = Query(min_length=1, max_length=500), user
         media = owned_media(db, id, user)
         if not media.ai_summary:
             raise HTTPException(status_code=409, detail="请先完成视频分析")
+        question_text = question.strip()
+        if not question_text:
+            raise HTTPException(status_code=400, detail="追问不能为空")
+        enforce_rate_limit(f"follow-up:{user.id}", 30, 3600)
         task = latest_task(db, id)
         session = get_or_create_agent_session(
-            db,
-            user_id=user.id,
-            media_id=id,
-            goal=task.goal if task else "基于最新报告继续追问",
+            db, user_id=user.id, media_id=id, goal=task.goal if task else "基于最新报告继续追问",
         )
         history = agent_history_messages(db, session.id)
         policy = ContextPolicy.from_env()
-        context = assemble(
-            history,
-            policy=policy,
-            fallback_summary=session.summary or "",
-        )
-        question_text = question.strip()
+        context = assemble(history, policy=policy, fallback_summary=session.summary or "")
         toolbox = agent_toolbox(db, media, ensure_evidence=False)
-        follow_up_evidence = toolbox.evidence_for_question(question_text, max_segments=18)
-        answer = provider().follow_up(
-            media.ai_summary,
-            question_text,
-            history=context.messages,
-            memory_summary=context.summary,
-            evidence_timeline=evidence_context(follow_up_evidence),
-        )
-        log.info(
-            "follow_up_context session_id=%s messages=%s summary_chars=%s dropped=%s truncated=%s",
-            session.id,
-            len(context.messages),
-            len(context.summary),
-            context.dropped_messages,
-            context.truncated,
-        )
+        # 即使服务调用失败，也保留会话，让所属用户能查询失败记录。
+        db.commit()
+        follow_provider = provider()
+        follow_provider.budget = toolbox.budget
+        rewrite = {"query": question_text, "rewritten": False, "needsClarification": False}
+        error: HTTPException | None = None
+        try:
+            rewrite = follow_provider.rewrite_follow_up(question_text, context.messages, context.summary)
+            if rewrite.get("needsClarification"):
+                answer = "请补充你指的是哪个对象或方案，我再根据视频证据回答。"
+                review = {"accepted": False, "reason": "NEEDS_CLARIFICATION"}
+            else:
+                query = str(rewrite.get("query") or question_text)
+                follow_provider._follow_up_query = query
+                follow_up_evidence = toolbox.evidence_for_question(query, max_segments=18)
+                answer = follow_provider.follow_up(
+                    media.ai_summary, question_text, history=context.messages, memory_summary=context.summary,
+                    evidence_timeline=evidence_context(follow_up_evidence),
+                )
+                review = getattr(follow_provider, "_follow_up_review", {"reason": "CUSTOM_PROVIDER"})
+        except BudgetExceeded as exc:
+            answer = "本次追问因调用预算超限结束，请调整预算后重试。"
+            review = {"accepted": False, "reason": "BUDGET_EXCEEDED", "limit": exc.limit}
+        except Exception as exc:
+            answer = "追问服务暂时失败，请稍后重试。"
+            review = {"accepted": False, "reason": "SERVICE_ERROR", "errorType": type(exc).__name__}
+            error = HTTPException(status_code=502, detail=answer)
+        trace = {
+            "question": question_text, "retrievalQuery": rewrite.get("query"),
+            "rewritten": bool(rewrite.get("rewritten")), "review": review,
+            "providerUsage": follow_provider.provider_usage_summary(),
+            "providerRequests": follow_provider.provider_usage_events(),
+            "budget": toolbox.budget.snapshot(), "createdAt": datetime.now(timezone.utc).isoformat(),
+            "model": getattr(follow_provider, "model", None),
+        }
+        trace_root = UPLOAD_ROOT / "followup-traces" / session.id
+        atomic_json(trace_root / (uuid.uuid4().hex + ".json"), trace)
+        atomic_json(trace_root / "latest.json", trace)
+        if error is not None:
+            raise error
         db.add_all([
             AgentMessage(session_id=session.id, user_id=user.id, role="user", content=question_text),
             AgentMessage(session_id=session.id, user_id=user.id, role="assistant", content=answer),
         ])
-        update_agent_memory_summary(session, [
-            *history,
-            {"role": "user", "content": question_text},
-            {"role": "assistant", "content": answer},
-        ], policy=policy)
+        update_agent_memory_summary(session, [*history,
+            {"role": "user", "content": question_text}, {"role": "assistant", "content": answer}], policy=policy)
         db.commit()
         return answer
 
@@ -3055,6 +3126,7 @@ def agent_memory(id: int, user: User = Depends(current_user)) -> dict[str, Any]:
                 "summary": session.summary or "",
                 "messageCount": message_count,
                 "messages": messages,
+                "latestFollowUpTrace": read_json(UPLOAD_ROOT / "followup-traces" / session.id / "latest.json"),
                 "historyTruncated": message_count > len(messages),
                 "createdAt": session.created_at.isoformat(),
                 "updatedAt": session.updated_at.isoformat(),

@@ -31,7 +31,8 @@ openssl rand -hex 32
 - 为 `MYSQL_PASSWORD`、`MYSQL_ROOT_PASSWORD`、`REDIS_PASSWORD` 和 `JWT_SECRET` 生成不同的随机值。
 - `DATABASE_URL` 中的 MySQL 用户和密码必须与上面的变量一致。
 - `CORS_ALLOWED_ORIGINS` 改成 `https://你的域名`。
-- DeepSeek 使用 `AI_BASE_URL=https://api.deepseek.com`、`AI_MODEL=deepseek-v4-flash`；只在服务器私有环境文件中填写新生成的 `AI_API_KEY`。密钥为空时使用 Mock Provider。
+- DeepSeek 使用 `AI_BASE_URL=https://api.deepseek.com`、`AI_MODEL=deepseek-flash`；只在服务器私有环境文件中填写 `AI_API_KEY`。密钥为空时使用 Mock Provider。
+- 使用云端识别时，将 `deploy/.env.api.example` 中的识别配置合并到生产环境文件；具体地址、模型、并行和恢复边界见 [Agent与API配置](../docs/Agent优化与API配置.md)。以下本地模型说明仅适用于选择本地识别的配置。
 - `LOCAL_ASR_ENABLED=true` 默认在 Worker 中启用 `faster-whisper base/int8`。首次启动会下载约 141 MB 模型到独立 Docker volume，之后复用缓存；模型不会加载到 API 或 MCP。
 - `OCR_ENABLED=true` 默认启用 PaddleOCR `PP-OCRv5_mobile_det/rec`，首次运行下载约 21 MB 模型。ASR 完成后释放 Whisper 模型，再由独立 OCR 子进程执行推理。
 - 4 核 8 GB 建议保持 `LOCAL_ASR_CPU_THREADS=4`、`WORKER_CPU_LIMIT=3.0`、`WORKER_MEMORY_LIMIT=2560m`。2 核机器建议将 CPU limit 改为 `1.5`，并可关闭 OCR 以缩短等待时间。

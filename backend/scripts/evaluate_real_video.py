@@ -9,6 +9,7 @@ review pass and is reported separately from the rule score.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -18,6 +19,26 @@ from pathlib import Path
 from typing import Any
 
 import httpx
+
+
+EVALUATOR_VERSION = "agent-rules-v2"
+
+
+def selected_cases_fingerprint(cases: list[dict[str, Any]]) -> str:
+    rendered = json.dumps(cases, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(rendered.encode("utf-8")).hexdigest()
+
+
+def resume_results(previous: dict[str, Any], cases: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
+    """只续跑同一题集与评分版本，防止旧的空规则满分混入新报告。"""
+    if previous.get("evaluatorVersion") != EVALUATOR_VERSION:
+        raise ValueError("评分版本不一致；请使用新的输出文件重新运行，保留旧报告供对照")
+    if previous.get("selectedCasesFingerprint") != selected_cases_fingerprint(cases):
+        raise ValueError("本次题目或标注与原报告不同；请使用新的输出文件")
+    return {
+        str(item["caseId"]): item
+        for item in previous.get("results", []) if isinstance(item, dict) and item.get("caseId")
+    }
 
 
 def normalize_text(value: Any) -> str:
@@ -30,22 +51,104 @@ def group_hit(answer: str, alternatives: list[str]) -> bool:
 
 
 def evaluate_answer(case: dict[str, Any], final_answer: str) -> dict[str, Any]:
-    groups = [group_hit(final_answer, group) for group in case.get("requiredAnswerGroups", [])]
+    raw_groups = case.get("requiredAnswerGroups")
+    raw_forbidden = case.get("forbiddenAnswerPatterns", [])
+    groups_valid = (
+        isinstance(raw_groups, list)
+        and bool(raw_groups)
+        and all(
+            isinstance(group, list)
+            and bool(group)
+            and all(isinstance(item, str) and bool(normalize_text(item)) for item in group)
+            for group in raw_groups
+        )
+    )
+    forbidden_valid = isinstance(raw_forbidden, list) and all(
+        isinstance(pattern, str) and bool(normalize_text(pattern)) for pattern in raw_forbidden
+    )
+    rules_valid = groups_valid and forbidden_valid
+    groups = [group_hit(final_answer, group) for group in raw_groups] if rules_valid else []
     forbidden = [
-        pattern for pattern in case.get("forbiddenAnswerPatterns", [])
-        if normalize_text(pattern) and normalize_text(pattern) in normalize_text(final_answer)
-    ]
+        pattern for pattern in raw_forbidden
+        if normalize_text(pattern) in normalize_text(final_answer)
+    ] if forbidden_valid else []
+    nonempty = bool(normalize_text(final_answer))
+    passed = bool(nonempty and all(groups) and not forbidden) if rules_valid else None
+    reason = None
+    if not rules_valid:
+        reason = "MISSING_ANSWER_RULES" if not raw_groups else "INVALID_ANSWER_RULES"
+    elif not nonempty:
+        reason = "EMPTY_ANSWER"
+    elif not all(groups):
+        reason = "REQUIRED_CONCEPT_MISSING"
+    elif forbidden:
+        reason = "FORBIDDEN_PATTERN"
     return {
+        "scoreStatus": "NOT_SCORED" if passed is None else ("PASSED" if passed else "FAILED"),
+        "scoreReason": reason,
+        "answerNonEmpty": nonempty,
         "requiredGroupHits": groups,
-        "requiredGroupsPassed": all(groups),
+        "requiredGroupsPassed": all(groups) if rules_valid else None,
         "forbiddenMatches": forbidden,
         "forbiddenPassed": not forbidden,
-        "rulePassed": all(groups) and not forbidden,
+        "rulePassed": passed,
     }
 
 
 def evaluate_status_answer(case: dict[str, Any], status: dict[str, Any]) -> dict[str, Any]:
-    return evaluate_answer(case, str(status.get("finalAnswer") or ""))
+    check = evaluate_answer(case, str(status.get("finalAnswer") or ""))
+    gold, prediction = case.get("answerable"), status.get("answerable")
+    matches = gold == prediction if isinstance(gold, bool) and isinstance(prediction, bool) else None
+    check["answerabilityMatches"] = matches
+    if matches is False and check["rulePassed"] is not None:
+        check.update(rulePassed=False, scoreStatus="FAILED", scoreReason="WRONG_ANSWERABILITY")
+    return check
+
+
+def refusal_decision_metrics(results: list[dict[str, Any]]) -> dict[str, Any]:
+    """统计非空结构化回答的应答/拒答决策；不把空结果或预算停止算正确拒答。
+
+    未知预测单列，召回分母仍包含应拒答的无效结果。决策正确不证明拒答
+    措辞或答案语义正确，这两项仍须规则和人工复核。
+    """
+    labeled = [item for item in results if isinstance(item.get("answerable"), bool)]
+    correct = false_reject = missed = answered = invalid = 0
+    for item in labeled:
+        prediction = item.get("answerableResult")
+        trace = item.get("trace")
+        budget_exceeded = isinstance(trace, dict) and bool(trace.get("budgetExceeded"))
+        if not isinstance(prediction, bool) or not normalize_text(item.get("finalAnswer")) or budget_exceeded:
+            invalid += 1
+        elif not item["answerable"] and not prediction:
+            correct += 1
+        elif item["answerable"] and not prediction:
+            false_reject += 1
+        elif not item["answerable"] and prediction:
+            missed += 1
+        else:
+            answered += 1
+
+    def ratio(numerator: int, denominator: int) -> float | None:
+        return round(numerator / denominator, 4) if denominator else None
+
+    answerable_count = sum(item["answerable"] for item in labeled)
+    unanswerable_count = len(labeled) - answerable_count
+    return {
+        "labeledCompletedCount": len(labeled),
+        "validPredictionCount": len(labeled) - invalid,
+        "invalidPredictionCount": invalid,
+        "answerableCaseCount": answerable_count,
+        "unanswerableCaseCount": unanswerable_count,
+        "correctAbstain": correct,
+        "falseReject": false_reject,
+        "missedAbstain": missed,
+        "answeredOk": answered,
+        "abstentionPrecision": ratio(correct, correct + false_reject),
+        "abstentionRecall": ratio(correct, unanswerable_count),
+        "falseRejectRate": ratio(false_reject, answerable_count),
+        "missedAbstainRate": ratio(missed, unanswerable_count),
+        "decisionAccuracy": ratio(correct + answered, len(labeled)),
+    }
 
 
 def classify_failure(error: Any, exc: Exception | None = None) -> str | None:
@@ -268,6 +371,9 @@ def run_case(
     final_answer = str(status.get("finalAnswer") or "")
     error = (status.get("error") or status.get("message")) if status.get("state") == "FAILED" else None
     answer_check = evaluate_status_answer(case, status)
+    trace = status.get("trace") if isinstance(status.get("trace"), dict) else {}
+    raw_graph = trace.get("graph", trace.get("agentGraph"))
+    graph = raw_graph if isinstance(raw_graph, dict) else {}
     return {
         "caseId": case["caseId"],
         "videoId": case["videoId"],
@@ -290,6 +396,19 @@ def run_case(
             else None
         ),
         "answerCheck": answer_check,
+        "experiment": {
+            "evaluatorVersion": EVALUATOR_VERSION,
+            "promptVersion": graph.get("promptVersion"),
+            "acceptanceMode": graph.get("acceptanceMode"),
+            "repairCount": graph.get("repairCount", graph.get("revisionCount")),
+            "retrievalRepairCount": graph.get("retrievalRepairCount"),
+            "repairKind": graph.get("repairKind"),
+            "repairDetails": graph.get("repairDetails"),
+            "checkpoint": graph.get("checkpoint"),
+            "evidenceFingerprint": trace.get("evidenceFingerprint"),
+            "model": trace.get("model"),
+            "retrievalProfile": trace.get("retrievalProfile"),
+        },
         "elapsedMs": int((time.perf_counter() - started) * 1000),
     }
 
@@ -307,14 +426,19 @@ def aggregate(results: list[dict[str, Any]]) -> dict[str, Any]:
         by_type[str(item.get("type"))].append(item)
 
     def group_summary(items: list[dict[str, Any]]) -> dict[str, Any]:
-        passed = [item for item in items if item.get("answerCheck", {}).get("rulePassed")]
+        finished = [item for item in items if item.get("state") == "COMPLETED"]
+        scored = [item for item in finished if isinstance(item.get("answerCheck", {}).get("rulePassed"), bool)]
+        passed = [item for item in scored if item["answerCheck"]["rulePassed"]]
         return {
             "caseCount": len(items),
-            "completedCount": sum(item.get("state") == "COMPLETED" for item in items),
+            "completedCount": len(finished),
+            "ruleScoredCount": len(scored),
+            "notScoredCount": len(finished) - len(scored),
             "rulePassCount": len(passed),
-            "rulePassRate": round(len(passed) / max(1, len(items)), 4),
+            "rulePassRate": round(len(passed) / len(scored), 4) if scored else None,
         }
 
+    rule_summary = group_summary(results)
     citation_rates = [
         float(item["evaluation"]["evidenceSupportRate"])
         for item in completed
@@ -332,11 +456,16 @@ def aggregate(results: list[dict[str, Any]]) -> dict[str, Any]:
         ),
         "modelEvaluableCaseCount": len(model_evaluable),
         "modelTaskSuccessRate": round(len(model_completed) / max(1, len(model_evaluable)), 4),
-        "answerRulePassRate": round(
-            sum(item.get("answerCheck", {}).get("rulePassed", False) for item in completed)
-            / max(1, len(completed)),
-            4,
-        ),
+        "answerRuleScoredCount": rule_summary["ruleScoredCount"],
+        "answerRuleNotScoredCount": rule_summary["notScoredCount"],
+        "answerRulePassRate": rule_summary["rulePassRate"],
+        "notScoredReasons": dict(Counter(
+            item.get("answerCheck", {}).get("scoreReason") or "MISSING_ANSWER_CHECK"
+            for item in completed if not isinstance(item.get("answerCheck", {}).get("rulePassed"), bool)
+        )),
+        "answerableRuleScores": group_summary([item for item in results if item.get("answerable") is True]),
+        "unanswerableRuleScores": group_summary([item for item in results if item.get("answerable") is False]),
+        "refusalDecision": refusal_decision_metrics(completed),
         "citationSupportRate": round(sum(citation_rates) / max(1, len(citation_rates)), 4),
         "byType": {key: group_summary(value) for key, value in sorted(by_type.items())},
         "stateCounts": dict(Counter(str(item.get("state")) for item in results)),
@@ -363,7 +492,10 @@ def write_run_output(
     ]
     output = {
         "runId": run_id,
+        "evaluatorVersion": EVALUATOR_VERSION,
         "datasetId": dataset_id,
+        "selectedCasesFingerprint": selected_cases_fingerprint(selected_cases),
+        "annotationReviewPendingCount": sum(case.get("reviewStatus") == "PENDING_VIDEO_REVIEW" for case in selected_cases),
         "mediaMap": media_map,
         "requestedCaseCount": requested_case_count,
         "plannedCaseCount": len(selected_cases),
@@ -373,7 +505,7 @@ def write_run_output(
         "budget": {"config": budget_config, "stop": budget_stop},
         "aggregate": aggregate(results),
         "results": results,
-        "note": "答案规则只检查结构化 finalAnswer，是保守自动筛查，不等于人工语义准确率。",
+        "note": "缺少有效答案规则标NOT_SCORED并排除规则通过率分母；应答/拒答决策独立统计。规则分和引用回查均不等于人工语义准确率。",
     }
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -416,11 +548,10 @@ def main() -> None:
     if args.resume and args.output.exists():
         previous = json.loads(args.output.read_text(encoding="utf-8"))
         run_id = str(previous.get("runId") or run_id)
-        result_by_case = {
-            str(item["caseId"]): item
-            for item in previous.get("results", [])
-            if item.get("caseId")
-        }
+        try:
+            result_by_case = resume_results(previous, selected_cases)
+        except ValueError as exc:
+            raise SystemExit(str(exc)) from exc
     budget_config = {
         "maxCases": max(0, args.max_cases),
         "maxProviderCalls": max(0, args.max_provider_calls),

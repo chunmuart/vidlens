@@ -112,6 +112,29 @@ class BudgetTrackerTest(unittest.TestCase):
         self.assertEqual(snap["limits"]["maxRounds"], 5)
         self.assertIn("elapsedMs", snap)
 
+    def test_retry_restores_usage_without_counting_queue_delay(self) -> None:
+        clock = FakeClock()
+        tracker = BudgetTracker(BudgetLimits(max_tokens=100), clock=clock).start()
+        tracker.restore({"rounds": 2, "tokens": 80, "costUsd": 0.01, "elapsedMs": 500})
+        clock.advance_ms(200)
+        self.assertEqual(tracker.elapsed_ms, 700)
+        self.assertEqual(tracker.rounds, 2)
+        self.assertEqual(tracker.cost_usd, 0.01)
+        tracker.add_tokens(total_tokens=30)
+        with self.assertRaises(BudgetExceeded):
+            tracker.check()
+
+    def test_repeated_restore_cannot_reset_or_double_previous_usage(self) -> None:
+        clock = FakeClock()
+        tracker = BudgetTracker(clock=clock).start()
+        previous = {"rounds": 2, "tokens": 80, "elapsedMs": 500}
+        tracker.restore(previous)
+        tracker.restore(previous)
+        tracker.restore({"rounds": 1, "tokens": 10, "elapsedMs": 10})
+        self.assertEqual(tracker.rounds, 2)
+        self.assertEqual(tracker.tokens, 80)
+        self.assertEqual(tracker.elapsed_ms, 500)
+
 
 if __name__ == "__main__":
     unittest.main()

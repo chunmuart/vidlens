@@ -12,7 +12,7 @@ import unittest
 
 from vidlens.agent import AgentToolbox
 from vidlens.agent_structured import PROMPT_VERSION, run_structured_evidence_agent
-from vidlens.checkpoint import AgentCheckpoint, checkpoint_enabled, evidence_fingerprint
+from vidlens.checkpoint import CHECKPOINT_VERSION, AgentCheckpoint, checkpoint_enabled, evidence_fingerprint
 
 
 GOAL = "课程介绍了哪种二叉树遍历顺序？"
@@ -256,9 +256,55 @@ class CheckpointValidationTest(unittest.TestCase):
         self.assertIsNone(checkpoint.load("planner"))
 
     def test_fingerprint_ignores_database_segment_ids(self) -> None:
-        first = evidence_fingerprint([{"segmentId": 1, **SEGMENTS[0]}])
-        second = evidence_fingerprint([{"segmentId": 999, **SEGMENTS[0]}])
+        first = evidence_fingerprint([{**SEGMENTS[0], "segmentId": 1}])
+        second = evidence_fingerprint([{**SEGMENTS[0], "segmentId": 999}])
         self.assertEqual(first, second)
+
+    def test_new_planner_persisted_before_crash_cannot_revive_old_retriever(self) -> None:
+        for changes in (
+            {"goal": "一个新的问题"},
+            {"prompt_version": PROMPT_VERSION + "-changed"},
+            {"evidence_fingerprint": "changed-evidence"},
+            {},  # 即使输入相同，重做 Planner 也使旧下游失效。
+        ):
+            with self.subTest(changes=changes):
+                inputs = {
+                    "enabled": True,
+                    "goal": GOAL,
+                    "prompt_version": PROMPT_VERSION,
+                    "evidence_fingerprint": evidence_fingerprint(SEGMENTS),
+                    **changes,
+                }
+                persisted: list[dict] = []
+                checkpoint = AgentCheckpoint(
+                    **inputs, data=snapshot_with_both_stages(), persist=persisted.append,
+                )
+                checkpoint.save("planner", {"evidencePlan": {"new": True}})
+                # 这里只保留已经持久化的数据，模拟在 Retriever 重算前进程退出。
+                restored = AgentCheckpoint(**inputs, data=persisted[-1])
+                self.assertEqual(restored.load("planner"), {"evidencePlan": {"new": True}})
+                self.assertIsNone(restored.load("retriever"))
+
+    def test_old_unsafe_format_is_invalidated(self) -> None:
+        snapshot = snapshot_with_both_stages()
+        snapshot["version"] = CHECKPOINT_VERSION - 1
+        checkpoint = AgentCheckpoint(
+            enabled=True, goal=GOAL, prompt_version=PROMPT_VERSION,
+            evidence_fingerprint=evidence_fingerprint(SEGMENTS), data=snapshot,
+        )
+        self.assertIsNone(checkpoint.load("planner"))
+        self.assertIsNone(checkpoint.load("retriever"))
+        checkpoint.save("planner", {"new": True})
+        self.assertNotIn("retriever", checkpoint.snapshot())
+
+    def test_invalid_global_input_cannot_relabel_old_planner_on_retriever_save(self) -> None:
+        checkpoint = AgentCheckpoint(
+            enabled=True, goal="一个新的问题", prompt_version=PROMPT_VERSION,
+            evidence_fingerprint=evidence_fingerprint(SEGMENTS), data=snapshot_with_both_stages(),
+        )
+        checkpoint.save("retriever", {"new": True})
+        self.assertIsNone(checkpoint.load("planner"))
+        self.assertEqual(checkpoint.load("retriever"), {"new": True})
 
 
 class StructuredAgentResumeTest(unittest.TestCase):

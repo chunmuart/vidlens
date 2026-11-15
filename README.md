@@ -1,172 +1,86 @@
 # VidLens
 
-视频内容理解平台。输入一段视频和一个问题，输出一份**每句话都能追溯到具体时间点**的分析报告。
+视频证据分析项目：上传视频、提出问题，检索带时间戳的语音和画面文字，生成可回看的报告，并支持继续追问。
 
-课程回放、会议录像、技术分享这类内容有两个现实问题：十几分钟的内容，人只能记住前几分钟；而直接丢给大模型做总结，模型会在没听清的地方编造，且你无从验证。
+## Windows 启动
 
-单条视频限制在 15 分钟以内：处理时长、抽帧数量与检索预算都随长度线性增长，超过这个长度，回答质量的覆盖会明显下降。
+安装 Docker Desktop。首次使用时将 `backend/.env.example` 复制为 `backend/.env`，填入模型配置；已有 `.env` 时直接保留。云端识别参数见 [Agent 与 API 配置](docs/Agent优化与API配置.md)。
 
-VidLens 的做法是把视频拆成「证据」再作答：ASR 转写音频、OCR 提取画面文字，按时间轴融合成带来源标记的证据流；回答问题时先检索证据，再要求模型只能基于证据作答，无证据即拒答。
-
-```
-视频 ──┬─ FFmpeg 抽音频 → ASR 转写 ─┐
-       └─ 抽关键帧 → OCR 文字识别 ─┴─→ 时间轴融合 → 证据库 → 检索 → Agent → 带引用的报告
-```
-
----
-
-## 一、三个核心问题与我的解法
-
-### 1. 长耗时任务不能塞进 HTTP 请求
-
-一段 40 分钟的视频，ASR 要跑几分钟，OCR 再几分钟，加上 LLM 分析，整个链路是分钟级的。同步接口必然超时，用户刷新就前功尽弃。
-
-**做法**：`POST /analysis/ai` 只做一件事——落库建任务、返回 task_id，然后把任务投进 RocketMQ。独立的 Worker 消费消息、跑重活、逐步更新进度，前端轮询 `GET /analysis/analysis-status` 恢复状态。
-
-**取舍**：引入 MQ 的代价是部署多一个组件、多一条排查链路（消息是否投递、Worker 是否存活、消息是否重复）。换来的是接口毫秒级返回、Worker 可以单独限流限内存、失败可重试。对分钟级任务，这个交换是值得的；如果是秒级任务，我会直接同步做。
-
-### 2. 大文件在弱网下传不完
-
-GB 级视频一次性上传，网络一抖就全部重来。
-
-**做法**：`init-upload` 创建上传会话 → `upload-chunk` 分片上传（服务端记录每片状态）→ `complete-upload` 合并校验。断点重连时先查 `upload-status`，只补传缺失的分片。同时用 MD5 作为内容指纹做用户级去重，同一用户重复上传直接命中已有记录。
-
-**取舍**：分片带来合并时的一致性问题（如何保证分片原子写入、合并幂等），所以合并阶段加了 MD5 全校验——宁可慢一步，也不让半截文件进入分析队列。
-
-### 3. 检索不准，模型就会开始编
-
-这是这类产品真正的难点。朴素 RAG 做「问题 → topK → 塞进 prompt」，在视频场景下会系统性失效：
-
-- 专有名词、缩写、精确数字用向量检索经常召回不到——实际标注数据里就有一道题专门考「某技术名词在模型里是几个 token」，靠语义相似度是捞不到这类精确信息的
-- 一道题往往需要多个证据点（「分别讲了哪三点」「A 和 B 有什么区别」），单次 topK 天然覆盖不全
-
-**做法**（`backend/vidlens/retrieval.py`）：
-
-1. **双路召回**：lexical（关键词）+ 本地 BGE 稠密向量，用 **RRF** 融合。选 RRF 而不是加权求和，是因为两路分数量纲不同，按排名融合不需要调权重。
-2. **需求拆解**：先用 `plan_evidence_requirements` 判断问题类型（SINGLE / MULTI_PART / EXHAUSTIVE_LIST / COMPARISON / SEQUENCE / TEMPORAL / SYNTHESIS），拆成若干证据需求，每个需求单独检索。
-3. **邻接扩展 + 充分性门禁**：检索到证据后向时间轴前后扩展找上下文；再判断是否真的覆盖了所有需求，不满足就继续检索或明确拒答。
-
-**取舍**：这套「Coverage-Aware」策略比朴素 RAG 慢（开发集上查询均值约 8ms → 15ms），且在留出集上并没有泛化（见下文）。但它把「答错了却看不出来」变成了「答不出来就说答不出来」，对可信度优先的场景，我认为后者更重要。
-
----
-
-## 二、Agent 与幻觉控制
-
-`backend/vidlens/agent_structured.py` 里的分析 Agent 走五段式流程，而不是自由 ReAct：
-
-```
-Planner → Retriever → Verifier → Writer → Critic
-```
-
-- **Planner**：把问题拆成结构化槽位（要回答什么、每条需求依赖什么证据）
-- **Retriever**：按槽位检索，构建 Evidence Ledger（证据账本）
-- **Verifier**：独立判断每条结论是否被证据支持，分四级
-- **Writer**：只能使用 Ledger 中的证据 ID 成文
-- **Critic**：检查完整性、矛盾、外部推断、是否该拒答
-
-其中最关键的是 **supportLevel 四级分档**：
-
-| 级别 | 含义 | 处理方式 |
-|---|---|---|
-| `DIRECT` | 视频里逐字说了 | 正常回答 + 引用 |
-| `SYNTHESIS` | 由多条证据概括得出 | 正常回答，标注为概括 |
-| `GROUNDED_INFERENCE` | 视频没明说，但可由证据合理推出 | **程序强制**追加「视频没有明确说明」 |
-| `NONE` | 证据不支持 | 拒答 |
-
-**为什么不用 prompt 让模型自己标注**：模型对「自己是否在推理」的判断并不稳定。所以这四级判定由 Verifier 给出，但「追加声明」和「拒答」这两个动作由程序执行——不依赖模型自觉。
-
-另有一条 `agent_graph.py`（LangGraph 状态机：`plan → prefetch → model_step ⇄ tool_execution → finalize`），用于需要多轮动态工具调用的场景。两条链路并存是为了能对比和回滚，通过 `AGENT_PIPELINE_VERSION` 切换。
-
----
-
-## 三、评测：我如何知道它真的有效
-
-这一块我认为比功能本身更能说明问题。
-
-评测指标：Recall@1/3/8、MRR、多证据完整命中率、无答案误召回率、分 ASR/OCR 来源的命中、延迟。脚本在 `backend/scripts/`，数据集在 `backend/evals/`。
-
-**开发集上的结果**：加入 Contextual 策略后，Recall@8 从 0.867 提升到 1.000，多证据完整命中率从 0.800 提升到 1.000；后续 Coverage-Aware v2 把 MRR 从 0.850 提到 0.875、Recall@8 从 0.775 提到 1.000。
-
-**留出集上的结果——这才是重点**：在一条**从未用于调参**的视频集上，Coverage-Aware v2 的 MRR 从 lexical 的 0.568 掉到 0.465，Recall@8 从 0.682 掉到 0.591，且 5 道不可回答题全部未在检索层拒答。
-
-也就是说：**开发集上的提升没有泛化**。我做了一个容易被忽略但很重要的决定——承认这个结果，冻结该留出集不再重跑，而不是换一个指标或继续在这个集合上调参。同时定位到根因不是证据抽取（282 段证据的金标覆盖率是 1.000，说明抽取层没丢东西），而是检索覆盖与拒答泛化。
-
-这个结论被我写进了 README 而不是删掉，因为它才是我对这个系统真实水平的判断。
-
----
-
-## 四、工程细节
-
-**用户隔离**：JWT 登录，所有媒体、证据、报告按 `user_id` 强制过滤。向量检索同样带 `video_id` 与 `source` 的 payload filter——这是安全底线，不是性能优化：不加过滤，一次检索就可能把别的视频的证据串进来。
-
-**证据融合**：ASR 与 OCR 各带 `(start_ms, end_ms, text, source)`，按时间排序合并。两条流任意一条为空系统仍可用；时间戳漂移靠邻接扩展兜底。
-
-**OCR 隔离子进程**：Paddle 的 oneDNN 线程模型会和主进程冲突并推高内存峰值，所以 OCR 放在独立子进程里跑、跑完回收；ASR 完成后先释放 Whisper 模型再启动 OCR，峰值内存因此能压到 4C8G 单机可承受的范围。
-
-**MCP Server**（`backend/vidlens/mcp_server.py`）：14 个工具 + 4 个资源模板，透传用户 JWT，所以 MCP 客户端只能访问该用户自己的视频。提供 Streamable HTTP 与 stdio 两种传输。
-
-**可替换的 AI Provider**：未配置真实模型密钥时自动退回确定性 Mock Provider，保证整条业务链路（上传 → 队列 → Worker → 报告）在无网络时也能跑通和测试。
-
----
-
-## 五、技术栈
-
-| 层 | 选型 | 理由 |
-|---|---|---|
-| API | FastAPI | 原生 async，适合大量 IO 等待（ASR 调用、向量检索） |
-| 存储 | MySQL + Alembic | 结构化数据需事务；迁移需版本化 |
-| 队列 | RocketMQ | 长耗时任务异步化，消费失败可重试 |
-| 锁 | Redis | 防重复提交，瞬时互斥 |
-| 向量 | Qdrant | 跨进程共享、payload 过滤、快照复用 |
-| ASR | faster-whisper (int8) | 本地推理，CPU 可跑，成本可控 |
-| OCR | PaddleOCR | 中文场景识别效果好，可 CPU 推理 |
-| Agent | LangGraph + 自研五段式 | 前者管动态路由，后者管可控可审计 |
-| 前端 | Vue 3 | — |
-
----
-
-## 六、本地运行
-
-需要 Docker Desktop 与 Node.js 22+。
-
-```bash
-cp backend/.env.example backend/.env      # 填入 AI_API_KEY；留空则走 Mock
-docker compose up --build                 # API :9090，Worker、MySQL、Redis、RocketMQ、Qdrant
-
-cd client && npm install && npm run dev   # 前端 :5173
-```
-
-首次启动会下载 ASR / OCR / BGE 模型（约 185MB）到独立 volume，后续复用。接口文档见 `http://localhost:9090/docs`。
-
-### Windows 一键启动（不使用 Docker）
-
-适合已经准备好本机 Python/Node 环境的情况：
-
-- 后端虚拟环境：`backend\.venv`（Python 3.11+）
-- 前端依赖：`client\node_modules`（Node 22+）
-- FFprobe：`cd .runtime\ffmpeg && npm install @ffprobe-installer/win32-x64`
-- AI 配置：设置 `VIDLENS_ENV_FILE` 指向包含 `LLM_BASE_URL / LLM_API_KEY / LLM_MODEL`（或 `AI_*`）的 env 文件；否则脚本会依次尝试 `C:\code\shoppilot\.env` 和 `backend\.env`
-
-双击 `start-vidlens.cmd` 会启动前后端并打开 `http://127.0.0.1:5174`。
+在项目根目录双击 `start-vidlens-docker.cmd`，或执行：
 
 ```powershell
-.\start-vidlens.cmd -Restart    # 重启前后端
-.\start-vidlens.cmd -NoBrowser  # 不自动打开浏览器
+.\start-vidlens-docker.cmd
 ```
 
-详细步骤见 [`docs/Windows本地运行说明.md`](docs/Windows本地运行说明.md)。
+脚本读取 `backend/.env`，构建并启动网页、API、Worker、MySQL、Redis、RocketMQ、Qdrant 和 MCP 服务。
 
-后端测试：
+- 网页：`http://localhost:5174`
+- API 文档：`http://localhost:9090/docs`
+- 停止：双击 `stop-vidlens-docker.cmd`，保留数据库、上传文件和模型缓存。
 
-```bash
-cd backend && pytest -q
+单条视频默认最多 15 分钟。第一次使用先选 1～3 分钟视频验证语音、画面文字和报告引用。
+
+## 分析流程
+
+```text
+视频 → FFmpeg ┬→ ASR 语音转写 ────┐
+              └→ 抽帧与 OCR 识别 ─┴→ 时间轴证据
+                                        ↓
+需求拆解 → 混合检索 → 证据核验 → 报告生成 → Critic 审查
 ```
 
----
+云端 ASR 与 OCR 分路并行，各自成功后保存；OCR 分路内按帧顺序调用。纯本地识别保持串行以控制内存。
 
-## 七、已知不足
+- **上传与任务**：分片上传、断点补传、内容去重；任务入库后交给 RocketMQ Worker，前端轮询进度。
+- **证据检索**：关键词与 BGE 向量检索，通过 RRF 融合，按问题需求分配证据，再扩展时间邻接片段。
+- **Agent**：Planner → Retriever → Verifier → Writer → Critic；补检索与报告修订共享一次修复额度。
+- **继续追问**：必要时结合历史补全问题，在当前视频内检索，校验引用与语义支持；指代不清时要求澄清。
+- **恢复与预算**：复用成功识别分路、OCR 帧和 Planner／初始 Retriever；同一任务重试累计调用预算。
+- **权限与 MCP**：JWT 用户隔离；MCP 通过用户令牌调用 API，提供视频检索、报告和引用校验工具。
 
-- Coverage-Aware 检索在留出集上未泛化（见第三节），当前默认策略仍需在更多真实视频上验证
-- 拒答泛化是主要短板：不可回答题在检索层几乎不拒答，拒答实际只发生在 Verifier 层
-- 单条长度上限 15 分钟（>15 分钟需先做分段处理），Worker 为串行处理
-- 评测集规模偏小（留出集 2 条视频、16 题），统计意义有限，结论需谨慎外推
+## 项目结构
+
+```text
+backend/
+  vidlens/       API、Worker、Agent、检索与识别实现
+  alembic/       数据库迁移
+  tests/         自动化测试
+  scripts/       评测、候选集生成与结果比较
+  evals/         评测标注与候选题集
+  vendor/        RocketMQ 构建依赖说明
+  .env.example   完整开发配置模板
+client/          Vue 3 网页与 Nginx 配置
+scripts/         Windows Docker 启停脚本
+skills/          基于 MCP 的课程笔记、会议复盘等使用流程
+deploy/         生产部署、备份与 API 配置片段
+docs/           当前 Agent、识别 API 与评测操作说明
+.github/         自动化检查
+```
+
+根目录的两个 `.cmd` 是双击入口，调用 `scripts/` 中对应脚本。开发配置统一使用 `backend/.env`；服务器使用 `deploy/.env.production`。本机环境、测试输出、模型缓存和上传数据不提交 Git。
+
+## 开发与验证
+
+后端独立开发和 MCP 运行见 [后端说明](backend/README.md)，网页独立开发见 [前端说明](client/README.md)。服务器部署见 [部署说明](deploy/README.md)。
+
+```powershell
+# 在项目根目录，用独立测试目录避免污染本地数据
+$env:VIDLENS_TEST_ROOT = Join-Path $PWD '.test-runtime/local'
+& backend/.venv/Scripts/python.exe -m pytest -q backend/tests
+
+# 前端构建
+npm --prefix client run build
+
+# 检查本地配置，不打印配置内容
+docker compose --env-file backend/.env -f docker-compose.yml -f docker-compose.local.yml config --quiet
+```
+
+本轮最终版的后端回归记录为 **339 passed、2 skipped**；跳过项需要真实 Qdrant 服务。前端构建及本地／生产 Compose 配置校验通过。核验不再根据解释关键词放行；主流程与追问审查均检查本轮未引用的候选反证。测试包含模拟 API 响应，不能据此声称真实识别准确率或速度提高。
+
+## 评测与边界
+
+`backend/evals/agent_baseline_v1.json` 包含 20 道候选题，全部待人工回查。没有有效评分规则的答案标记 `NOT_SCORED`；回答质量与拒答决策分别统计。标注确认和结果对比步骤见 [配置与评测指南](docs/Agent优化与API配置.md)。
+
+历史冻结集上 Coverage-Aware v2 的 MRR／Recall@8 为 `0.4651／0.5909`，低于 lexical 的 `0.5682／0.6818`；这些历史结果不代表本次 Agent 改造效果。开发集提升不能代替新视频上的验证。
+
+checkpoint 保存 Planner 和初始 Retriever，后续阶段重新执行；识别分路缓存不保证跨进程恰好一次付费调用。OCR 只识别抽到画面的文字，可能漏掉短暂显示的内容。当前没有生产吞吐量或完整的新旧版本真实 API 对照结论。
