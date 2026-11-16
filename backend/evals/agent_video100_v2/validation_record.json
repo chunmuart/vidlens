@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-16",
+  "backendTests": {
+    "passed": 378,
+    "skipped": 2,
+    "warnings": 4
+  },
+  "cachedOnlyFullReplay": {
+    "completed": true,
+    "newModelRequestsPermitted": false,
+    "datasetFingerprintStable": true
+  },
+  "archiveValidation": {
+    "sha256ManifestMatched": true,
+    "zipIntegrityPassed": true,
+    "configuredSecretsAbsent": true,
+    "rawVideoAbsent": true
+  },
+  "humanVideoVerified": 0
+}

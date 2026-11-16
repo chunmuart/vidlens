@@ -1,0 +1,39 @@
+{
+  "controlled": {
+    "cases": 300,
+    "sourceGroups": 50,
+    "bySplit": {
+      "development": 198,
+      "test": 102
+    },
+    "byType": {
+      "asr": 50,
+      "ocr": 50,
+      "multi_evidence": 50,
+      "constraint": 50,
+      "followup": 50,
+      "unanswerable": 50
+    },
+    "reviewedRealCases": 0
+  },
+  "realCandidates": {
+    "cases": 58,
+    "sourceGroups": 8,
+    "bySplit": {
+      "unassigned": 58
+    },
+    "byType": {
+      "direct_fact": 4,
+      "ocr": 7,
+      "paraphrase": 6,
+      "multi_evidence": 8,
+      "temporal_order": 1,
+      "asr_ocr": 2,
+      "unanswerable": 13,
+      "asr_fact_or_paraphrase": 12,
+      "temporal_reference": 5
+    },
+    "reviewedRealCases": 0
+  },
+  "note": "test是受控回归保留场景，不是真实视频未见集；CSV仅供审核，修改CSV不会自动改变JSON金标。"
+}

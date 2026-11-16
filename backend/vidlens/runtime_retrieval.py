@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import hashlib
 import os
 import threading
 from pathlib import Path
@@ -60,9 +61,26 @@ def _coverage_lexical(segments: list[dict[str, Any]]) -> SearchRetriever:
 
 
 def _embedding() -> Any:
+    global _embedding_backend, _embedding_key
+    provider = _env("EVIDENCE_EMBEDDING_PROVIDER", "local").lower()
+    if provider == "cloud":
+        from vidlens.cloud_embedding import CloudEmbeddingBackend
+        api_key = _env("EVIDENCE_EMBEDDING_API_KEY", os.getenv("DASHSCOPE_API_KEY", ""))
+        cloud_key = ("cloud", _env("EVIDENCE_EMBEDDING_BASE_URL", "https://dashscope.aliyuncs.com/compatible-mode/v1"),
+                     hashlib.sha256(api_key.encode()).hexdigest(), _env("EVIDENCE_EMBEDDING_MODEL", "text-embedding-v4"),
+                     int(_env("EVIDENCE_EMBEDDING_DIMENSIONS", "1024")),
+                     int(_env("EVIDENCE_EMBEDDING_CLOUD_BATCH_SIZE", "10")),
+                     float(_env("EVIDENCE_EMBEDDING_TIMEOUT_SECONDS", "60")))
+        with _lock:
+            if _embedding_backend is None or _embedding_key != cloud_key:
+                _embedding_backend = CloudEmbeddingBackend(cloud_key[1], api_key, cloud_key[3],
+                    dimensions=cloud_key[4], batch_size=cloud_key[5], timeout=cloud_key[6])
+                _embedding_key = cloud_key
+            return _embedding_backend
+    if provider != "local":
+        raise ValueError("Unknown EVIDENCE_EMBEDDING_PROVIDER")
     from vidlens.embedding_retrieval import LocalOnnxEmbeddingBackend
 
-    global _embedding_backend, _embedding_key
     model_dir = Path(_env("EVIDENCE_EMBEDDING_MODEL_DIR", "/data/models/retrieval/bge-small-zh-v1.5"))
     key = (
         str(model_dir.resolve()),
@@ -90,6 +108,11 @@ def _store() -> Any:
     url = _env("QDRANT_URL", "http://qdrant:6333").rstrip("/")
     api_key = os.getenv("QDRANT_API_KEY", "").strip() or None
     collection = _env("QDRANT_COLLECTION", "vidlens_evidence_v1")
+    if _env("EVIDENCE_EMBEDDING_PROVIDER", "local").lower() == "cloud":
+        identity = "|".join([_env("EVIDENCE_EMBEDDING_BASE_URL", "https://dashscope.aliyuncs.com/compatible-mode/v1"),
+                            _env("EVIDENCE_EMBEDDING_MODEL", "text-embedding-v4"),
+                            _env("EVIDENCE_EMBEDDING_DIMENSIONS", "1024")])
+        collection += "_cloud_" + hashlib.sha256(identity.encode()).hexdigest()[:12]
     timeout = _env_float("QDRANT_TIMEOUT_SECONDS", 10.0)
     key = (url, api_key, collection, timeout)
     with _lock:

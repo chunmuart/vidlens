@@ -1,0 +1,22 @@
+{
+  "protocolVersion": "real-bilibili-v1",
+  "selection": "公开相关视频中选择2至8分钟的讲解视频；便利抽样，非B站随机代表样本。选片先于出题与检索结果。",
+  "videos": [
+    {"bvid":"BV1i7PfzSEct","domain":"AI","split":"development"},
+    {"bvid":"BV1nHpq6AEcD","domain":"AI","split":"test"},
+    {"bvid":"BV1u3Nr6yE3F","domain":"AI","split":"development"},
+    {"bvid":"BV1WV67YbEcr","domain":"AI","split":"test"},
+    {"bvid":"BV1oh4y1G7fB","domain":"AI","split":"development"},
+    {"bvid":"BV1owiFBmEqk","domain":"AI","split":"test"},
+    {"bvid":"BV1EjuEzoEft","domain":"AI","split":"development"},
+    {"bvid":"BV1WN9MB8ErJ","domain":"science","split":"development"},
+    {"bvid":"BV1vsdoBZEki","domain":"science","split":"test"},
+    {"bvid":"BV1WMcvzZEUC","domain":"consumer","split":"development"},
+    {"bvid":"BV1oYnm6mEqV","domain":"consumer","split":"test"},
+    {"bvid":"BV1hf4y1q7sg","domain":"education","split":"development"},
+    {"bvid":"BV1Un1UBAER1","domain":"science","split":"development"},
+    {"bvid":"BV1ZG4y1g7xn","domain":"science","split":"test"},
+    {"bvid":"BV1EpWu6QE8K","domain":"education","split":"test"},
+    {"bvid":"BV1tsxF6jEND","domain":"consumer","split":"test"}
+  ]
+}

@@ -1,0 +1,3671 @@
+{
+  "schemaVersion": "2.0",
+  "datasetId": "vidlens-controlled-300-v1-test",
+  "kind": "SYNTHETIC_CONTROLLED",
+  "reviewStatus": "FIXTURE_DEFINED",
+  "topK": [
+    1,
+    3,
+    8
+  ],
+  "description": "50个虚构证据场景×6种问题；模板相关，不能解释为300个独立真实视频样本。",
+  "videos": [
+    {
+      "videoId": "fixture-034",
+      "sourceGroupId": "fixture-034",
+      "title": "虚构演示：数据备份",
+      "split": "test"
+    },
+    {
+      "videoId": "fixture-035",
+      "sourceGroupId": "fixture-035",
+      "title": "虚构演示：灰度发布",
+      "split": "test"
+    },
+    {
+      "videoId": "fixture-036",
+      "sourceGroupId": "fixture-036",
+      "title": "虚构演示：健康探针",
+      "split": "test"
+    },
+    {
+      "videoId": "fixture-037",
+      "sourceGroupId": "fixture-037",
+      "title": "虚构演示：延迟监控",
+      "split": "test"
+    },
+    {
+      "videoId": "fixture-038",
+      "sourceGroupId": "fixture-038",
+      "title": "虚构演示：报表导出",
+      "split": "test"
+    },
+    {
+      "videoId": "fixture-039",
+      "sourceGroupId": "fixture-039",
+      "title": "虚构演示：邮件通知",
+      "split": "test"
+    },
+    {
+      "videoId": "fixture-040",
+      "sourceGroupId": "fixture-040",
+      "title": "虚构演示：评论审核",
+      "split": "test"
+    },
+    {
+      "videoId": "fixture-041",
+      "sourceGroupId": "fixture-041",
+      "title": "虚构演示：课程签到",
+      "split": "test"
+    },
+    {
+      "videoId": "fixture-042",
+      "sourceGroupId": "fixture-042",
+      "title": "虚构演示：会议纪要",
+      "split": "test"
+    },
+    {
+      "videoId": "fixture-043",
+      "sourceGroupId": "fixture-043",
+      "title": "虚构演示：工单分派",
+      "split": "test"
+    },
+    {
+      "videoId": "fixture-044",
+      "sourceGroupId": "fixture-044",
+      "title": "虚构演示：实验分组",
+      "split": "test"
+    },
+    {
+      "videoId": "fixture-045",
+      "sourceGroupId": "fixture-045",
+      "title": "虚构演示：数据划分",
+      "split": "test"
+    },
+    {
+      "videoId": "fixture-046",
+      "sourceGroupId": "fixture-046",
+      "title": "虚构演示：样本审核",
+      "split": "test"
+    },
+    {
+      "videoId": "fixture-047",
+      "sourceGroupId": "fixture-047",
+      "title": "虚构演示：评测冻结",
+      "split": "test"
+    },
+    {
+      "videoId": "fixture-048",
+      "sourceGroupId": "fixture-048",
+      "title": "虚构演示：文档索引",
+      "split": "test"
+    },
+    {
+      "videoId": "fixture-049",
+      "sourceGroupId": "fixture-049",
+      "title": "虚构演示：权限校验",
+      "split": "test"
+    },
+    {
+      "videoId": "fixture-050",
+      "sourceGroupId": "fixture-050",
+      "title": "虚构演示：临时文件清理",
+      "split": "test"
+    }
+  ],
+  "cases": [
+    {
+      "caseId": "fixture-034-q1",
+      "videoId": "fixture-034",
+      "sourceGroupId": "fixture-034",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "asr",
+      "question": "数据备份的目的是什么？",
+      "answerable": true,
+      "goldAnswer": "恢复误删数据",
+      "requiredAnswerGroups": [
+        [
+          "恢复误删数据"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-034-e1",
+          "startMs": 400000,
+          "endMs": 404000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "数据备份的目的是什么？"
+      ]
+    },
+    {
+      "caseId": "fixture-034-q2",
+      "videoId": "fixture-034",
+      "sourceGroupId": "fixture-034",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "ocr",
+      "question": "数据备份配置面板上的备份间隔是多少？",
+      "answerable": true,
+      "goldAnswer": "6小时",
+      "requiredAnswerGroups": [
+        [
+          "6小时"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-034-e2",
+          "startMs": 240000,
+          "endMs": 244000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "数据备份配置面板上的备份间隔是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-034-q3",
+      "videoId": "fixture-034",
+      "sourceGroupId": "fixture-034",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "multi_evidence",
+      "question": "数据备份的目的和备份间隔分别是什么？",
+      "answerable": true,
+      "goldAnswer": "恢复误删数据；6小时",
+      "requiredAnswerGroups": [
+        [
+          "恢复误删数据"
+        ],
+        [
+          "6小时"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-034-e1",
+          "startMs": 400000,
+          "endMs": 404000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "fixture-034-e2",
+          "startMs": 240000,
+          "endMs": 244000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "数据备份的目的是什么？",
+        "数据备份的备份间隔是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-034-q4",
+      "videoId": "fixture-034",
+      "sourceGroupId": "fixture-034",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "constraint",
+      "question": "数据备份有什么限制？",
+      "answerable": true,
+      "goldAnswer": "恢复前必须校验备份完整性",
+      "requiredAnswerGroups": [
+        [
+          "恢复前必须校验备份完整性"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-034-e3",
+          "startMs": 840000,
+          "endMs": 844000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "数据备份有什么限制？"
+      ]
+    },
+    {
+      "caseId": "fixture-034-q5",
+      "videoId": "fixture-034",
+      "sourceGroupId": "fixture-034",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "followup",
+      "question": "它有什么限制？",
+      "answerable": true,
+      "goldAnswer": "恢复前必须校验备份完整性",
+      "requiredAnswerGroups": [
+        [
+          "恢复前必须校验备份完整性"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-034-e3",
+          "startMs": 840000,
+          "endMs": 844000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "数据备份有什么限制？"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "请介绍数据备份。"
+        },
+        {
+          "role": "assistant",
+          "content": "数据备份的目的是恢复误删数据。"
+        }
+      ],
+      "standaloneQuestion": "数据备份有什么限制？"
+    },
+    {
+      "caseId": "fixture-034-q6",
+      "videoId": "fixture-034",
+      "sourceGroupId": "fixture-034",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "unanswerable",
+      "question": "数据备份的负责人是谁？",
+      "answerable": false,
+      "goldAnswer": "材料未提供负责人，无法确定。",
+      "requiredAnswerGroups": [
+        [
+          "未提供",
+          "没有提供",
+          "无法确定",
+          "证据不足"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [],
+      "goldPlan": [
+        "数据备份的负责人是谁？"
+      ]
+    },
+    {
+      "caseId": "fixture-035-q1",
+      "videoId": "fixture-035",
+      "sourceGroupId": "fixture-035",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "asr",
+      "question": "灰度发布的目的是什么？",
+      "answerable": true,
+      "goldAnswer": "逐步验证新版本",
+      "requiredAnswerGroups": [
+        [
+          "逐步验证新版本"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-035-e1",
+          "startMs": 640000,
+          "endMs": 644000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "灰度发布的目的是什么？"
+      ]
+    },
+    {
+      "caseId": "fixture-035-q2",
+      "videoId": "fixture-035",
+      "sourceGroupId": "fixture-035",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "ocr",
+      "question": "灰度发布配置面板上的首批用户比例是多少？",
+      "answerable": true,
+      "goldAnswer": "5%",
+      "requiredAnswerGroups": [
+        [
+          "5%"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-035-e2",
+          "startMs": 520000,
+          "endMs": 524000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "灰度发布配置面板上的首批用户比例是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-035-q3",
+      "videoId": "fixture-035",
+      "sourceGroupId": "fixture-035",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "multi_evidence",
+      "question": "灰度发布的目的和首批用户比例分别是什么？",
+      "answerable": true,
+      "goldAnswer": "逐步验证新版本；5%",
+      "requiredAnswerGroups": [
+        [
+          "逐步验证新版本"
+        ],
+        [
+          "5%"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-035-e1",
+          "startMs": 640000,
+          "endMs": 644000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "fixture-035-e2",
+          "startMs": 520000,
+          "endMs": 524000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "灰度发布的目的是什么？",
+        "灰度发布的首批用户比例是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-035-q4",
+      "videoId": "fixture-035",
+      "sourceGroupId": "fixture-035",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "constraint",
+      "question": "灰度发布有什么限制？",
+      "answerable": true,
+      "goldAnswer": "异常率超阈值立即回滚",
+      "requiredAnswerGroups": [
+        [
+          "异常率超阈值立即回滚"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-035-e3",
+          "startMs": 720000,
+          "endMs": 724000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "灰度发布有什么限制？"
+      ]
+    },
+    {
+      "caseId": "fixture-035-q5",
+      "videoId": "fixture-035",
+      "sourceGroupId": "fixture-035",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "followup",
+      "question": "它有什么限制？",
+      "answerable": true,
+      "goldAnswer": "异常率超阈值立即回滚",
+      "requiredAnswerGroups": [
+        [
+          "异常率超阈值立即回滚"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-035-e3",
+          "startMs": 720000,
+          "endMs": 724000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "灰度发布有什么限制？"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "请介绍灰度发布。"
+        },
+        {
+          "role": "assistant",
+          "content": "灰度发布的目的是逐步验证新版本。"
+        }
+      ],
+      "standaloneQuestion": "灰度发布有什么限制？"
+    },
+    {
+      "caseId": "fixture-035-q6",
+      "videoId": "fixture-035",
+      "sourceGroupId": "fixture-035",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "unanswerable",
+      "question": "灰度发布的负责人是谁？",
+      "answerable": false,
+      "goldAnswer": "材料未提供负责人，无法确定。",
+      "requiredAnswerGroups": [
+        [
+          "未提供",
+          "没有提供",
+          "无法确定",
+          "证据不足"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [],
+      "goldPlan": [
+        "灰度发布的负责人是谁？"
+      ]
+    },
+    {
+      "caseId": "fixture-036-q1",
+      "videoId": "fixture-036",
+      "sourceGroupId": "fixture-036",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "asr",
+      "question": "健康探针的目的是什么？",
+      "answerable": true,
+      "goldAnswer": "发现服务不可用",
+      "requiredAnswerGroups": [
+        [
+          "发现服务不可用"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-036-e1",
+          "startMs": 120000,
+          "endMs": 124000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "健康探针的目的是什么？"
+      ]
+    },
+    {
+      "caseId": "fixture-036-q2",
+      "videoId": "fixture-036",
+      "sourceGroupId": "fixture-036",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "ocr",
+      "question": "健康探针配置面板上的探测间隔是多少？",
+      "answerable": true,
+      "goldAnswer": "15秒",
+      "requiredAnswerGroups": [
+        [
+          "15秒"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-036-e2",
+          "startMs": 800000,
+          "endMs": 804000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "健康探针配置面板上的探测间隔是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-036-q3",
+      "videoId": "fixture-036",
+      "sourceGroupId": "fixture-036",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "multi_evidence",
+      "question": "健康探针的目的和探测间隔分别是什么？",
+      "answerable": true,
+      "goldAnswer": "发现服务不可用；15秒",
+      "requiredAnswerGroups": [
+        [
+          "发现服务不可用"
+        ],
+        [
+          "15秒"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-036-e1",
+          "startMs": 120000,
+          "endMs": 124000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "fixture-036-e2",
+          "startMs": 800000,
+          "endMs": 804000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "健康探针的目的是什么？",
+        "健康探针的探测间隔是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-036-q4",
+      "videoId": "fixture-036",
+      "sourceGroupId": "fixture-036",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "constraint",
+      "question": "健康探针有什么限制？",
+      "answerable": true,
+      "goldAnswer": "失败不能直接删除业务数据",
+      "requiredAnswerGroups": [
+        [
+          "失败不能直接删除业务数据"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-036-e3",
+          "startMs": 560000,
+          "endMs": 564000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "健康探针有什么限制？"
+      ]
+    },
+    {
+      "caseId": "fixture-036-q5",
+      "videoId": "fixture-036",
+      "sourceGroupId": "fixture-036",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "followup",
+      "question": "它有什么限制？",
+      "answerable": true,
+      "goldAnswer": "失败不能直接删除业务数据",
+      "requiredAnswerGroups": [
+        [
+          "失败不能直接删除业务数据"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-036-e3",
+          "startMs": 560000,
+          "endMs": 564000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "健康探针有什么限制？"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "请介绍健康探针。"
+        },
+        {
+          "role": "assistant",
+          "content": "健康探针的目的是发现服务不可用。"
+        }
+      ],
+      "standaloneQuestion": "健康探针有什么限制？"
+    },
+    {
+      "caseId": "fixture-036-q6",
+      "videoId": "fixture-036",
+      "sourceGroupId": "fixture-036",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "unanswerable",
+      "question": "健康探针的负责人是谁？",
+      "answerable": false,
+      "goldAnswer": "材料未提供负责人，无法确定。",
+      "requiredAnswerGroups": [
+        [
+          "未提供",
+          "没有提供",
+          "无法确定",
+          "证据不足"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [],
+      "goldPlan": [
+        "健康探针的负责人是谁？"
+      ]
+    },
+    {
+      "caseId": "fixture-037-q1",
+      "videoId": "fixture-037",
+      "sourceGroupId": "fixture-037",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "asr",
+      "question": "延迟监控的目的是什么？",
+      "answerable": true,
+      "goldAnswer": "观察慢请求",
+      "requiredAnswerGroups": [
+        [
+          "观察慢请求"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-037-e1",
+          "startMs": 680000,
+          "endMs": 684000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "延迟监控的目的是什么？"
+      ]
+    },
+    {
+      "caseId": "fixture-037-q2",
+      "videoId": "fixture-037",
+      "sourceGroupId": "fixture-037",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "ocr",
+      "question": "延迟监控配置面板上的告警阈值是多少？",
+      "answerable": true,
+      "goldAnswer": "900毫秒",
+      "requiredAnswerGroups": [
+        [
+          "900毫秒"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-037-e2",
+          "startMs": 280000,
+          "endMs": 284000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "延迟监控配置面板上的告警阈值是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-037-q3",
+      "videoId": "fixture-037",
+      "sourceGroupId": "fixture-037",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "multi_evidence",
+      "question": "延迟监控的目的和告警阈值分别是什么？",
+      "answerable": true,
+      "goldAnswer": "观察慢请求；900毫秒",
+      "requiredAnswerGroups": [
+        [
+          "观察慢请求"
+        ],
+        [
+          "900毫秒"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-037-e1",
+          "startMs": 680000,
+          "endMs": 684000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "fixture-037-e2",
+          "startMs": 280000,
+          "endMs": 284000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "延迟监控的目的是什么？",
+        "延迟监控的告警阈值是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-037-q4",
+      "videoId": "fixture-037",
+      "sourceGroupId": "fixture-037",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "constraint",
+      "question": "延迟监控有什么限制？",
+      "answerable": true,
+      "goldAnswer": "只统计完成的请求",
+      "requiredAnswerGroups": [
+        [
+          "只统计完成的请求"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-037-e3",
+          "startMs": 160000,
+          "endMs": 164000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "延迟监控有什么限制？"
+      ]
+    },
+    {
+      "caseId": "fixture-037-q5",
+      "videoId": "fixture-037",
+      "sourceGroupId": "fixture-037",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "followup",
+      "question": "它有什么限制？",
+      "answerable": true,
+      "goldAnswer": "只统计完成的请求",
+      "requiredAnswerGroups": [
+        [
+          "只统计完成的请求"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-037-e3",
+          "startMs": 160000,
+          "endMs": 164000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "延迟监控有什么限制？"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "请介绍延迟监控。"
+        },
+        {
+          "role": "assistant",
+          "content": "延迟监控的目的是观察慢请求。"
+        }
+      ],
+      "standaloneQuestion": "延迟监控有什么限制？"
+    },
+    {
+      "caseId": "fixture-037-q6",
+      "videoId": "fixture-037",
+      "sourceGroupId": "fixture-037",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "unanswerable",
+      "question": "延迟监控的负责人是谁？",
+      "answerable": false,
+      "goldAnswer": "材料未提供负责人，无法确定。",
+      "requiredAnswerGroups": [
+        [
+          "未提供",
+          "没有提供",
+          "无法确定",
+          "证据不足"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [],
+      "goldPlan": [
+        "延迟监控的负责人是谁？"
+      ]
+    },
+    {
+      "caseId": "fixture-038-q1",
+      "videoId": "fixture-038",
+      "sourceGroupId": "fixture-038",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "asr",
+      "question": "报表导出的目的是什么？",
+      "answerable": true,
+      "goldAnswer": "生成离线统计文件",
+      "requiredAnswerGroups": [
+        [
+          "生成离线统计文件"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-038-e1",
+          "startMs": 320000,
+          "endMs": 324000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "报表导出的目的是什么？"
+      ]
+    },
+    {
+      "caseId": "fixture-038-q2",
+      "videoId": "fixture-038",
+      "sourceGroupId": "fixture-038",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "ocr",
+      "question": "报表导出配置面板上的单次导出上限是多少？",
+      "answerable": true,
+      "goldAnswer": "5000行",
+      "requiredAnswerGroups": [
+        [
+          "5000行"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-038-e2",
+          "startMs": 600000,
+          "endMs": 604000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "报表导出配置面板上的单次导出上限是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-038-q3",
+      "videoId": "fixture-038",
+      "sourceGroupId": "fixture-038",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "multi_evidence",
+      "question": "报表导出的目的和单次导出上限分别是什么？",
+      "answerable": true,
+      "goldAnswer": "生成离线统计文件；5000行",
+      "requiredAnswerGroups": [
+        [
+          "生成离线统计文件"
+        ],
+        [
+          "5000行"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-038-e1",
+          "startMs": 320000,
+          "endMs": 324000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "fixture-038-e2",
+          "startMs": 600000,
+          "endMs": 604000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "报表导出的目的是什么？",
+        "报表导出的单次导出上限是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-038-q4",
+      "videoId": "fixture-038",
+      "sourceGroupId": "fixture-038",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "constraint",
+      "question": "报表导出有什么限制？",
+      "answerable": true,
+      "goldAnswer": "导出必须检查数据权限",
+      "requiredAnswerGroups": [
+        [
+          "导出必须检查数据权限"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-038-e3",
+          "startMs": 800000,
+          "endMs": 804000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "报表导出有什么限制？"
+      ]
+    },
+    {
+      "caseId": "fixture-038-q5",
+      "videoId": "fixture-038",
+      "sourceGroupId": "fixture-038",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "followup",
+      "question": "它有什么限制？",
+      "answerable": true,
+      "goldAnswer": "导出必须检查数据权限",
+      "requiredAnswerGroups": [
+        [
+          "导出必须检查数据权限"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-038-e3",
+          "startMs": 800000,
+          "endMs": 804000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "报表导出有什么限制？"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "请介绍报表导出。"
+        },
+        {
+          "role": "assistant",
+          "content": "报表导出的目的是生成离线统计文件。"
+        }
+      ],
+      "standaloneQuestion": "报表导出有什么限制？"
+    },
+    {
+      "caseId": "fixture-038-q6",
+      "videoId": "fixture-038",
+      "sourceGroupId": "fixture-038",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "unanswerable",
+      "question": "报表导出的负责人是谁？",
+      "answerable": false,
+      "goldAnswer": "材料未提供负责人，无法确定。",
+      "requiredAnswerGroups": [
+        [
+          "未提供",
+          "没有提供",
+          "无法确定",
+          "证据不足"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [],
+      "goldPlan": [
+        "报表导出的负责人是谁？"
+      ]
+    },
+    {
+      "caseId": "fixture-039-q1",
+      "videoId": "fixture-039",
+      "sourceGroupId": "fixture-039",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "asr",
+      "question": "邮件通知的目的是什么？",
+      "answerable": true,
+      "goldAnswer": "提醒任务完成",
+      "requiredAnswerGroups": [
+        [
+          "提醒任务完成"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-039-e1",
+          "startMs": 280000,
+          "endMs": 284000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "邮件通知的目的是什么？"
+      ]
+    },
+    {
+      "caseId": "fixture-039-q2",
+      "videoId": "fixture-039",
+      "sourceGroupId": "fixture-039",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "ocr",
+      "question": "邮件通知配置面板上的发送间隔下限是多少？",
+      "answerable": true,
+      "goldAnswer": "40秒",
+      "requiredAnswerGroups": [
+        [
+          "40秒"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-039-e2",
+          "startMs": 800000,
+          "endMs": 804000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "邮件通知配置面板上的发送间隔下限是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-039-q3",
+      "videoId": "fixture-039",
+      "sourceGroupId": "fixture-039",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "multi_evidence",
+      "question": "邮件通知的目的和发送间隔下限分别是什么？",
+      "answerable": true,
+      "goldAnswer": "提醒任务完成；40秒",
+      "requiredAnswerGroups": [
+        [
+          "提醒任务完成"
+        ],
+        [
+          "40秒"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-039-e1",
+          "startMs": 280000,
+          "endMs": 284000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "fixture-039-e2",
+          "startMs": 800000,
+          "endMs": 804000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "邮件通知的目的是什么？",
+        "邮件通知的发送间隔下限是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-039-q4",
+      "videoId": "fixture-039",
+      "sourceGroupId": "fixture-039",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "constraint",
+      "question": "邮件通知有什么限制？",
+      "answerable": true,
+      "goldAnswer": "用户退订后停止发送",
+      "requiredAnswerGroups": [
+        [
+          "用户退订后停止发送"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-039-e3",
+          "startMs": 520000,
+          "endMs": 524000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "邮件通知有什么限制？"
+      ]
+    },
+    {
+      "caseId": "fixture-039-q5",
+      "videoId": "fixture-039",
+      "sourceGroupId": "fixture-039",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "followup",
+      "question": "它有什么限制？",
+      "answerable": true,
+      "goldAnswer": "用户退订后停止发送",
+      "requiredAnswerGroups": [
+        [
+          "用户退订后停止发送"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-039-e3",
+          "startMs": 520000,
+          "endMs": 524000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "邮件通知有什么限制？"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "请介绍邮件通知。"
+        },
+        {
+          "role": "assistant",
+          "content": "邮件通知的目的是提醒任务完成。"
+        }
+      ],
+      "standaloneQuestion": "邮件通知有什么限制？"
+    },
+    {
+      "caseId": "fixture-039-q6",
+      "videoId": "fixture-039",
+      "sourceGroupId": "fixture-039",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "unanswerable",
+      "question": "邮件通知的负责人是谁？",
+      "answerable": false,
+      "goldAnswer": "材料未提供负责人，无法确定。",
+      "requiredAnswerGroups": [
+        [
+          "未提供",
+          "没有提供",
+          "无法确定",
+          "证据不足"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [],
+      "goldPlan": [
+        "邮件通知的负责人是谁？"
+      ]
+    },
+    {
+      "caseId": "fixture-040-q1",
+      "videoId": "fixture-040",
+      "sourceGroupId": "fixture-040",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "asr",
+      "question": "评论审核的目的是什么？",
+      "answerable": true,
+      "goldAnswer": "过滤违规内容",
+      "requiredAnswerGroups": [
+        [
+          "过滤违规内容"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-040-e1",
+          "startMs": 200000,
+          "endMs": 204000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "评论审核的目的是什么？"
+      ]
+    },
+    {
+      "caseId": "fixture-040-q2",
+      "videoId": "fixture-040",
+      "sourceGroupId": "fixture-040",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "ocr",
+      "question": "评论审核配置面板上的待审核批次大小是多少？",
+      "answerable": true,
+      "goldAnswer": "30条",
+      "requiredAnswerGroups": [
+        [
+          "30条"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-040-e2",
+          "startMs": 120000,
+          "endMs": 124000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "评论审核配置面板上的待审核批次大小是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-040-q3",
+      "videoId": "fixture-040",
+      "sourceGroupId": "fixture-040",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "multi_evidence",
+      "question": "评论审核的目的和待审核批次大小分别是什么？",
+      "answerable": true,
+      "goldAnswer": "过滤违规内容；30条",
+      "requiredAnswerGroups": [
+        [
+          "过滤违规内容"
+        ],
+        [
+          "30条"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-040-e1",
+          "startMs": 200000,
+          "endMs": 204000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "fixture-040-e2",
+          "startMs": 120000,
+          "endMs": 124000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "评论审核的目的是什么？",
+        "评论审核的待审核批次大小是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-040-q4",
+      "videoId": "fixture-040",
+      "sourceGroupId": "fixture-040",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "constraint",
+      "question": "评论审核有什么限制？",
+      "answerable": true,
+      "goldAnswer": "申诉内容必须交给人工复核",
+      "requiredAnswerGroups": [
+        [
+          "申诉内容必须交给人工复核"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-040-e3",
+          "startMs": 40000,
+          "endMs": 44000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "评论审核有什么限制？"
+      ]
+    },
+    {
+      "caseId": "fixture-040-q5",
+      "videoId": "fixture-040",
+      "sourceGroupId": "fixture-040",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "followup",
+      "question": "它有什么限制？",
+      "answerable": true,
+      "goldAnswer": "申诉内容必须交给人工复核",
+      "requiredAnswerGroups": [
+        [
+          "申诉内容必须交给人工复核"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-040-e3",
+          "startMs": 40000,
+          "endMs": 44000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "评论审核有什么限制？"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "请介绍评论审核。"
+        },
+        {
+          "role": "assistant",
+          "content": "评论审核的目的是过滤违规内容。"
+        }
+      ],
+      "standaloneQuestion": "评论审核有什么限制？"
+    },
+    {
+      "caseId": "fixture-040-q6",
+      "videoId": "fixture-040",
+      "sourceGroupId": "fixture-040",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "unanswerable",
+      "question": "评论审核的负责人是谁？",
+      "answerable": false,
+      "goldAnswer": "材料未提供负责人，无法确定。",
+      "requiredAnswerGroups": [
+        [
+          "未提供",
+          "没有提供",
+          "无法确定",
+          "证据不足"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [],
+      "goldPlan": [
+        "评论审核的负责人是谁？"
+      ]
+    },
+    {
+      "caseId": "fixture-041-q1",
+      "videoId": "fixture-041",
+      "sourceGroupId": "fixture-041",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "asr",
+      "question": "课程签到的目的是什么？",
+      "answerable": true,
+      "goldAnswer": "记录到课情况",
+      "requiredAnswerGroups": [
+        [
+          "记录到课情况"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-041-e1",
+          "startMs": 40000,
+          "endMs": 44000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "课程签到的目的是什么？"
+      ]
+    },
+    {
+      "caseId": "fixture-041-q2",
+      "videoId": "fixture-041",
+      "sourceGroupId": "fixture-041",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "ocr",
+      "question": "课程签到配置面板上的迟到宽限时间是多少？",
+      "answerable": true,
+      "goldAnswer": "8分钟",
+      "requiredAnswerGroups": [
+        [
+          "8分钟"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-041-e2",
+          "startMs": 240000,
+          "endMs": 244000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "课程签到配置面板上的迟到宽限时间是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-041-q3",
+      "videoId": "fixture-041",
+      "sourceGroupId": "fixture-041",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "multi_evidence",
+      "question": "课程签到的目的和迟到宽限时间分别是什么？",
+      "answerable": true,
+      "goldAnswer": "记录到课情况；8分钟",
+      "requiredAnswerGroups": [
+        [
+          "记录到课情况"
+        ],
+        [
+          "8分钟"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-041-e1",
+          "startMs": 40000,
+          "endMs": 44000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "fixture-041-e2",
+          "startMs": 240000,
+          "endMs": 244000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "课程签到的目的是什么？",
+        "课程签到的迟到宽限时间是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-041-q4",
+      "videoId": "fixture-041",
+      "sourceGroupId": "fixture-041",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "constraint",
+      "question": "课程签到有什么限制？",
+      "answerable": true,
+      "goldAnswer": "代签不计为有效签到",
+      "requiredAnswerGroups": [
+        [
+          "代签不计为有效签到"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-041-e3",
+          "startMs": 120000,
+          "endMs": 124000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "课程签到有什么限制？"
+      ]
+    },
+    {
+      "caseId": "fixture-041-q5",
+      "videoId": "fixture-041",
+      "sourceGroupId": "fixture-041",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "followup",
+      "question": "它有什么限制？",
+      "answerable": true,
+      "goldAnswer": "代签不计为有效签到",
+      "requiredAnswerGroups": [
+        [
+          "代签不计为有效签到"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-041-e3",
+          "startMs": 120000,
+          "endMs": 124000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "课程签到有什么限制？"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "请介绍课程签到。"
+        },
+        {
+          "role": "assistant",
+          "content": "课程签到的目的是记录到课情况。"
+        }
+      ],
+      "standaloneQuestion": "课程签到有什么限制？"
+    },
+    {
+      "caseId": "fixture-041-q6",
+      "videoId": "fixture-041",
+      "sourceGroupId": "fixture-041",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "unanswerable",
+      "question": "课程签到的负责人是谁？",
+      "answerable": false,
+      "goldAnswer": "材料未提供负责人，无法确定。",
+      "requiredAnswerGroups": [
+        [
+          "未提供",
+          "没有提供",
+          "无法确定",
+          "证据不足"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [],
+      "goldPlan": [
+        "课程签到的负责人是谁？"
+      ]
+    },
+    {
+      "caseId": "fixture-042-q1",
+      "videoId": "fixture-042",
+      "sourceGroupId": "fixture-042",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "asr",
+      "question": "会议纪要的目的是什么？",
+      "answerable": true,
+      "goldAnswer": "汇总会议决定",
+      "requiredAnswerGroups": [
+        [
+          "汇总会议决定"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-042-e1",
+          "startMs": 840000,
+          "endMs": 844000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "会议纪要的目的是什么？"
+      ]
+    },
+    {
+      "caseId": "fixture-042-q2",
+      "videoId": "fixture-042",
+      "sourceGroupId": "fixture-042",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "ocr",
+      "question": "会议纪要配置面板上的行动项数量上限是多少？",
+      "answerable": true,
+      "goldAnswer": "10条",
+      "requiredAnswerGroups": [
+        [
+          "10条"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-042-e2",
+          "startMs": 720000,
+          "endMs": 724000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "会议纪要配置面板上的行动项数量上限是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-042-q3",
+      "videoId": "fixture-042",
+      "sourceGroupId": "fixture-042",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "multi_evidence",
+      "question": "会议纪要的目的和行动项数量上限分别是什么？",
+      "answerable": true,
+      "goldAnswer": "汇总会议决定；10条",
+      "requiredAnswerGroups": [
+        [
+          "汇总会议决定"
+        ],
+        [
+          "10条"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-042-e1",
+          "startMs": 840000,
+          "endMs": 844000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "fixture-042-e2",
+          "startMs": 720000,
+          "endMs": 724000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "会议纪要的目的是什么？",
+        "会议纪要的行动项数量上限是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-042-q4",
+      "videoId": "fixture-042",
+      "sourceGroupId": "fixture-042",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "constraint",
+      "question": "会议纪要有什么限制？",
+      "answerable": true,
+      "goldAnswer": "未明确负责人时标记待确认",
+      "requiredAnswerGroups": [
+        [
+          "未明确负责人时标记待确认"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-042-e3",
+          "startMs": 600000,
+          "endMs": 604000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "会议纪要有什么限制？"
+      ]
+    },
+    {
+      "caseId": "fixture-042-q5",
+      "videoId": "fixture-042",
+      "sourceGroupId": "fixture-042",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "followup",
+      "question": "它有什么限制？",
+      "answerable": true,
+      "goldAnswer": "未明确负责人时标记待确认",
+      "requiredAnswerGroups": [
+        [
+          "未明确负责人时标记待确认"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-042-e3",
+          "startMs": 600000,
+          "endMs": 604000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "会议纪要有什么限制？"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "请介绍会议纪要。"
+        },
+        {
+          "role": "assistant",
+          "content": "会议纪要的目的是汇总会议决定。"
+        }
+      ],
+      "standaloneQuestion": "会议纪要有什么限制？"
+    },
+    {
+      "caseId": "fixture-042-q6",
+      "videoId": "fixture-042",
+      "sourceGroupId": "fixture-042",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "unanswerable",
+      "question": "会议纪要的负责人是谁？",
+      "answerable": false,
+      "goldAnswer": "材料未提供负责人，无法确定。",
+      "requiredAnswerGroups": [
+        [
+          "未提供",
+          "没有提供",
+          "无法确定",
+          "证据不足"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [],
+      "goldPlan": [
+        "会议纪要的负责人是谁？"
+      ]
+    },
+    {
+      "caseId": "fixture-043-q1",
+      "videoId": "fixture-043",
+      "sourceGroupId": "fixture-043",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "asr",
+      "question": "工单分派的目的是什么？",
+      "answerable": true,
+      "goldAnswer": "把问题交给负责人",
+      "requiredAnswerGroups": [
+        [
+          "把问题交给负责人"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-043-e1",
+          "startMs": 40000,
+          "endMs": 44000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "工单分派的目的是什么？"
+      ]
+    },
+    {
+      "caseId": "fixture-043-q2",
+      "videoId": "fixture-043",
+      "sourceGroupId": "fixture-043",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "ocr",
+      "question": "工单分派配置面板上的首次响应时限是多少？",
+      "answerable": true,
+      "goldAnswer": "2小时",
+      "requiredAnswerGroups": [
+        [
+          "2小时"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-043-e2",
+          "startMs": 80000,
+          "endMs": 84000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "工单分派配置面板上的首次响应时限是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-043-q3",
+      "videoId": "fixture-043",
+      "sourceGroupId": "fixture-043",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "multi_evidence",
+      "question": "工单分派的目的和首次响应时限分别是什么？",
+      "answerable": true,
+      "goldAnswer": "把问题交给负责人；2小时",
+      "requiredAnswerGroups": [
+        [
+          "把问题交给负责人"
+        ],
+        [
+          "2小时"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-043-e1",
+          "startMs": 40000,
+          "endMs": 44000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "fixture-043-e2",
+          "startMs": 80000,
+          "endMs": 84000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "工单分派的目的是什么？",
+        "工单分派的首次响应时限是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-043-q4",
+      "videoId": "fixture-043",
+      "sourceGroupId": "fixture-043",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "constraint",
+      "question": "工单分派有什么限制？",
+      "answerable": true,
+      "goldAnswer": "未解决不能自动关闭",
+      "requiredAnswerGroups": [
+        [
+          "未解决不能自动关闭"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-043-e3",
+          "startMs": 800000,
+          "endMs": 804000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "工单分派有什么限制？"
+      ]
+    },
+    {
+      "caseId": "fixture-043-q5",
+      "videoId": "fixture-043",
+      "sourceGroupId": "fixture-043",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "followup",
+      "question": "它有什么限制？",
+      "answerable": true,
+      "goldAnswer": "未解决不能自动关闭",
+      "requiredAnswerGroups": [
+        [
+          "未解决不能自动关闭"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-043-e3",
+          "startMs": 800000,
+          "endMs": 804000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "工单分派有什么限制？"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "请介绍工单分派。"
+        },
+        {
+          "role": "assistant",
+          "content": "工单分派的目的是把问题交给负责人。"
+        }
+      ],
+      "standaloneQuestion": "工单分派有什么限制？"
+    },
+    {
+      "caseId": "fixture-043-q6",
+      "videoId": "fixture-043",
+      "sourceGroupId": "fixture-043",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "unanswerable",
+      "question": "工单分派的负责人是谁？",
+      "answerable": false,
+      "goldAnswer": "材料未提供负责人，无法确定。",
+      "requiredAnswerGroups": [
+        [
+          "未提供",
+          "没有提供",
+          "无法确定",
+          "证据不足"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [],
+      "goldPlan": [
+        "工单分派的负责人是谁？"
+      ]
+    },
+    {
+      "caseId": "fixture-044-q1",
+      "videoId": "fixture-044",
+      "sourceGroupId": "fixture-044",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "asr",
+      "question": "实验分组的目的是什么？",
+      "answerable": true,
+      "goldAnswer": "比较两种检索策略",
+      "requiredAnswerGroups": [
+        [
+          "比较两种检索策略"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-044-e1",
+          "startMs": 760000,
+          "endMs": 764000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "实验分组的目的是什么？"
+      ]
+    },
+    {
+      "caseId": "fixture-044-q2",
+      "videoId": "fixture-044",
+      "sourceGroupId": "fixture-044",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "ocr",
+      "question": "实验分组配置面板上的实验组比例是多少？",
+      "answerable": true,
+      "goldAnswer": "50%",
+      "requiredAnswerGroups": [
+        [
+          "50%"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-044-e2",
+          "startMs": 240000,
+          "endMs": 244000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "实验分组配置面板上的实验组比例是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-044-q3",
+      "videoId": "fixture-044",
+      "sourceGroupId": "fixture-044",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "multi_evidence",
+      "question": "实验分组的目的和实验组比例分别是什么？",
+      "answerable": true,
+      "goldAnswer": "比较两种检索策略；50%",
+      "requiredAnswerGroups": [
+        [
+          "比较两种检索策略"
+        ],
+        [
+          "50%"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-044-e1",
+          "startMs": 760000,
+          "endMs": 764000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "fixture-044-e2",
+          "startMs": 240000,
+          "endMs": 244000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "实验分组的目的是什么？",
+        "实验分组的实验组比例是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-044-q4",
+      "videoId": "fixture-044",
+      "sourceGroupId": "fixture-044",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "constraint",
+      "question": "实验分组有什么限制？",
+      "answerable": true,
+      "goldAnswer": "同一用户固定分组",
+      "requiredAnswerGroups": [
+        [
+          "同一用户固定分组"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-044-e3",
+          "startMs": 840000,
+          "endMs": 844000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "实验分组有什么限制？"
+      ]
+    },
+    {
+      "caseId": "fixture-044-q5",
+      "videoId": "fixture-044",
+      "sourceGroupId": "fixture-044",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "followup",
+      "question": "它有什么限制？",
+      "answerable": true,
+      "goldAnswer": "同一用户固定分组",
+      "requiredAnswerGroups": [
+        [
+          "同一用户固定分组"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-044-e3",
+          "startMs": 840000,
+          "endMs": 844000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "实验分组有什么限制？"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "请介绍实验分组。"
+        },
+        {
+          "role": "assistant",
+          "content": "实验分组的目的是比较两种检索策略。"
+        }
+      ],
+      "standaloneQuestion": "实验分组有什么限制？"
+    },
+    {
+      "caseId": "fixture-044-q6",
+      "videoId": "fixture-044",
+      "sourceGroupId": "fixture-044",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "unanswerable",
+      "question": "实验分组的负责人是谁？",
+      "answerable": false,
+      "goldAnswer": "材料未提供负责人，无法确定。",
+      "requiredAnswerGroups": [
+        [
+          "未提供",
+          "没有提供",
+          "无法确定",
+          "证据不足"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [],
+      "goldPlan": [
+        "实验分组的负责人是谁？"
+      ]
+    },
+    {
+      "caseId": "fixture-045-q1",
+      "videoId": "fixture-045",
+      "sourceGroupId": "fixture-045",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "asr",
+      "question": "数据划分的目的是什么？",
+      "answerable": true,
+      "goldAnswer": "隔离开发与最终测试",
+      "requiredAnswerGroups": [
+        [
+          "隔离开发与最终测试"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-045-e1",
+          "startMs": 840000,
+          "endMs": 844000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "数据划分的目的是什么？"
+      ]
+    },
+    {
+      "caseId": "fixture-045-q2",
+      "videoId": "fixture-045",
+      "sourceGroupId": "fixture-045",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "ocr",
+      "question": "数据划分配置面板上的测试视频数量是多少？",
+      "answerable": true,
+      "goldAnswer": "17个",
+      "requiredAnswerGroups": [
+        [
+          "17个"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-045-e2",
+          "startMs": 80000,
+          "endMs": 84000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "数据划分配置面板上的测试视频数量是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-045-q3",
+      "videoId": "fixture-045",
+      "sourceGroupId": "fixture-045",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "multi_evidence",
+      "question": "数据划分的目的和测试视频数量分别是什么？",
+      "answerable": true,
+      "goldAnswer": "隔离开发与最终测试；17个",
+      "requiredAnswerGroups": [
+        [
+          "隔离开发与最终测试"
+        ],
+        [
+          "17个"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-045-e1",
+          "startMs": 840000,
+          "endMs": 844000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "fixture-045-e2",
+          "startMs": 80000,
+          "endMs": 84000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "数据划分的目的是什么？",
+        "数据划分的测试视频数量是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-045-q4",
+      "videoId": "fixture-045",
+      "sourceGroupId": "fixture-045",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "constraint",
+      "question": "数据划分有什么限制？",
+      "answerable": true,
+      "goldAnswer": "同一视频不能跨集合",
+      "requiredAnswerGroups": [
+        [
+          "同一视频不能跨集合"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-045-e3",
+          "startMs": 160000,
+          "endMs": 164000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "数据划分有什么限制？"
+      ]
+    },
+    {
+      "caseId": "fixture-045-q5",
+      "videoId": "fixture-045",
+      "sourceGroupId": "fixture-045",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "followup",
+      "question": "它有什么限制？",
+      "answerable": true,
+      "goldAnswer": "同一视频不能跨集合",
+      "requiredAnswerGroups": [
+        [
+          "同一视频不能跨集合"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-045-e3",
+          "startMs": 160000,
+          "endMs": 164000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "数据划分有什么限制？"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "请介绍数据划分。"
+        },
+        {
+          "role": "assistant",
+          "content": "数据划分的目的是隔离开发与最终测试。"
+        }
+      ],
+      "standaloneQuestion": "数据划分有什么限制？"
+    },
+    {
+      "caseId": "fixture-045-q6",
+      "videoId": "fixture-045",
+      "sourceGroupId": "fixture-045",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "unanswerable",
+      "question": "数据划分的负责人是谁？",
+      "answerable": false,
+      "goldAnswer": "材料未提供负责人，无法确定。",
+      "requiredAnswerGroups": [
+        [
+          "未提供",
+          "没有提供",
+          "无法确定",
+          "证据不足"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [],
+      "goldPlan": [
+        "数据划分的负责人是谁？"
+      ]
+    },
+    {
+      "caseId": "fixture-046-q1",
+      "videoId": "fixture-046",
+      "sourceGroupId": "fixture-046",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "asr",
+      "question": "样本审核的目的是什么？",
+      "answerable": true,
+      "goldAnswer": "校验题目与视频一致",
+      "requiredAnswerGroups": [
+        [
+          "校验题目与视频一致"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-046-e1",
+          "startMs": 520000,
+          "endMs": 524000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "样本审核的目的是什么？"
+      ]
+    },
+    {
+      "caseId": "fixture-046-q2",
+      "videoId": "fixture-046",
+      "sourceGroupId": "fixture-046",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "ocr",
+      "question": "样本审核配置面板上的每题审核人数是多少？",
+      "answerable": true,
+      "goldAnswer": "2人",
+      "requiredAnswerGroups": [
+        [
+          "2人"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-046-e2",
+          "startMs": 400000,
+          "endMs": 404000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "样本审核配置面板上的每题审核人数是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-046-q3",
+      "videoId": "fixture-046",
+      "sourceGroupId": "fixture-046",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "multi_evidence",
+      "question": "样本审核的目的和每题审核人数分别是什么？",
+      "answerable": true,
+      "goldAnswer": "校验题目与视频一致；2人",
+      "requiredAnswerGroups": [
+        [
+          "校验题目与视频一致"
+        ],
+        [
+          "2人"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-046-e1",
+          "startMs": 520000,
+          "endMs": 524000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "fixture-046-e2",
+          "startMs": 400000,
+          "endMs": 404000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "样本审核的目的是什么？",
+        "样本审核的每题审核人数是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-046-q4",
+      "videoId": "fixture-046",
+      "sourceGroupId": "fixture-046",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "constraint",
+      "question": "样本审核有什么限制？",
+      "answerable": true,
+      "goldAnswer": "有分歧时不能直接入正式集",
+      "requiredAnswerGroups": [
+        [
+          "有分歧时不能直接入正式集"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-046-e3",
+          "startMs": 360000,
+          "endMs": 364000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "样本审核有什么限制？"
+      ]
+    },
+    {
+      "caseId": "fixture-046-q5",
+      "videoId": "fixture-046",
+      "sourceGroupId": "fixture-046",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "followup",
+      "question": "它有什么限制？",
+      "answerable": true,
+      "goldAnswer": "有分歧时不能直接入正式集",
+      "requiredAnswerGroups": [
+        [
+          "有分歧时不能直接入正式集"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-046-e3",
+          "startMs": 360000,
+          "endMs": 364000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "样本审核有什么限制？"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "请介绍样本审核。"
+        },
+        {
+          "role": "assistant",
+          "content": "样本审核的目的是校验题目与视频一致。"
+        }
+      ],
+      "standaloneQuestion": "样本审核有什么限制？"
+    },
+    {
+      "caseId": "fixture-046-q6",
+      "videoId": "fixture-046",
+      "sourceGroupId": "fixture-046",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "unanswerable",
+      "question": "样本审核的负责人是谁？",
+      "answerable": false,
+      "goldAnswer": "材料未提供负责人，无法确定。",
+      "requiredAnswerGroups": [
+        [
+          "未提供",
+          "没有提供",
+          "无法确定",
+          "证据不足"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [],
+      "goldPlan": [
+        "样本审核的负责人是谁？"
+      ]
+    },
+    {
+      "caseId": "fixture-047-q1",
+      "videoId": "fixture-047",
+      "sourceGroupId": "fixture-047",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "asr",
+      "question": "评测冻结的目的是什么？",
+      "answerable": true,
+      "goldAnswer": "防止反复针对测试集调参",
+      "requiredAnswerGroups": [
+        [
+          "防止反复针对测试集调参"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-047-e1",
+          "startMs": 640000,
+          "endMs": 644000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "评测冻结的目的是什么？"
+      ]
+    },
+    {
+      "caseId": "fixture-047-q2",
+      "videoId": "fixture-047",
+      "sourceGroupId": "fixture-047",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "ocr",
+      "question": "评测冻结配置面板上的冻结版本编号是多少？",
+      "answerable": true,
+      "goldAnswer": "V3",
+      "requiredAnswerGroups": [
+        [
+          "V3"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-047-e2",
+          "startMs": 360000,
+          "endMs": 364000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "评测冻结配置面板上的冻结版本编号是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-047-q3",
+      "videoId": "fixture-047",
+      "sourceGroupId": "fixture-047",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "multi_evidence",
+      "question": "评测冻结的目的和冻结版本编号分别是什么？",
+      "answerable": true,
+      "goldAnswer": "防止反复针对测试集调参；V3",
+      "requiredAnswerGroups": [
+        [
+          "防止反复针对测试集调参"
+        ],
+        [
+          "V3"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-047-e1",
+          "startMs": 640000,
+          "endMs": 644000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "fixture-047-e2",
+          "startMs": 360000,
+          "endMs": 364000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "评测冻结的目的是什么？",
+        "评测冻结的冻结版本编号是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-047-q4",
+      "videoId": "fixture-047",
+      "sourceGroupId": "fixture-047",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "constraint",
+      "question": "评测冻结有什么限制？",
+      "answerable": true,
+      "goldAnswer": "发现标注错误必须发布新版本",
+      "requiredAnswerGroups": [
+        [
+          "发现标注错误必须发布新版本"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-047-e3",
+          "startMs": 240000,
+          "endMs": 244000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "评测冻结有什么限制？"
+      ]
+    },
+    {
+      "caseId": "fixture-047-q5",
+      "videoId": "fixture-047",
+      "sourceGroupId": "fixture-047",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "followup",
+      "question": "它有什么限制？",
+      "answerable": true,
+      "goldAnswer": "发现标注错误必须发布新版本",
+      "requiredAnswerGroups": [
+        [
+          "发现标注错误必须发布新版本"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-047-e3",
+          "startMs": 240000,
+          "endMs": 244000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "评测冻结有什么限制？"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "请介绍评测冻结。"
+        },
+        {
+          "role": "assistant",
+          "content": "评测冻结的目的是防止反复针对测试集调参。"
+        }
+      ],
+      "standaloneQuestion": "评测冻结有什么限制？"
+    },
+    {
+      "caseId": "fixture-047-q6",
+      "videoId": "fixture-047",
+      "sourceGroupId": "fixture-047",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "unanswerable",
+      "question": "评测冻结的负责人是谁？",
+      "answerable": false,
+      "goldAnswer": "材料未提供负责人，无法确定。",
+      "requiredAnswerGroups": [
+        [
+          "未提供",
+          "没有提供",
+          "无法确定",
+          "证据不足"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [],
+      "goldPlan": [
+        "评测冻结的负责人是谁？"
+      ]
+    },
+    {
+      "caseId": "fixture-048-q1",
+      "videoId": "fixture-048",
+      "sourceGroupId": "fixture-048",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "asr",
+      "question": "文档索引的目的是什么？",
+      "answerable": true,
+      "goldAnswer": "定位技术章节",
+      "requiredAnswerGroups": [
+        [
+          "定位技术章节"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-048-e1",
+          "startMs": 680000,
+          "endMs": 684000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "文档索引的目的是什么？"
+      ]
+    },
+    {
+      "caseId": "fixture-048-q2",
+      "videoId": "fixture-048",
+      "sourceGroupId": "fixture-048",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "ocr",
+      "question": "文档索引配置面板上的索引刷新间隔是多少？",
+      "answerable": true,
+      "goldAnswer": "11分钟",
+      "requiredAnswerGroups": [
+        [
+          "11分钟"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-048-e2",
+          "startMs": 280000,
+          "endMs": 284000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "文档索引配置面板上的索引刷新间隔是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-048-q3",
+      "videoId": "fixture-048",
+      "sourceGroupId": "fixture-048",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "multi_evidence",
+      "question": "文档索引的目的和索引刷新间隔分别是什么？",
+      "answerable": true,
+      "goldAnswer": "定位技术章节；11分钟",
+      "requiredAnswerGroups": [
+        [
+          "定位技术章节"
+        ],
+        [
+          "11分钟"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-048-e1",
+          "startMs": 680000,
+          "endMs": 684000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "fixture-048-e2",
+          "startMs": 280000,
+          "endMs": 284000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "文档索引的目的是什么？",
+        "文档索引的索引刷新间隔是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-048-q4",
+      "videoId": "fixture-048",
+      "sourceGroupId": "fixture-048",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "constraint",
+      "question": "文档索引有什么限制？",
+      "answerable": true,
+      "goldAnswer": "已删除文档不应继续返回",
+      "requiredAnswerGroups": [
+        [
+          "已删除文档不应继续返回"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-048-e3",
+          "startMs": 560000,
+          "endMs": 564000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "文档索引有什么限制？"
+      ]
+    },
+    {
+      "caseId": "fixture-048-q5",
+      "videoId": "fixture-048",
+      "sourceGroupId": "fixture-048",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "followup",
+      "question": "它有什么限制？",
+      "answerable": true,
+      "goldAnswer": "已删除文档不应继续返回",
+      "requiredAnswerGroups": [
+        [
+          "已删除文档不应继续返回"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-048-e3",
+          "startMs": 560000,
+          "endMs": 564000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "文档索引有什么限制？"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "请介绍文档索引。"
+        },
+        {
+          "role": "assistant",
+          "content": "文档索引的目的是定位技术章节。"
+        }
+      ],
+      "standaloneQuestion": "文档索引有什么限制？"
+    },
+    {
+      "caseId": "fixture-048-q6",
+      "videoId": "fixture-048",
+      "sourceGroupId": "fixture-048",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "unanswerable",
+      "question": "文档索引的负责人是谁？",
+      "answerable": false,
+      "goldAnswer": "材料未提供负责人，无法确定。",
+      "requiredAnswerGroups": [
+        [
+          "未提供",
+          "没有提供",
+          "无法确定",
+          "证据不足"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [],
+      "goldPlan": [
+        "文档索引的负责人是谁？"
+      ]
+    },
+    {
+      "caseId": "fixture-049-q1",
+      "videoId": "fixture-049",
+      "sourceGroupId": "fixture-049",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "asr",
+      "question": "权限校验的目的是什么？",
+      "answerable": true,
+      "goldAnswer": "隔离不同用户的资料",
+      "requiredAnswerGroups": [
+        [
+          "隔离不同用户的资料"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-049-e1",
+          "startMs": 760000,
+          "endMs": 764000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "权限校验的目的是什么？"
+      ]
+    },
+    {
+      "caseId": "fixture-049-q2",
+      "videoId": "fixture-049",
+      "sourceGroupId": "fixture-049",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "ocr",
+      "question": "权限校验配置面板上的权限缓存时间是多少？",
+      "answerable": true,
+      "goldAnswer": "25秒",
+      "requiredAnswerGroups": [
+        [
+          "25秒"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-049-e2",
+          "startMs": 360000,
+          "endMs": 364000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "权限校验配置面板上的权限缓存时间是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-049-q3",
+      "videoId": "fixture-049",
+      "sourceGroupId": "fixture-049",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "multi_evidence",
+      "question": "权限校验的目的和权限缓存时间分别是什么？",
+      "answerable": true,
+      "goldAnswer": "隔离不同用户的资料；25秒",
+      "requiredAnswerGroups": [
+        [
+          "隔离不同用户的资料"
+        ],
+        [
+          "25秒"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-049-e1",
+          "startMs": 760000,
+          "endMs": 764000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "fixture-049-e2",
+          "startMs": 360000,
+          "endMs": 364000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "权限校验的目的是什么？",
+        "权限校验的权限缓存时间是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-049-q4",
+      "videoId": "fixture-049",
+      "sourceGroupId": "fixture-049",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "constraint",
+      "question": "权限校验有什么限制？",
+      "answerable": true,
+      "goldAnswer": "跨用户读取必须拒绝",
+      "requiredAnswerGroups": [
+        [
+          "跨用户读取必须拒绝"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-049-e3",
+          "startMs": 480000,
+          "endMs": 484000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "权限校验有什么限制？"
+      ]
+    },
+    {
+      "caseId": "fixture-049-q5",
+      "videoId": "fixture-049",
+      "sourceGroupId": "fixture-049",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "followup",
+      "question": "它有什么限制？",
+      "answerable": true,
+      "goldAnswer": "跨用户读取必须拒绝",
+      "requiredAnswerGroups": [
+        [
+          "跨用户读取必须拒绝"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-049-e3",
+          "startMs": 480000,
+          "endMs": 484000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "权限校验有什么限制？"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "请介绍权限校验。"
+        },
+        {
+          "role": "assistant",
+          "content": "权限校验的目的是隔离不同用户的资料。"
+        }
+      ],
+      "standaloneQuestion": "权限校验有什么限制？"
+    },
+    {
+      "caseId": "fixture-049-q6",
+      "videoId": "fixture-049",
+      "sourceGroupId": "fixture-049",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "unanswerable",
+      "question": "权限校验的负责人是谁？",
+      "answerable": false,
+      "goldAnswer": "材料未提供负责人，无法确定。",
+      "requiredAnswerGroups": [
+        [
+          "未提供",
+          "没有提供",
+          "无法确定",
+          "证据不足"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [],
+      "goldPlan": [
+        "权限校验的负责人是谁？"
+      ]
+    },
+    {
+      "caseId": "fixture-050-q1",
+      "videoId": "fixture-050",
+      "sourceGroupId": "fixture-050",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "asr",
+      "question": "临时文件清理的目的是什么？",
+      "answerable": true,
+      "goldAnswer": "回收分析中间文件",
+      "requiredAnswerGroups": [
+        [
+          "回收分析中间文件"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-050-e1",
+          "startMs": 160000,
+          "endMs": 164000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "临时文件清理的目的是什么？"
+      ]
+    },
+    {
+      "caseId": "fixture-050-q2",
+      "videoId": "fixture-050",
+      "sourceGroupId": "fixture-050",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "ocr",
+      "question": "临时文件清理配置面板上的文件保留时长是多少？",
+      "answerable": true,
+      "goldAnswer": "48小时",
+      "requiredAnswerGroups": [
+        [
+          "48小时"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-050-e2",
+          "startMs": 760000,
+          "endMs": 764000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "临时文件清理配置面板上的文件保留时长是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-050-q3",
+      "videoId": "fixture-050",
+      "sourceGroupId": "fixture-050",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "multi_evidence",
+      "question": "临时文件清理的目的和文件保留时长分别是什么？",
+      "answerable": true,
+      "goldAnswer": "回收分析中间文件；48小时",
+      "requiredAnswerGroups": [
+        [
+          "回收分析中间文件"
+        ],
+        [
+          "48小时"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-050-e1",
+          "startMs": 160000,
+          "endMs": 164000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "fixture-050-e2",
+          "startMs": 760000,
+          "endMs": 764000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "临时文件清理的目的是什么？",
+        "临时文件清理的文件保留时长是多少？"
+      ]
+    },
+    {
+      "caseId": "fixture-050-q4",
+      "videoId": "fixture-050",
+      "sourceGroupId": "fixture-050",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "constraint",
+      "question": "临时文件清理有什么限制？",
+      "answerable": true,
+      "goldAnswer": "正在运行的任务文件不能删除",
+      "requiredAnswerGroups": [
+        [
+          "正在运行的任务文件不能删除"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-050-e3",
+          "startMs": 560000,
+          "endMs": 564000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "临时文件清理有什么限制？"
+      ]
+    },
+    {
+      "caseId": "fixture-050-q5",
+      "videoId": "fixture-050",
+      "sourceGroupId": "fixture-050",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "followup",
+      "question": "它有什么限制？",
+      "answerable": true,
+      "goldAnswer": "正在运行的任务文件不能删除",
+      "requiredAnswerGroups": [
+        [
+          "正在运行的任务文件不能删除"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "fixture-050-e3",
+          "startMs": 560000,
+          "endMs": 564000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "goldPlan": [
+        "临时文件清理有什么限制？"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "请介绍临时文件清理。"
+        },
+        {
+          "role": "assistant",
+          "content": "临时文件清理的目的是回收分析中间文件。"
+        }
+      ],
+      "standaloneQuestion": "临时文件清理有什么限制？"
+    },
+    {
+      "caseId": "fixture-050-q6",
+      "videoId": "fixture-050",
+      "sourceGroupId": "fixture-050",
+      "split": "test",
+      "kind": "SYNTHETIC_CONTROLLED",
+      "reviewStatus": "FIXTURE_DEFINED",
+      "type": "unanswerable",
+      "question": "临时文件清理的负责人是谁？",
+      "answerable": false,
+      "goldAnswer": "材料未提供负责人，无法确定。",
+      "requiredAnswerGroups": [
+        [
+          "未提供",
+          "没有提供",
+          "无法确定",
+          "证据不足"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [],
+      "goldPlan": [
+        "临时文件清理的负责人是谁？"
+      ]
+    }
+  ]
+}

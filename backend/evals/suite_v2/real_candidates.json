@@ -1,0 +1,2032 @@
+{
+  "schemaVersion": "2.0",
+  "datasetId": "vidlens-real-candidates-v2",
+  "kind": "REAL_VIDEO_CANDIDATE",
+  "reviewStatus": "PENDING_VIDEO_REVIEW",
+  "topK": [
+    1,
+    3,
+    8
+  ],
+  "description": "按BV号+去空白问题去重；不是语义去重，重叠题仍需复核；重新核对原视频后才能发布正式集。",
+  "sourceFingerprints": {
+    "real_video_eval.json": "653cedfae92315db8b46f76a9a79da5fbe976630684fb17fef9a20c3b2e9355d",
+    "heldout_retrieval_eval.json": "c4e27de2c04e814a8b90efad94f573ef669ed7e6bdca6bd74018197826430c17",
+    "final_heldout_retrieval_eval.json": "3b48f15c3452b20a468f8d2752623287e5f077fd4719d58f2c9377c293c4bab8",
+    "coverage_aware_v2_final_heldout_retrieval_eval.json": "e5eb10ab4f81917829669e594e02f87b2b483a64dab28584f9e7877ba5baa498"
+  },
+  "videos": [
+    {
+      "videoId": "BV1yLKw6aE9p",
+      "bvid": "BV1yLKw6aE9p",
+      "title": "【闪客】大大大模型哪大了？深入解读超大模型 Kimi K3 背后的技术",
+      "durationMs": 561000,
+      "sourceGroupId": "BV1yLKw6aE9p"
+    },
+    {
+      "videoId": "BV1smXUYSEGi",
+      "bvid": "BV1smXUYSEGi",
+      "title": "大模型token究竟是啥？",
+      "durationMs": 283000,
+      "sourceGroupId": "BV1smXUYSEGi"
+    },
+    {
+      "videoId": "BV1TGKV6PEdf",
+      "bvid": "BV1TGKV6PEdf",
+      "durationMs": 269000,
+      "heldOut": true,
+      "notes": "科普视频，主题是面试 Agent的Checkpoint机制，全程自带字幕",
+      "sourceGroupId": "BV1TGKV6PEdf"
+    },
+    {
+      "videoId": "BV1tiKU6eEuU",
+      "bvid": "BV1tiKU6eEuU",
+      "durationMs": 734000,
+      "heldOut": true,
+      "notes": "科普视频，主题为LangChain和LangGraph有什么区别，全程自带字幕",
+      "sourceGroupId": "BV1tiKU6eEuU"
+    },
+    {
+      "videoId": "BV1ASQEBWEgV",
+      "bvid": "BV1ASQEBWEgV",
+      "durationMs": 258000,
+      "heldOut": true,
+      "notes": "科普视频，全程字母，照着PPT讲LangChain和LangGraph分别适合什么场景",
+      "sourceGroupId": "BV1ASQEBWEgV"
+    },
+    {
+      "videoId": "BV1K8D7BWEUS",
+      "bvid": "BV1K8D7BWEUS",
+      "durationMs": 402000,
+      "heldOut": true,
+      "notes": "科普视频，主题为太阳、星海、以及生物大灭绝。",
+      "sourceGroupId": "BV1K8D7BWEUS"
+    },
+    {
+      "videoId": "BV1RYKp66Ext",
+      "bvid": "BV1RYKp66Ext",
+      "durationMs": 520000,
+      "heldOut": true,
+      "notes": "关于明日方舟的黑流树海的零件机制分析",
+      "sourceGroupId": "BV1RYKp66Ext"
+    },
+    {
+      "videoId": "BV1d3f2BqEMx",
+      "bvid": "BV1d3f2BqEMx",
+      "durationMs": 598000,
+      "heldOut": true,
+      "notes": "介绍明日方舟集成战略的界园树洞原理",
+      "sourceGroupId": "BV1d3f2BqEMx"
+    }
+  ],
+  "cases": [
+    {
+      "caseId": "real-candidate-001",
+      "videoId": "BV1yLKw6aE9p",
+      "question": "大模型的“大”字最直接的含义是什么？",
+      "type": "direct_fact",
+      "answerable": true,
+      "goldAnswer": "模型的参数量大。",
+      "requiredAnswerGroups": [
+        [
+          "参数量大",
+          "参数数量大"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "v001-q01-e1",
+          "startMs": 11000,
+          "endMs": 17000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1yLKw6aE9p",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "real_video_eval.json",
+          "caseId": "video-001-q01"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-002",
+      "videoId": "BV1yLKw6aE9p",
+      "question": "Kimi K3的百万token输入输出价格是多少？",
+      "type": "ocr",
+      "answerable": true,
+      "goldAnswer": "输入价格为 $3/M input tokens，输出价格为 $15/M output tokens。",
+      "requiredAnswerGroups": [
+        [
+          "$3/m input",
+          "每百万输入 token 3 美元",
+          "输入价格为3美元",
+          "$3/百万token"
+        ],
+        [
+          "$15/m output",
+          "每百万输出 token 15 美元",
+          "输出价格为15美元",
+          "$15/百万token"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "v001-q02-e1",
+          "startMs": 30000,
+          "endMs": 45000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1yLKw6aE9p",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "real_video_eval.json",
+          "caseId": "video-001-q02"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-003",
+      "videoId": "BV1yLKw6aE9p",
+      "question": "关于残差问题，Kimi没有与其他模型一样，而选择的另一条路是什么？",
+      "type": "paraphrase",
+      "answerable": true,
+      "goldAnswer": "使用注意力残差。",
+      "requiredAnswerGroups": [
+        [
+          "注意力残差",
+          "attention residual"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "v001-q03-e1",
+          "startMs": 205000,
+          "endMs": 228000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1yLKw6aE9p",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "real_video_eval.json",
+          "caseId": "video-001-q03"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-004",
+      "videoId": "BV1yLKw6aE9p",
+      "question": "这次K3模型使用了当时这篇经典论文中的什么技术？",
+      "type": "multi_evidence",
+      "answerable": true,
+      "goldAnswer": "使用了注意力残差技术。",
+      "requiredAnswerGroups": [
+        [
+          "注意力残差",
+          "attention residual"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "v001-q04-e1",
+          "startMs": 205000,
+          "endMs": 228000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "v001-q04-e2",
+          "startMs": 230000,
+          "endMs": 237000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1yLKw6aE9p",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "real_video_eval.json",
+          "caseId": "video-001-q04"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-005",
+      "videoId": "BV1yLKw6aE9p",
+      "question": "Kimi K3的三种“大”分别是什么？",
+      "type": "paraphrase",
+      "answerable": true,
+      "goldAnswer": "参数量大（2.8T）、百万上下文长度和支持多模态。",
+      "requiredAnswerGroups": [
+        [
+          "参数量",
+          "参数数量"
+        ],
+        [
+          "百万上下文",
+          "上下文长度"
+        ],
+        [
+          "多模态"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "v001-q05-e1",
+          "startMs": 61000,
+          "endMs": 71000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1yLKw6aE9p",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "real_video_eval.json",
+          "caseId": "video-001-q05"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-006",
+      "videoId": "BV1yLKw6aE9p",
+      "question": "agent的能力公开测评中K3的表现怎么样？",
+      "type": "direct_fact",
+      "answerable": true,
+      "goldAnswer": "表现相当亮眼。",
+      "requiredAnswerGroups": [
+        [
+          "亮眼",
+          "很好",
+          "表现出色",
+          "优秀"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "v001-q06-e1",
+          "startMs": 374000,
+          "endMs": 380000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1yLKw6aE9p",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "real_video_eval.json",
+          "caseId": "video-001-q06"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-007",
+      "videoId": "BV1yLKw6aE9p",
+      "question": "视频作者在测试 Kimi K3 模型时给了四个任务，“文生图生视频的工作流”这个任务之后的任务是什么？",
+      "type": "temporal_order",
+      "answerable": true,
+      "goldAnswer": "大模型评测。",
+      "requiredAnswerGroups": [
+        [
+          "大模型评测",
+          "模型评测"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "v001-q07-e1",
+          "startMs": 459000,
+          "endMs": 476000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1yLKw6aE9p",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "real_video_eval.json",
+          "caseId": "video-001-q07"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-008",
+      "videoId": "BV1yLKw6aE9p",
+      "question": "这次测评K3的时候很多服务端超时了，作者推测可能是什么原因？",
+      "type": "paraphrase",
+      "answerable": true,
+      "goldAnswer": "作者推测可能是 K3 太破圈、使用人数太多，导致服务器超时或被挤爆。",
+      "requiredAnswerGroups": [
+        [
+          "可能",
+          "推测"
+        ],
+        [
+          "破圈",
+          "热门",
+          "使用人数太多",
+          "服务器"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [
+        "必然是",
+        "一定是",
+        "确定是"
+      ],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "v001-q08-e1",
+          "startMs": 358000,
+          "endMs": 371000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1yLKw6aE9p",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "real_video_eval.json",
+          "caseId": "video-001-q08"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-009",
+      "videoId": "BV1smXUYSEGi",
+      "question": "是谁问了作者“大模型的token究竟是什么东西”？",
+      "type": "direct_fact",
+      "answerable": true,
+      "goldAnswer": "作者的老婆。",
+      "requiredAnswerGroups": [
+        [
+          "老婆",
+          "妻子"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "v002-q01-e1",
+          "startMs": 0,
+          "endMs": 5000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1smXUYSEGi",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "real_video_eval.json",
+          "caseId": "video-002-q01"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-010",
+      "videoId": "BV1smXUYSEGi",
+      "question": "视频在第19秒左右说的“这段话”指的是什么句子（出现在画面中的）？",
+      "type": "ocr",
+      "answerable": true,
+      "goldAnswer": "我喜欢唱、跳、Rap和篮球。",
+      "requiredAnswerGroups": [
+        [
+          "唱"
+        ],
+        [
+          "跳"
+        ],
+        [
+          "rap"
+        ],
+        [
+          "篮球"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "v002-q02-e1",
+          "startMs": 19000,
+          "endMs": 36000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1smXUYSEGi",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "real_video_eval.json",
+          "caseId": "video-002-q02"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-011",
+      "videoId": "BV1smXUYSEGi",
+      "question": "视频在第60秒左右的时候让我们快速地念一下“这几个字”，是哪几个字？",
+      "type": "asr_ocr",
+      "answerable": true,
+      "goldAnswer": "旯、妁、圳、侈、邯。",
+      "requiredAnswerGroups": [
+        [
+          "旯"
+        ],
+        [
+          "妁"
+        ],
+        [
+          "圳"
+        ],
+        [
+          "侈"
+        ],
+        [
+          "邯"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "v002-q03-e1",
+          "startMs": 59000,
+          "endMs": 75000,
+          "sources": [
+            "ASR",
+            "OCR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1smXUYSEGi",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "real_video_eval.json",
+          "caseId": "video-002-q03"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-012",
+      "videoId": "BV1smXUYSEGi",
+      "question": "我们的大脑为什么喜欢把这些有含义的词语作为一个整体来对待？",
+      "type": "paraphrase",
+      "answerable": true,
+      "goldAnswer": "因为这样可以节省脑力。",
+      "requiredAnswerGroups": [
+        [
+          "节省脑力",
+          "节省认知",
+          "减少认知负担"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "v002-q04-e1",
+          "startMs": 71000,
+          "endMs": 91000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1smXUYSEGi",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "real_video_eval.json",
+          "caseId": "video-002-q04"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-013",
+      "videoId": "BV1smXUYSEGi",
+      "question": "分词器是大模型专门拿来干什么的？",
+      "type": "paraphrase",
+      "answerable": true,
+      "goldAnswer": "把大段文字拆解成大小合适的一个个 token。",
+      "requiredAnswerGroups": [
+        [
+          "拆解",
+          "分解",
+          "切分"
+        ],
+        [
+          "文字",
+          "文本"
+        ],
+        [
+          "token",
+          "词元"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "v002-q05-e1",
+          "startMs": 108000,
+          "endMs": 117000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1smXUYSEGi",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "real_video_eval.json",
+          "caseId": "video-002-q05"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-014",
+      "videoId": "BV1smXUYSEGi",
+      "question": "在DeepSeek里面“鸡蛋关羽”是几个 token？",
+      "type": "paraphrase",
+      "answerable": true,
+      "goldAnswer": "两个 token；“鸡蛋”是一个 token，“关羽”也是一个 token。",
+      "requiredAnswerGroups": [
+        [
+          "两个",
+          "2"
+        ],
+        [
+          "鸡蛋"
+        ],
+        [
+          "关羽"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [
+        "总计一个",
+        "总计四个"
+      ],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "v002-q06-e1",
+          "startMs": 205000,
+          "endMs": 231000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1smXUYSEGi",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "real_video_eval.json",
+          "caseId": "video-002-q06"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-015",
+      "videoId": "BV1smXUYSEGi",
+      "question": "“苹果”的“苹”字在 Qwen 模型里是几个 token？",
+      "type": "direct_fact",
+      "answerable": true,
+      "goldAnswer": "一个 token。",
+      "requiredAnswerGroups": [
+        [
+          "一个 token",
+          "1个 token",
+          "一个",
+          "1"
+        ],
+        [
+          "Qwen",
+          "通义千问"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [],
+      "evidenceRequirement": "all",
+      "goldEvidence": [
+        {
+          "evidenceId": "v002-q07-e1",
+          "startMs": 240000,
+          "endMs": 248000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1smXUYSEGi",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "real_video_eval.json",
+          "caseId": "video-002-q07"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-016",
+      "videoId": "BV1smXUYSEGi",
+      "question": "视频中加密领域的 token 是什么意思？",
+      "type": "unanswerable",
+      "answerable": false,
+      "goldAnswer": "视频中没有说明加密领域 token 的含义。",
+      "requiredAnswerGroups": [
+        [
+          "视频未明确说明",
+          "视频没有说明",
+          "无法从视频确定"
+        ]
+      ],
+      "forbiddenAnswerPatterns": [
+        "加密领域的 token 是",
+        "token 就是加密",
+        "自行编造"
+      ],
+      "evidenceRequirement": "none",
+      "goldEvidence": [],
+      "sourceGroupId": "BV1smXUYSEGi",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "real_video_eval.json",
+          "caseId": "video-002-q08"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-017",
+      "videoId": "BV1TGKV6PEdf",
+      "annotationType": "ASR 事实或改写",
+      "question": "如果你在面试官问Agent的Checkpoint机制的时候，只说保存状态，面试官会把你怎么样？",
+      "answerable": true,
+      "sourceLabel": "ASR",
+      "referenceAnswer": "面试官嘴上不说，心里已经划到没上过生产那一档了",
+      "type": "asr_fact_or_paraphrase",
+      "goldEvidence": [
+        {
+          "evidenceId": "heldout-video-001-q01-e1",
+          "startMs": 1000,
+          "endMs": 12000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1TGKV6PEdf",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "heldout_retrieval_eval.json",
+          "caseId": "heldout-video-001-q01"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-018",
+      "videoId": "BV1TGKV6PEdf",
+      "annotationType": "ASR 事实或改写",
+      "question": "Time Travel是什么？",
+      "answerable": true,
+      "sourceLabel": "ASR",
+      "referenceAnswer": "是指获得从任意历史 Checkpoint 恢复执行的能力，",
+      "type": "asr_fact_or_paraphrase",
+      "goldEvidence": [
+        {
+          "evidenceId": "heldout-video-001-q02-e1",
+          "startMs": 190000,
+          "endMs": 196000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1TGKV6PEdf",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "heldout_retrieval_eval.json",
+          "caseId": "heldout-video-001-q02"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-019",
+      "videoId": "BV1TGKV6PEdf",
+      "annotationType": "OCR 画面文字",
+      "question": "画面中 Jack 后面的标注是什么？",
+      "answerable": true,
+      "sourceLabel": "OCR",
+      "referenceAnswer": "@ Agent Dev",
+      "type": "ocr",
+      "goldEvidence": [
+        {
+          "evidenceId": "heldout-video-001-q03-e1",
+          "startMs": 1000,
+          "endMs": 20000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1TGKV6PEdf",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "heldout_retrieval_eval.json",
+          "caseId": "heldout-video-001-q03"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-020",
+      "videoId": "BV1TGKV6PEdf",
+      "annotationType": "OCR 画面文字",
+      "question": "生命周期架构(TTL)的工程法则是什么",
+      "answerable": true,
+      "sourceLabel": "OCR",
+      "referenceAnswer": "全量覆盖+冗灾余量",
+      "type": "ocr",
+      "goldEvidence": [
+        {
+          "evidenceId": "heldout-video-001-q04-e1",
+          "startMs": 122000,
+          "endMs": 145000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1TGKV6PEdf",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "heldout_retrieval_eval.json",
+          "caseId": "heldout-video-001-q04"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-021",
+      "videoId": "BV1TGKV6PEdf",
+      "annotationType": "ASR+OCR 联合",
+      "question": "视频以什么真实事件说明 State 强制溯源的重要性？任务从 Checkpoint 恢复后若直接根据最新内存重放旧订票逻辑，会导致什么问题？",
+      "answerable": true,
+      "sourceLabel": "ASR + OCR",
+      "referenceAnswer": "真实血案：航司抢票场景的挂起/恢复重入；恢复后按最新内存重放旧订票逻辑，可能因余座已变化造成时序和状态错乱。",
+      "type": "asr_ocr",
+      "goldEvidence": [
+        {
+          "evidenceId": "heldout-video-001-q05-e1",
+          "startMs": 155000,
+          "endMs": 185000,
+          "sources": [
+            "OCR"
+          ]
+        },
+        {
+          "evidenceId": "heldout-video-001-q05-e2",
+          "startMs": 170000,
+          "endMs": 185000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1TGKV6PEdf",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "heldout_retrieval_eval.json",
+          "caseId": "heldout-video-001-q05"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-022",
+      "videoId": "BV1TGKV6PEdf",
+      "annotationType": "不可回答",
+      "question": "Agent 的 RAG是什么",
+      "answerable": false,
+      "sourceLabel": "无",
+      "referenceAnswer": "视频中没有说明",
+      "type": "unanswerable",
+      "goldEvidence": [],
+      "sourceGroupId": "BV1TGKV6PEdf",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "heldout_retrieval_eval.json",
+          "caseId": "heldout-video-001-q06"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-023",
+      "videoId": "BV1tiKU6eEuU",
+      "annotationType": "ASR 事实或改写",
+      "question": "LangChain有哪两个致命硬伤（局限）？",
+      "answerable": true,
+      "sourceLabel": "ASR",
+      "referenceAnswer": "一：无纠错机制。二：循环能力生硬，无法灵活回头。",
+      "type": "asr_fact_or_paraphrase",
+      "goldEvidence": [
+        {
+          "evidenceId": "heldout-video-002-q01-e1",
+          "startMs": 262000,
+          "endMs": 302000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1tiKU6eEuU",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "heldout_retrieval_eval.json",
+          "caseId": "heldout-video-002-q01"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-024",
+      "videoId": "BV1tiKU6eEuU",
+      "annotationType": "ASR 事实或改写",
+      "question": "LangGraph和普通流水线之间最本质的区别是什么",
+      "answerable": true,
+      "sourceLabel": "ASR",
+      "referenceAnswer": "有在运行中能够自主纠错和循环的能力",
+      "type": "asr_fact_or_paraphrase",
+      "goldEvidence": [
+        {
+          "evidenceId": "heldout-video-002-q02-e1",
+          "startMs": 157000,
+          "endMs": 180000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1tiKU6eEuU",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "heldout_retrieval_eval.json",
+          "caseId": "heldout-video-002-q02"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-025",
+      "videoId": "BV1tiKU6eEuU",
+      "annotationType": "时间指代",
+      "question": "作者在视频 02:25 左右的时候，把LangChain比作成了什么",
+      "answerable": true,
+      "sourceLabel": "ASR",
+      "referenceAnswer": "单项执行的工厂流水线",
+      "type": "temporal_reference",
+      "goldEvidence": [
+        {
+          "evidenceId": "heldout-video-002-q03-e1",
+          "startMs": 137000,
+          "endMs": 158000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1tiKU6eEuU",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "heldout_retrieval_eval.json",
+          "caseId": "heldout-video-002-q03"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-026",
+      "videoId": "BV1tiKU6eEuU",
+      "annotationType": "OCR 画面文字",
+      "question": "LangGraph机制二： 全局状态管理 的价值是什么？",
+      "answerable": true,
+      "sourceLabel": "OCR",
+      "referenceAnswer": "打破节点隔离，任务数据集中维护与持久化。",
+      "type": "ocr",
+      "goldEvidence": [
+        {
+          "evidenceId": "heldout-video-002-q04-e1",
+          "startMs": 415000,
+          "endMs": 438000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1tiKU6eEuU",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "heldout_retrieval_eval.json",
+          "caseId": "heldout-video-002-q04"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-027",
+      "videoId": "BV1tiKU6eEuU",
+      "annotationType": "ASR多证据推理",
+      "question": "LangGraph有哪四个底层的硬核机制？",
+      "answerable": true,
+      "sourceLabel": "多证据",
+      "referenceAnswer": "机制一： 灵活的循环控制。机制二： 全局状态管理。机制三：Reducer规约机制。机制四： Checkpoint快照机制。",
+      "type": "multi_evidence",
+      "goldEvidence": [
+        {
+          "evidenceId": "heldout-video-002-q05-e1",
+          "startMs": 345000,
+          "endMs": 353000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "heldout-video-002-q05-e2",
+          "startMs": 405000,
+          "endMs": 411000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "heldout-video-002-q05-e3",
+          "startMs": 457000,
+          "endMs": 463000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "heldout-video-002-q05-e4",
+          "startMs": 490000,
+          "endMs": 496000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1tiKU6eEuU",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "heldout_retrieval_eval.json",
+          "caseId": "heldout-video-002-q05"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-028",
+      "videoId": "BV1tiKU6eEuU",
+      "annotationType": "不可回答",
+      "question": "LangGraph和Dify有什么区别？",
+      "answerable": false,
+      "sourceLabel": "无",
+      "referenceAnswer": "视频中没有说明",
+      "type": "unanswerable",
+      "goldEvidence": [],
+      "sourceGroupId": "BV1tiKU6eEuU",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "heldout_retrieval_eval.json",
+          "caseId": "heldout-video-002-q06"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-029",
+      "videoId": "BV1ASQEBWEgV",
+      "annotationType": "ASR 事实或改写",
+      "question": "视频中说在2026年的今天，大模型架构师面试的必考题是什么？",
+      "answerable": true,
+      "sourceLabel": "ASR",
+      "referenceAnswer": "LangChain和LangGraph分别适合什么场景",
+      "type": "asr_fact_or_paraphrase",
+      "goldEvidence": [
+        {
+          "evidenceId": "final-video-001-q01-e1",
+          "startMs": 1000,
+          "endMs": 12000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1ASQEBWEgV",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "final_heldout_retrieval_eval.json",
+          "caseId": "final-video-001-q01"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-030",
+      "videoId": "BV1ASQEBWEgV",
+      "annotationType": "ASR 事实或改写",
+      "question": "LangGraph让AI进入核心业务生产线的能力是什么？",
+      "answerable": true,
+      "sourceLabel": "ASR",
+      "referenceAnswer": "LangGraph的可中断、可审核、可持久化的能力",
+      "type": "asr_fact_or_paraphrase",
+      "goldEvidence": [
+        {
+          "evidenceId": "final-video-001-q02-e1",
+          "startMs": 240000,
+          "endMs": 249000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1ASQEBWEgV",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "final_heldout_retrieval_eval.json",
+          "caseId": "final-video-001-q02"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-031",
+      "videoId": "BV1ASQEBWEgV",
+      "annotationType": "OCR 画面文字",
+      "question": "画面中 LangGraph 的“循环图”和“全局持久化 State”分别标注为什么？",
+      "answerable": true,
+      "sourceLabel": "OCR",
+      "referenceAnswer": "Cyclic Graph（循环图）；全局持久化 State（Time Travel）。",
+      "type": "ocr",
+      "goldEvidence": [
+        {
+          "evidenceId": "final-video-001-q03-e1",
+          "startMs": 45000,
+          "endMs": 60000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1ASQEBWEgV",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "final_heldout_retrieval_eval.json",
+          "caseId": "final-video-001-q03"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-032",
+      "videoId": "BV1ASQEBWEgV",
+      "annotationType": "时间指代",
+      "question": "视频第 03:00 左右讲了什么内容，是用来解决什么的？",
+      "answerable": true,
+      "sourceLabel": "ASR",
+      "referenceAnswer": "讲了LangGraph的状态膨胀的解决方案，即引入Reducer 机制与子图划分，仅在节点间传递差异化增量，非必要数据及时剪枝。",
+      "type": "temporal_reference",
+      "goldEvidence": [
+        {
+          "evidenceId": "final-video-001-q04-e1",
+          "startMs": 170000,
+          "endMs": 189000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1ASQEBWEgV",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "final_heldout_retrieval_eval.json",
+          "caseId": "final-video-001-q04"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-033",
+      "videoId": "BV1ASQEBWEgV",
+      "annotationType": "多证据",
+      "question": "LangChain和LangGraph分别最适合应用什么？",
+      "answerable": true,
+      "sourceLabel": "多证据ASR",
+      "referenceAnswer": "LangChain适合：单次的QA问答、基础的文档翻译、流程非常明确的数据ETL任务。LangGraph适合：多智能体协作、需要自我反思的复杂任务，比如AI写了一封给大客户的邮件，发之前得先停在那等人工点个发送。",
+      "type": "multi_evidence",
+      "goldEvidence": [
+        {
+          "evidenceId": "final-video-001-q05-e1",
+          "startMs": 79000,
+          "endMs": 88000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "final-video-001-q05-e2",
+          "startMs": 151000,
+          "endMs": 163000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1ASQEBWEgV",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "final_heldout_retrieval_eval.json",
+          "caseId": "final-video-001-q05"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-034",
+      "videoId": "BV1ASQEBWEgV",
+      "annotationType": "不可回答",
+      "question": "Dify和LangChain的区别是什么？",
+      "answerable": false,
+      "sourceLabel": "无",
+      "referenceAnswer": "视频中没有说明……",
+      "type": "unanswerable",
+      "goldEvidence": [],
+      "sourceGroupId": "BV1ASQEBWEgV",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "final_heldout_retrieval_eval.json",
+          "caseId": "final-video-001-q06"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-035",
+      "videoId": "BV1ASQEBWEgV",
+      "annotationType": "不可回答",
+      "question": "LangChain在多久后会被弃用？",
+      "answerable": false,
+      "sourceLabel": "无",
+      "referenceAnswer": "视频中没有说明……",
+      "type": "unanswerable",
+      "goldEvidence": [],
+      "sourceGroupId": "BV1ASQEBWEgV",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "final_heldout_retrieval_eval.json",
+          "caseId": "final-video-001-q07"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-036",
+      "videoId": "BV1K8D7BWEUS",
+      "annotationType": "ASR 事实或改写",
+      "question": "太阳绕着什么转？",
+      "answerable": true,
+      "sourceLabel": "ASR",
+      "referenceAnswer": "太阳绕着银河系的中心转",
+      "type": "asr_fact_or_paraphrase",
+      "goldEvidence": [
+        {
+          "evidenceId": "final-video-002-q01-e1",
+          "startMs": 4000,
+          "endMs": 10000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1K8D7BWEUS",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "final_heldout_retrieval_eval.json",
+          "caseId": "final-video-002-q01"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-037",
+      "videoId": "BV1K8D7BWEUS",
+      "annotationType": "ASR 事实或改写",
+      "question": "白垩纪恐龙灭绝发生时，太阳在银河系的密集盘面吗？",
+      "answerable": true,
+      "sourceLabel": "ASR",
+      "referenceAnswer": "不在，而是在银河系相对空旷的区域",
+      "type": "asr_fact_or_paraphrase",
+      "goldEvidence": [
+        {
+          "evidenceId": "final-video-002-q02-e1",
+          "startMs": 165000,
+          "endMs": 173000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1K8D7BWEUS",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "final_heldout_retrieval_eval.json",
+          "caseId": "final-video-002-q02"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-038",
+      "videoId": "BV1K8D7BWEUS",
+      "annotationType": "时间指代",
+      "question": "视频第 02:30 画面显示的文字是什么？",
+      "answerable": true,
+      "sourceLabel": "OCR",
+      "referenceAnswer": "它的椭圆轨道每隔2600万年",
+      "type": "temporal_reference",
+      "goldEvidence": [
+        {
+          "evidenceId": "final-video-002-q03-e1",
+          "startMs": 149000,
+          "endMs": 153000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1K8D7BWEUS",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "final_heldout_retrieval_eval.json",
+          "caseId": "final-video-002-q03"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-039",
+      "videoId": "BV1K8D7BWEUS",
+      "annotationType": "多证据",
+      "question": "为解释银河系总引力不足以维持太阳约 220 km/s 的轨道速度，有哪两种假说？",
+      "answerable": true,
+      "sourceLabel": "多证据ASR",
+      "referenceAnswer": "暗物质假说和修改型牛顿动力学假说",
+      "type": "multi_evidence",
+      "goldEvidence": [
+        {
+          "evidenceId": "final-video-002-q04-e1",
+          "startMs": 287000,
+          "endMs": 300000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "final-video-002-q04-e2",
+          "startMs": 343000,
+          "endMs": 365000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1K8D7BWEUS",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "final_heldout_retrieval_eval.json",
+          "caseId": "final-video-002-q04"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-040",
+      "videoId": "BV1K8D7BWEUS",
+      "annotationType": "不可回答",
+      "question": "离太阳最近的恒星是什么？",
+      "answerable": false,
+      "sourceLabel": "无",
+      "referenceAnswer": "视频中没有说明……",
+      "type": "unanswerable",
+      "goldEvidence": [],
+      "sourceGroupId": "BV1K8D7BWEUS",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "final_heldout_retrieval_eval.json",
+          "caseId": "final-video-002-q05"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-041",
+      "videoId": "BV1K8D7BWEUS",
+      "annotationType": "不可回答",
+      "question": "太阳的具体质量是多少？",
+      "answerable": false,
+      "sourceLabel": "无",
+      "referenceAnswer": "视频中没有说明……",
+      "type": "unanswerable",
+      "goldEvidence": [],
+      "sourceGroupId": "BV1K8D7BWEUS",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "final_heldout_retrieval_eval.json",
+          "caseId": "final-video-002-q06"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-042",
+      "videoId": "BV1K8D7BWEUS",
+      "annotationType": "不可回答",
+      "question": "奥陶纪大灭绝是什么引起的？",
+      "answerable": false,
+      "sourceLabel": "无",
+      "referenceAnswer": "视频中没有说明……",
+      "type": "unanswerable",
+      "goldEvidence": [],
+      "sourceGroupId": "BV1K8D7BWEUS",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "final_heldout_retrieval_eval.json",
+          "caseId": "final-video-002-q07"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-043",
+      "videoId": "BV1RYKp66Ext",
+      "annotationType": "ASR 事实或改写",
+      "question": "相比N稀有度的加工品，R稀有度的加工品更倾向于什么？",
+      "answerable": true,
+      "sourceLabel": "ASR",
+      "referenceAnswer": "R的加工品更倾向于省步数以及更自由地大范围跳跃",
+      "type": "asr_fact_or_paraphrase",
+      "goldEvidence": [
+        {
+          "evidenceId": "coverage-final-video-001-q01-e1",
+          "startMs": 86000,
+          "endMs": 93000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1RYKp66Ext",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "coverage_aware_v2_final_heldout_retrieval_eval.json",
+          "caseId": "coverage-final-video-001-q01"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-044",
+      "videoId": "BV1RYKp66Ext",
+      "annotationType": "OCR 画面文字",
+      "question": "Normal稀有度的零件有哪些？",
+      "answerable": true,
+      "sourceLabel": "OCR",
+      "referenceAnswer": "种子 血蕈 雾滚草 浪花 枯苔藓球 报废轮子 报废假肢 标准引擎 气垫底座 试作外骨骼 小八界",
+      "type": "ocr",
+      "goldEvidence": [
+        {
+          "evidenceId": "coverage-final-video-001-q02-e1",
+          "startMs": 58000,
+          "endMs": 70000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1RYKp66Ext",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "coverage_aware_v2_final_heldout_retrieval_eval.json",
+          "caseId": "coverage-final-video-001-q02"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-045",
+      "videoId": "BV1RYKp66Ext",
+      "annotationType": "时间指代",
+      "question": "视频第 03:49 左右是怎样评价黑流树海的狭路相逢的？",
+      "answerable": true,
+      "sourceLabel": "ASR",
+      "referenceAnswer": "黑流树海的狭路相逢是收益最高的节点",
+      "type": "temporal_reference",
+      "goldEvidence": [
+        {
+          "evidenceId": "coverage-final-video-001-q03-e1",
+          "startMs": 226000,
+          "endMs": 233000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1RYKp66Ext",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "coverage_aware_v2_final_heldout_retrieval_eval.json",
+          "caseId": "coverage-final-video-001-q03"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-046",
+      "videoId": "BV1RYKp66Ext",
+      "annotationType": "比较多证据",
+      "question": "哪些零件是培育种子可以获得，但是在迷藏节点不能获取的",
+      "answerable": true,
+      "sourceLabel": "多证据 ASR+OCR",
+      "referenceAnswer": "R稀有度的所有零件；结构性原理、“简易遥控器”；浪花、无滚草、小八戒",
+      "type": "multi_evidence",
+      "goldEvidence": [
+        {
+          "evidenceId": "coverage-final-video-001-q04-e1",
+          "startMs": 200000,
+          "endMs": 209000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "coverage-final-video-001-q04-e2",
+          "startMs": 405000,
+          "endMs": 420000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "coverage-final-video-001-q04-e3",
+          "startMs": 74000,
+          "endMs": 91000,
+          "sources": [
+            "OCR"
+          ]
+        },
+        {
+          "evidenceId": "coverage-final-video-001-q04-e4",
+          "startMs": 108000,
+          "endMs": 122000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1RYKp66Ext",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "coverage_aware_v2_final_heldout_retrieval_eval.json",
+          "caseId": "coverage-final-video-001-q04"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-047",
+      "videoId": "BV1RYKp66Ext",
+      "annotationType": "枚举多证据",
+      "question": "板藤有哪些获取来源？",
+      "answerable": true,
+      "sourceLabel": "多证据 ASR+OCR",
+      "referenceAnswer": "紧急、紧急不期、居民据点、50费宝箱能获取SR稀有度的零件；培育种子来获得板藤；狭路相逢中档；迷藏节点；用SR零件在失与得中换出",
+      "type": "multi_evidence",
+      "goldEvidence": [
+        {
+          "evidenceId": "coverage-final-video-001-q05-e1",
+          "startMs": 116000,
+          "endMs": 135000,
+          "sources": [
+            "OCR"
+          ]
+        },
+        {
+          "evidenceId": "coverage-final-video-001-q05-e2",
+          "startMs": 116000,
+          "endMs": 120000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "coverage-final-video-001-q05-e3",
+          "startMs": 165000,
+          "endMs": 172000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "coverage-final-video-001-q05-e4",
+          "startMs": 199000,
+          "endMs": 204000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "coverage-final-video-001-q05-e5",
+          "startMs": 208000,
+          "endMs": 215000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "coverage-final-video-001-q05-e6",
+          "startMs": 259000,
+          "endMs": 269000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "coverage-final-video-001-q05-e7",
+          "startMs": 405000,
+          "endMs": 420000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "coverage-final-video-001-q05-e8",
+          "startMs": 478000,
+          "endMs": 490000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1RYKp66Ext",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "coverage_aware_v2_final_heldout_retrieval_eval.json",
+          "caseId": "coverage-final-video-001-q05"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-048",
+      "videoId": "BV1RYKp66Ext",
+      "annotationType": "ASR 事实或改写",
+      "question": "笼控器怎么获得？",
+      "answerable": true,
+      "sourceLabel": "ASR",
+      "referenceAnswer": "笼控器只有通过事件获得",
+      "type": "asr_fact_or_paraphrase",
+      "goldEvidence": [
+        {
+          "evidenceId": "coverage-final-video-001-q06-e1",
+          "startMs": 125000,
+          "endMs": 129000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1RYKp66Ext",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "coverage_aware_v2_final_heldout_retrieval_eval.json",
+          "caseId": "coverage-final-video-001-q06"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-049",
+      "videoId": "BV1RYKp66Ext",
+      "annotationType": "不可回答",
+      "question": "黑流树海的一结局BOSS是什么？",
+      "answerable": false,
+      "sourceLabel": "无",
+      "referenceAnswer": "视频中没有说明……",
+      "type": "unanswerable",
+      "goldEvidence": [],
+      "sourceGroupId": "BV1RYKp66Ext",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "coverage_aware_v2_final_heldout_retrieval_eval.json",
+          "caseId": "coverage-final-video-001-q07"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-050",
+      "videoId": "BV1RYKp66Ext",
+      "annotationType": "不可回答",
+      "question": "黑流树海和界园哪个好玩？",
+      "answerable": false,
+      "sourceLabel": "无",
+      "referenceAnswer": "视频中没有说明……",
+      "type": "unanswerable",
+      "goldEvidence": [],
+      "sourceGroupId": "BV1RYKp66Ext",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "coverage_aware_v2_final_heldout_retrieval_eval.json",
+          "caseId": "coverage-final-video-001-q08"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-051",
+      "videoId": "BV1d3f2BqEMx",
+      "annotationType": "ASR 事实或改写",
+      "question": "界园的树洞是什么形状的地图？",
+      "answerable": true,
+      "sourceLabel": "ASR",
+      "referenceAnswer": "正方形",
+      "type": "asr_fact_or_paraphrase",
+      "goldEvidence": [
+        {
+          "evidenceId": "coverage-final-video-002-q01-e1",
+          "startMs": 15000,
+          "endMs": 21000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1d3f2BqEMx",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "coverage_aware_v2_final_heldout_retrieval_eval.json",
+          "caseId": "coverage-final-video-002-q01"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-052",
+      "videoId": "BV1d3f2BqEMx",
+      "annotationType": "ASR 事实或改写",
+      "question": "我们推测界园树洞是用的什么算法？",
+      "answerable": true,
+      "sourceLabel": "ASR",
+      "referenceAnswer": "是随机普里姆算法（一种从起点开始基于已访问节点向外扩张的随机生成树算法）",
+      "type": "asr_fact_or_paraphrase",
+      "goldEvidence": [
+        {
+          "evidenceId": "coverage-final-video-002-q02-e1",
+          "startMs": 121000,
+          "endMs": 132000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1d3f2BqEMx",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "coverage_aware_v2_final_heldout_retrieval_eval.json",
+          "caseId": "coverage-final-video-002-q02"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-053",
+      "videoId": "BV1d3f2BqEMx",
+      "annotationType": "时间指代",
+      "question": "视频第 01:00 左右的画面显示剩余烛火还有多少？",
+      "answerable": true,
+      "sourceLabel": "OCR",
+      "referenceAnswer": "4",
+      "type": "temporal_reference",
+      "goldEvidence": [
+        {
+          "evidenceId": "coverage-final-video-002-q03-e1",
+          "startMs": 56000,
+          "endMs": 62000,
+          "sources": [
+            "OCR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1d3f2BqEMx",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "coverage_aware_v2_final_heldout_retrieval_eval.json",
+          "caseId": "coverage-final-video-002-q03"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-054",
+      "videoId": "BV1d3f2BqEMx",
+      "annotationType": "比较多证据",
+      "question": "是非镜的 初始十字节点 比 5x5外的两行节点 多出现了哪些节点类型？",
+      "answerable": true,
+      "sourceLabel": "多证据 ASR",
+      "referenceAnswer": "多出了 传说、易与 这两类节点",
+      "type": "multi_evidence",
+      "goldEvidence": [
+        {
+          "evidenceId": "coverage-final-video-002-q04-e1",
+          "startMs": 285000,
+          "endMs": 290000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "coverage-final-video-002-q04-e2",
+          "startMs": 338000,
+          "endMs": 345000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1d3f2BqEMx",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "coverage_aware_v2_final_heldout_retrieval_eval.json",
+          "caseId": "coverage-final-video-002-q04"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-055",
+      "videoId": "BV1d3f2BqEMx",
+      "annotationType": "枚举多证据",
+      "question": "节点分配除了随机还有什么规则限制？",
+      "answerable": true,
+      "sourceLabel": "多证据 ASR",
+      "referenceAnswer": "一，在是非境中，抉择不与初始的四个节点相连；二，在今昔境中，只有杂疑、祸乱、故肆与初始的三个节点相连",
+      "type": "multi_evidence",
+      "goldEvidence": [
+        {
+          "evidenceId": "coverage-final-video-002-q05-e1",
+          "startMs": 363000,
+          "endMs": 369000,
+          "sources": [
+            "ASR"
+          ]
+        },
+        {
+          "evidenceId": "coverage-final-video-002-q05-e2",
+          "startMs": 371000,
+          "endMs": 376000,
+          "sources": [
+            "ASR"
+          ]
+        }
+      ],
+      "sourceGroupId": "BV1d3f2BqEMx",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "coverage_aware_v2_final_heldout_retrieval_eval.json",
+          "caseId": "coverage-final-video-002-q05"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-056",
+      "videoId": "BV1d3f2BqEMx",
+      "annotationType": "不可回答",
+      "question": "界园的树洞内作战会掉落多少票卷？",
+      "answerable": false,
+      "sourceLabel": "无",
+      "referenceAnswer": "视频中没有说明……",
+      "type": "unanswerable",
+      "goldEvidence": [],
+      "sourceGroupId": "BV1d3f2BqEMx",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "coverage_aware_v2_final_heldout_retrieval_eval.json",
+          "caseId": "coverage-final-video-002-q06"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-057",
+      "videoId": "BV1d3f2BqEMx",
+      "annotationType": "不可回答",
+      "question": "界园开局选择什么分队能够更好的探索树洞是非镜？",
+      "answerable": false,
+      "sourceLabel": "无",
+      "referenceAnswer": "视频中没有说明……",
+      "type": "unanswerable",
+      "goldEvidence": [],
+      "sourceGroupId": "BV1d3f2BqEMx",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "coverage_aware_v2_final_heldout_retrieval_eval.json",
+          "caseId": "coverage-final-video-002-q07"
+        }
+      ]
+    },
+    {
+      "caseId": "real-candidate-058",
+      "videoId": "BV1d3f2BqEMx",
+      "annotationType": "不可回答",
+      "question": "界园里想要达成五结局一定要进入树洞吗？",
+      "answerable": false,
+      "sourceLabel": "无",
+      "referenceAnswer": "视频中没有说明……",
+      "type": "unanswerable",
+      "goldEvidence": [],
+      "sourceGroupId": "BV1d3f2BqEMx",
+      "kind": "REAL_VIDEO_CANDIDATE",
+      "split": "unassigned",
+      "reviewStatus": "PENDING_VIDEO_REVIEW",
+      "sourceAnnotations": [
+        {
+          "file": "coverage_aware_v2_final_heldout_retrieval_eval.json",
+          "caseId": "coverage-final-video-002-q08"
+        }
+      ]
+    }
+  ]
+}

@@ -25,7 +25,17 @@ def atomic_json(path: Path, value: dict[str, Any]) -> None:
     temporary = path.with_name('.tmp-' + uuid.uuid4().hex[:16])
     try:
         temporary.write_text(json.dumps(value, ensure_ascii=False), encoding='utf-8')
-        os.replace(temporary, path)
+        # Windows readers/antivirus can briefly deny replacement even though
+        # the file is writable. Retain the complete temporary file while
+        # retrying only these transient sharing/access errors.
+        for attempt in range(6):
+            try:
+                os.replace(temporary, path)
+                break
+            except PermissionError as exc:
+                if os.name != 'nt' or getattr(exc, 'winerror', None) not in (5, 32, 33) or attempt == 5:
+                    raise
+                time.sleep(0.025 * (2 ** attempt))
     finally:
         temporary.unlink(missing_ok=True)
 

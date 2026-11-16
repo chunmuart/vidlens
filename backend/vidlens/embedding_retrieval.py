@@ -123,6 +123,7 @@ class DenseEmbeddingRetriever:
     ) -> None:
         self.segments = [dict(item) for item in segments]
         self.backend = backend
+        self.retrieval_mode = getattr(backend, "retrieval_mode", "LOCAL_DENSE_EMBEDDING")
         self.vectors = backend.encode(
             [str(item.get("content", "")) for item in self.segments],
             query=False,
@@ -151,7 +152,7 @@ class DenseEmbeddingRetriever:
             return {
                 "ok": True,
                 "query": normalized_query,
-                "retrievalMode": "LOCAL_DENSE_EMBEDDING",
+                "retrievalMode": self.retrieval_mode,
                 "matches": [],
                 "matchedCount": 0,
                 "fallbackToTimelineStart": False,
@@ -176,7 +177,7 @@ class DenseEmbeddingRetriever:
         return {
             "ok": True,
             "query": normalized_query,
-            "retrievalMode": "LOCAL_DENSE_EMBEDDING",
+            "retrievalMode": self.retrieval_mode,
             "matches": ranked[:top_k],
             "matchedCount": len(ranked),
             "fallbackToTimelineStart": False,
@@ -193,8 +194,9 @@ class HybridRrfRetriever:
         rrf_k: int = 60,
         lexical_weight: float = 0.5,
         dense_weight: float = 0.5,
+        lexical_retriever: Any = None,
     ) -> None:
-        self.lexical = EvidenceRetriever(segments)
+        self.lexical = lexical_retriever if lexical_retriever is not None else EvidenceRetriever(segments)
         self.dense = DenseEmbeddingRetriever(segments, backend)
         self.candidate_depth = max(8, min(int(candidate_depth), 100))
         self.rrf_k = max(1, int(rrf_k))

@@ -1,0 +1,7452 @@
+{
+  "fixture-001": [
+    {
+      "segmentId": "fixture-001-noise-2-2",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "支付回调的限制：同一支付流水只能入账一次。"
+    },
+    {
+      "segmentId": "fixture-001-noise-1-0",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "库存扣减的目的是防止超卖。"
+    },
+    {
+      "segmentId": "fixture-001-noise-2-0",
+      "source": "ASR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "支付回调的目的是更新订单支付状态。"
+    },
+    {
+      "segmentId": "fixture-001-noise-1-1",
+      "source": "OCR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "库存扣减配置面板：单次购买上限为3件。"
+    },
+    {
+      "segmentId": "fixture-001-s3",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "订单缓存的限制：价格结算必须查询数据库。"
+    },
+    {
+      "segmentId": "fixture-001-noise-4-0",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "优惠券发放的目的是控制活动成本。"
+    },
+    {
+      "segmentId": "fixture-001-noise-1-3",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "库存扣减的负责人是演示员1，不负责订单缓存。"
+    },
+    {
+      "segmentId": "fixture-001-s5",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-001-s2",
+      "source": "OCR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "订单缓存配置面板：缓存有效期为45秒。"
+    },
+    {
+      "segmentId": "fixture-001-noise-4-2",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "优惠券发放的限制：过期优惠券不可使用。"
+    },
+    {
+      "segmentId": "fixture-001-noise-2-1",
+      "source": "OCR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "支付回调配置面板：重试间隔为17秒。"
+    },
+    {
+      "segmentId": "fixture-001-s1",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "订单缓存的目的是减少商品详情的重复查询。"
+    },
+    {
+      "segmentId": "fixture-001-noise-3-2",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "退款审核的限制：已使用的兑换券不支持退款。"
+    },
+    {
+      "segmentId": "fixture-001-noise-3-1",
+      "source": "OCR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "退款审核配置面板：人工审核期限为4天。"
+    },
+    {
+      "segmentId": "fixture-001-noise-3-3",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "退款审核的负责人是演示员3，不负责订单缓存。"
+    },
+    {
+      "segmentId": "fixture-001-noise-2-3",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "支付回调的负责人是演示员2，不负责订单缓存。"
+    },
+    {
+      "segmentId": "fixture-001-noise-3-0",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "退款审核的目的是核查退款申请。"
+    },
+    {
+      "segmentId": "fixture-001-s4",
+      "source": "OCR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "对照模块的配置：库存缓存有效期是12秒。"
+    },
+    {
+      "segmentId": "fixture-001-noise-4-1",
+      "source": "OCR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "优惠券发放配置面板：每人领取上限为2张。"
+    },
+    {
+      "segmentId": "fixture-001-noise-1-2",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "库存扣减的限制：库存不足时拒绝创建订单。"
+    },
+    {
+      "segmentId": "fixture-001-noise-4-3",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "优惠券发放的负责人是演示员4，不负责订单缓存。"
+    }
+  ],
+  "fixture-002": [
+    {
+      "segmentId": "fixture-002-noise-2-1",
+      "source": "OCR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "退款审核配置面板：人工审核期限为4天。"
+    },
+    {
+      "segmentId": "fixture-002-noise-4-3",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "商品搜索的负责人是演示员4，不负责库存扣减。"
+    },
+    {
+      "segmentId": "fixture-002-noise-4-1",
+      "source": "OCR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "商品搜索配置面板：每页结果数量为24条。"
+    },
+    {
+      "segmentId": "fixture-002-s2",
+      "source": "OCR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "库存扣减配置面板：单次购买上限为3件。"
+    },
+    {
+      "segmentId": "fixture-002-noise-3-3",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "优惠券发放的负责人是演示员3，不负责库存扣减。"
+    },
+    {
+      "segmentId": "fixture-002-noise-2-3",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "退款审核的负责人是演示员2，不负责库存扣减。"
+    },
+    {
+      "segmentId": "fixture-002-s5",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-002-noise-1-3",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "支付回调的负责人是演示员1，不负责库存扣减。"
+    },
+    {
+      "segmentId": "fixture-002-noise-4-2",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "商品搜索的限制：下架商品不进入结果。"
+    },
+    {
+      "segmentId": "fixture-002-noise-4-0",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "商品搜索的目的是查找商品名称。"
+    },
+    {
+      "segmentId": "fixture-002-noise-3-1",
+      "source": "OCR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "优惠券发放配置面板：每人领取上限为2张。"
+    },
+    {
+      "segmentId": "fixture-002-noise-1-1",
+      "source": "OCR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "支付回调配置面板：重试间隔为17秒。"
+    },
+    {
+      "segmentId": "fixture-002-noise-2-2",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "退款审核的限制：已使用的兑换券不支持退款。"
+    },
+    {
+      "segmentId": "fixture-002-noise-3-0",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "优惠券发放的目的是控制活动成本。"
+    },
+    {
+      "segmentId": "fixture-002-noise-3-2",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "优惠券发放的限制：过期优惠券不可使用。"
+    },
+    {
+      "segmentId": "fixture-002-s1",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "库存扣减的目的是防止超卖。"
+    },
+    {
+      "segmentId": "fixture-002-noise-1-0",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "支付回调的目的是更新订单支付状态。"
+    },
+    {
+      "segmentId": "fixture-002-noise-1-2",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "支付回调的限制：同一支付流水只能入账一次。"
+    },
+    {
+      "segmentId": "fixture-002-s4",
+      "source": "OCR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "对照模块的配置：预售商品上限是8件。"
+    },
+    {
+      "segmentId": "fixture-002-noise-2-0",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "退款审核的目的是核查退款申请。"
+    },
+    {
+      "segmentId": "fixture-002-s3",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "库存扣减的限制：库存不足时拒绝创建订单。"
+    }
+  ],
+  "fixture-003": [
+    {
+      "segmentId": "fixture-003-noise-4-0",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "用户注册的目的是创建个人账号。"
+    },
+    {
+      "segmentId": "fixture-003-noise-3-0",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "商品搜索的目的是查找商品名称。"
+    },
+    {
+      "segmentId": "fixture-003-noise-2-3",
+      "source": "ASR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "优惠券发放的负责人是演示员2，不负责支付回调。"
+    },
+    {
+      "segmentId": "fixture-003-noise-3-1",
+      "source": "OCR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "商品搜索配置面板：每页结果数量为24条。"
+    },
+    {
+      "segmentId": "fixture-003-noise-3-2",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "商品搜索的限制：下架商品不进入结果。"
+    },
+    {
+      "segmentId": "fixture-003-noise-4-3",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "用户注册的负责人是演示员4，不负责支付回调。"
+    },
+    {
+      "segmentId": "fixture-003-noise-3-3",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "商品搜索的负责人是演示员3，不负责支付回调。"
+    },
+    {
+      "segmentId": "fixture-003-noise-1-1",
+      "source": "OCR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "退款审核配置面板：人工审核期限为4天。"
+    },
+    {
+      "segmentId": "fixture-003-noise-1-2",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "退款审核的限制：已使用的兑换券不支持退款。"
+    },
+    {
+      "segmentId": "fixture-003-noise-1-0",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "退款审核的目的是核查退款申请。"
+    },
+    {
+      "segmentId": "fixture-003-s1",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "支付回调的目的是更新订单支付状态。"
+    },
+    {
+      "segmentId": "fixture-003-noise-2-0",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "优惠券发放的目的是控制活动成本。"
+    },
+    {
+      "segmentId": "fixture-003-noise-2-1",
+      "source": "OCR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "优惠券发放配置面板：每人领取上限为2张。"
+    },
+    {
+      "segmentId": "fixture-003-noise-2-2",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "优惠券发放的限制：过期优惠券不可使用。"
+    },
+    {
+      "segmentId": "fixture-003-s5",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-003-noise-4-2",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "用户注册的限制：同一邮箱不能重复注册。"
+    },
+    {
+      "segmentId": "fixture-003-s4",
+      "source": "OCR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "对照模块的配置：退款回调间隔是29秒。"
+    },
+    {
+      "segmentId": "fixture-003-noise-4-1",
+      "source": "OCR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "用户注册配置面板：验证码有效期为7分钟。"
+    },
+    {
+      "segmentId": "fixture-003-s3",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "支付回调的限制：同一支付流水只能入账一次。"
+    },
+    {
+      "segmentId": "fixture-003-noise-1-3",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "退款审核的负责人是演示员1，不负责支付回调。"
+    },
+    {
+      "segmentId": "fixture-003-s2",
+      "source": "OCR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "支付回调配置面板：重试间隔为17秒。"
+    }
+  ],
+  "fixture-004": [
+    {
+      "segmentId": "fixture-004-noise-2-3",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "商品搜索的负责人是演示员2，不负责退款审核。"
+    },
+    {
+      "segmentId": "fixture-004-s1",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "退款审核的目的是核查退款申请。"
+    },
+    {
+      "segmentId": "fixture-004-noise-1-0",
+      "source": "ASR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "优惠券发放的目的是控制活动成本。"
+    },
+    {
+      "segmentId": "fixture-004-noise-3-1",
+      "source": "OCR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "用户注册配置面板：验证码有效期为7分钟。"
+    },
+    {
+      "segmentId": "fixture-004-noise-3-3",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "用户注册的负责人是演示员3，不负责退款审核。"
+    },
+    {
+      "segmentId": "fixture-004-noise-1-3",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "优惠券发放的负责人是演示员1，不负责退款审核。"
+    },
+    {
+      "segmentId": "fixture-004-noise-4-3",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "登录风控的负责人是演示员4，不负责退款审核。"
+    },
+    {
+      "segmentId": "fixture-004-noise-4-1",
+      "source": "OCR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "登录风控配置面板：失败次数阈值为6次。"
+    },
+    {
+      "segmentId": "fixture-004-s3",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "退款审核的限制：已使用的兑换券不支持退款。"
+    },
+    {
+      "segmentId": "fixture-004-noise-1-2",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "优惠券发放的限制：过期优惠券不可使用。"
+    },
+    {
+      "segmentId": "fixture-004-noise-2-1",
+      "source": "OCR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "商品搜索配置面板：每页结果数量为24条。"
+    },
+    {
+      "segmentId": "fixture-004-noise-4-2",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "登录风控的限制：超过阈值需要人工解锁。"
+    },
+    {
+      "segmentId": "fixture-004-noise-2-0",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "商品搜索的目的是查找商品名称。"
+    },
+    {
+      "segmentId": "fixture-004-s4",
+      "source": "OCR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "对照模块的配置：换货审核期限是6天。"
+    },
+    {
+      "segmentId": "fixture-004-noise-1-1",
+      "source": "OCR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "优惠券发放配置面板：每人领取上限为2张。"
+    },
+    {
+      "segmentId": "fixture-004-noise-3-2",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "用户注册的限制：同一邮箱不能重复注册。"
+    },
+    {
+      "segmentId": "fixture-004-noise-3-0",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "用户注册的目的是创建个人账号。"
+    },
+    {
+      "segmentId": "fixture-004-s2",
+      "source": "OCR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "退款审核配置面板：人工审核期限为4天。"
+    },
+    {
+      "segmentId": "fixture-004-s5",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-004-noise-4-0",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "登录风控的目的是降低账号盗用风险。"
+    },
+    {
+      "segmentId": "fixture-004-noise-2-2",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "商品搜索的限制：下架商品不进入结果。"
+    }
+  ],
+  "fixture-005": [
+    {
+      "segmentId": "fixture-005-noise-2-2",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "用户注册的限制：同一邮箱不能重复注册。"
+    },
+    {
+      "segmentId": "fixture-005-s3",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "优惠券发放的限制：过期优惠券不可使用。"
+    },
+    {
+      "segmentId": "fixture-005-noise-4-1",
+      "source": "OCR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "文件上传配置面板：单文件大小上限为80MB。"
+    },
+    {
+      "segmentId": "fixture-005-noise-1-3",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "商品搜索的负责人是演示员1，不负责优惠券发放。"
+    },
+    {
+      "segmentId": "fixture-005-noise-3-1",
+      "source": "OCR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "登录风控配置面板：失败次数阈值为6次。"
+    },
+    {
+      "segmentId": "fixture-005-noise-3-2",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "登录风控的限制：超过阈值需要人工解锁。"
+    },
+    {
+      "segmentId": "fixture-005-s5",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-005-noise-2-0",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "用户注册的目的是创建个人账号。"
+    },
+    {
+      "segmentId": "fixture-005-noise-1-2",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "商品搜索的限制：下架商品不进入结果。"
+    },
+    {
+      "segmentId": "fixture-005-noise-3-0",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "登录风控的目的是降低账号盗用风险。"
+    },
+    {
+      "segmentId": "fixture-005-noise-3-3",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "登录风控的负责人是演示员3，不负责优惠券发放。"
+    },
+    {
+      "segmentId": "fixture-005-s1",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "优惠券发放的目的是控制活动成本。"
+    },
+    {
+      "segmentId": "fixture-005-noise-2-1",
+      "source": "OCR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "用户注册配置面板：验证码有效期为7分钟。"
+    },
+    {
+      "segmentId": "fixture-005-noise-4-3",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "文件上传的负责人是演示员4，不负责优惠券发放。"
+    },
+    {
+      "segmentId": "fixture-005-noise-1-0",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "商品搜索的目的是查找商品名称。"
+    },
+    {
+      "segmentId": "fixture-005-s4",
+      "source": "OCR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "对照模块的配置：抽奖券每人上限是5张。"
+    },
+    {
+      "segmentId": "fixture-005-noise-1-1",
+      "source": "OCR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "商品搜索配置面板：每页结果数量为24条。"
+    },
+    {
+      "segmentId": "fixture-005-noise-2-3",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "用户注册的负责人是演示员2，不负责优惠券发放。"
+    },
+    {
+      "segmentId": "fixture-005-s2",
+      "source": "OCR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "优惠券发放配置面板：每人领取上限为2张。"
+    },
+    {
+      "segmentId": "fixture-005-noise-4-2",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "文件上传的限制：不接受可执行文件。"
+    },
+    {
+      "segmentId": "fixture-005-noise-4-0",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "文件上传的目的是保存项目附件。"
+    }
+  ],
+  "fixture-006": [
+    {
+      "segmentId": "fixture-006-noise-3-2",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "文件上传的限制：不接受可执行文件。"
+    },
+    {
+      "segmentId": "fixture-006-noise-2-0",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "登录风控的目的是降低账号盗用风险。"
+    },
+    {
+      "segmentId": "fixture-006-s3",
+      "source": "ASR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "商品搜索的限制：下架商品不进入结果。"
+    },
+    {
+      "segmentId": "fixture-006-s4",
+      "source": "OCR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "对照模块的配置：订单列表每页是15条。"
+    },
+    {
+      "segmentId": "fixture-006-noise-3-1",
+      "source": "OCR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "文件上传配置面板：单文件大小上限为80MB。"
+    },
+    {
+      "segmentId": "fixture-006-noise-1-3",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "用户注册的负责人是演示员1，不负责商品搜索。"
+    },
+    {
+      "segmentId": "fixture-006-noise-4-2",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "视频分片的限制：末段不足长度时保留原长度。"
+    },
+    {
+      "segmentId": "fixture-006-noise-3-3",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "文件上传的负责人是演示员3，不负责商品搜索。"
+    },
+    {
+      "segmentId": "fixture-006-s1",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "商品搜索的目的是查找商品名称。"
+    },
+    {
+      "segmentId": "fixture-006-noise-1-1",
+      "source": "OCR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "用户注册配置面板：验证码有效期为7分钟。"
+    },
+    {
+      "segmentId": "fixture-006-noise-2-3",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "登录风控的负责人是演示员2，不负责商品搜索。"
+    },
+    {
+      "segmentId": "fixture-006-noise-2-2",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "登录风控的限制：超过阈值需要人工解锁。"
+    },
+    {
+      "segmentId": "fixture-006-noise-4-1",
+      "source": "OCR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "视频分片配置面板：分片长度为35秒。"
+    },
+    {
+      "segmentId": "fixture-006-noise-1-2",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "用户注册的限制：同一邮箱不能重复注册。"
+    },
+    {
+      "segmentId": "fixture-006-noise-3-0",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "文件上传的目的是保存项目附件。"
+    },
+    {
+      "segmentId": "fixture-006-noise-4-3",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "视频分片的负责人是演示员4，不负责商品搜索。"
+    },
+    {
+      "segmentId": "fixture-006-s5",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-006-s2",
+      "source": "OCR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "商品搜索配置面板：每页结果数量为24条。"
+    },
+    {
+      "segmentId": "fixture-006-noise-2-1",
+      "source": "OCR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "登录风控配置面板：失败次数阈值为6次。"
+    },
+    {
+      "segmentId": "fixture-006-noise-4-0",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "视频分片的目的是便于逐段处理视频。"
+    },
+    {
+      "segmentId": "fixture-006-noise-1-0",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "用户注册的目的是创建个人账号。"
+    }
+  ],
+  "fixture-007": [
+    {
+      "segmentId": "fixture-007-noise-3-0",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "视频分片的目的是便于逐段处理视频。"
+    },
+    {
+      "segmentId": "fixture-007-s2",
+      "source": "OCR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "用户注册配置面板：验证码有效期为7分钟。"
+    },
+    {
+      "segmentId": "fixture-007-s3",
+      "source": "ASR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "用户注册的限制：同一邮箱不能重复注册。"
+    },
+    {
+      "segmentId": "fixture-007-noise-4-1",
+      "source": "OCR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "语音识别配置面板：并发请求上限为4路。"
+    },
+    {
+      "segmentId": "fixture-007-noise-4-3",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "语音识别的负责人是演示员4，不负责用户注册。"
+    },
+    {
+      "segmentId": "fixture-007-noise-1-3",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "登录风控的负责人是演示员1，不负责用户注册。"
+    },
+    {
+      "segmentId": "fixture-007-noise-4-0",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "语音识别的目的是提取语音文本。"
+    },
+    {
+      "segmentId": "fixture-007-noise-2-1",
+      "source": "OCR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "文件上传配置面板：单文件大小上限为80MB。"
+    },
+    {
+      "segmentId": "fixture-007-noise-2-2",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "文件上传的限制：不接受可执行文件。"
+    },
+    {
+      "segmentId": "fixture-007-noise-3-1",
+      "source": "OCR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "视频分片配置面板：分片长度为35秒。"
+    },
+    {
+      "segmentId": "fixture-007-noise-1-2",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "登录风控的限制：超过阈值需要人工解锁。"
+    },
+    {
+      "segmentId": "fixture-007-noise-3-3",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "视频分片的负责人是演示员3，不负责用户注册。"
+    },
+    {
+      "segmentId": "fixture-007-s5",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-007-noise-1-1",
+      "source": "OCR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "登录风控配置面板：失败次数阈值为6次。"
+    },
+    {
+      "segmentId": "fixture-007-noise-1-0",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "登录风控的目的是降低账号盗用风险。"
+    },
+    {
+      "segmentId": "fixture-007-noise-3-2",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "视频分片的限制：末段不足长度时保留原长度。"
+    },
+    {
+      "segmentId": "fixture-007-noise-2-3",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "文件上传的负责人是演示员2，不负责用户注册。"
+    },
+    {
+      "segmentId": "fixture-007-s1",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "用户注册的目的是创建个人账号。"
+    },
+    {
+      "segmentId": "fixture-007-noise-2-0",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "文件上传的目的是保存项目附件。"
+    },
+    {
+      "segmentId": "fixture-007-noise-4-2",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "语音识别的限制：静音片段只记录空文本。"
+    },
+    {
+      "segmentId": "fixture-007-s4",
+      "source": "OCR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "对照模块的配置：登录验证码有效期是3分钟。"
+    }
+  ],
+  "fixture-008": [
+    {
+      "segmentId": "fixture-008-noise-3-3",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "语音识别的负责人是演示员3，不负责登录风控。"
+    },
+    {
+      "segmentId": "fixture-008-noise-4-3",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "画面识别的负责人是演示员4，不负责登录风控。"
+    },
+    {
+      "segmentId": "fixture-008-s3",
+      "source": "ASR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "登录风控的限制：超过阈值需要人工解锁。"
+    },
+    {
+      "segmentId": "fixture-008-noise-4-0",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "画面识别的目的是提取课件文字。"
+    },
+    {
+      "segmentId": "fixture-008-noise-1-1",
+      "source": "OCR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "文件上传配置面板：单文件大小上限为80MB。"
+    },
+    {
+      "segmentId": "fixture-008-noise-2-2",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "视频分片的限制：末段不足长度时保留原长度。"
+    },
+    {
+      "segmentId": "fixture-008-noise-4-2",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "画面识别的限制：纯黑画面跳过识别。"
+    },
+    {
+      "segmentId": "fixture-008-noise-2-0",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "视频分片的目的是便于逐段处理视频。"
+    },
+    {
+      "segmentId": "fixture-008-noise-1-2",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "文件上传的限制：不接受可执行文件。"
+    },
+    {
+      "segmentId": "fixture-008-s4",
+      "source": "OCR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "对照模块的配置：支付密码失败阈值是4次。"
+    },
+    {
+      "segmentId": "fixture-008-noise-4-1",
+      "source": "OCR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "画面识别配置面板：抽帧间隔为9秒。"
+    },
+    {
+      "segmentId": "fixture-008-noise-2-3",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "视频分片的负责人是演示员2，不负责登录风控。"
+    },
+    {
+      "segmentId": "fixture-008-noise-1-0",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "文件上传的目的是保存项目附件。"
+    },
+    {
+      "segmentId": "fixture-008-s1",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "登录风控的目的是降低账号盗用风险。"
+    },
+    {
+      "segmentId": "fixture-008-s2",
+      "source": "OCR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "登录风控配置面板：失败次数阈值为6次。"
+    },
+    {
+      "segmentId": "fixture-008-noise-3-1",
+      "source": "OCR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "语音识别配置面板：并发请求上限为4路。"
+    },
+    {
+      "segmentId": "fixture-008-noise-3-2",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "语音识别的限制：静音片段只记录空文本。"
+    },
+    {
+      "segmentId": "fixture-008-noise-2-1",
+      "source": "OCR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "视频分片配置面板：分片长度为35秒。"
+    },
+    {
+      "segmentId": "fixture-008-s5",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-008-noise-1-3",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "文件上传的负责人是演示员1，不负责登录风控。"
+    },
+    {
+      "segmentId": "fixture-008-noise-3-0",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "语音识别的目的是提取语音文本。"
+    }
+  ],
+  "fixture-009": [
+    {
+      "segmentId": "fixture-009-noise-4-3",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "字幕校对的负责人是演示员4，不负责文件上传。"
+    },
+    {
+      "segmentId": "fixture-009-noise-3-0",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "画面识别的目的是提取课件文字。"
+    },
+    {
+      "segmentId": "fixture-009-noise-2-0",
+      "source": "ASR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "语音识别的目的是提取语音文本。"
+    },
+    {
+      "segmentId": "fixture-009-noise-3-3",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "画面识别的负责人是演示员3，不负责文件上传。"
+    },
+    {
+      "segmentId": "fixture-009-s1",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "文件上传的目的是保存项目附件。"
+    },
+    {
+      "segmentId": "fixture-009-noise-2-3",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "语音识别的负责人是演示员2，不负责文件上传。"
+    },
+    {
+      "segmentId": "fixture-009-s2",
+      "source": "OCR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "文件上传配置面板：单文件大小上限为80MB。"
+    },
+    {
+      "segmentId": "fixture-009-noise-2-1",
+      "source": "OCR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "语音识别配置面板：并发请求上限为4路。"
+    },
+    {
+      "segmentId": "fixture-009-noise-1-1",
+      "source": "OCR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "视频分片配置面板：分片长度为35秒。"
+    },
+    {
+      "segmentId": "fixture-009-noise-1-3",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "视频分片的负责人是演示员1，不负责文件上传。"
+    },
+    {
+      "segmentId": "fixture-009-noise-2-2",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "语音识别的限制：静音片段只记录空文本。"
+    },
+    {
+      "segmentId": "fixture-009-noise-1-2",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "视频分片的限制：末段不足长度时保留原长度。"
+    },
+    {
+      "segmentId": "fixture-009-noise-1-0",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "视频分片的目的是便于逐段处理视频。"
+    },
+    {
+      "segmentId": "fixture-009-s3",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "文件上传的限制：不接受可执行文件。"
+    },
+    {
+      "segmentId": "fixture-009-noise-3-2",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "画面识别的限制：纯黑画面跳过识别。"
+    },
+    {
+      "segmentId": "fixture-009-s4",
+      "source": "OCR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "对照模块的配置：头像大小上限是2MB。"
+    },
+    {
+      "segmentId": "fixture-009-noise-4-1",
+      "source": "OCR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "字幕校对配置面板：每批字幕数量为16条。"
+    },
+    {
+      "segmentId": "fixture-009-noise-4-2",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "字幕校对的限制：不允许新增原音频没有的结论。"
+    },
+    {
+      "segmentId": "fixture-009-noise-4-0",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "字幕校对的目的是修正专有名词。"
+    },
+    {
+      "segmentId": "fixture-009-s5",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-009-noise-3-1",
+      "source": "OCR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "画面识别配置面板：抽帧间隔为9秒。"
+    }
+  ],
+  "fixture-010": [
+    {
+      "segmentId": "fixture-010-noise-4-1",
+      "source": "OCR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "证据切片配置面板：相邻窗口长度为14秒。"
+    },
+    {
+      "segmentId": "fixture-010-noise-2-3",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "画面识别的负责人是演示员2，不负责视频分片。"
+    },
+    {
+      "segmentId": "fixture-010-s3",
+      "source": "ASR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "视频分片的限制：末段不足长度时保留原长度。"
+    },
+    {
+      "segmentId": "fixture-010-noise-1-2",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "语音识别的限制：静音片段只记录空文本。"
+    },
+    {
+      "segmentId": "fixture-010-s1",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "视频分片的目的是便于逐段处理视频。"
+    },
+    {
+      "segmentId": "fixture-010-noise-3-3",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "字幕校对的负责人是演示员3，不负责视频分片。"
+    },
+    {
+      "segmentId": "fixture-010-s4",
+      "source": "OCR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "对照模块的配置：音频分片长度是18秒。"
+    },
+    {
+      "segmentId": "fixture-010-noise-3-2",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "字幕校对的限制：不允许新增原音频没有的结论。"
+    },
+    {
+      "segmentId": "fixture-010-noise-4-3",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "证据切片的负责人是演示员4，不负责视频分片。"
+    },
+    {
+      "segmentId": "fixture-010-noise-2-1",
+      "source": "OCR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "画面识别配置面板：抽帧间隔为9秒。"
+    },
+    {
+      "segmentId": "fixture-010-s5",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-010-noise-3-0",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "字幕校对的目的是修正专有名词。"
+    },
+    {
+      "segmentId": "fixture-010-noise-4-0",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "证据切片的目的是保留上下文边界。"
+    },
+    {
+      "segmentId": "fixture-010-noise-3-1",
+      "source": "OCR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "字幕校对配置面板：每批字幕数量为16条。"
+    },
+    {
+      "segmentId": "fixture-010-noise-2-2",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "画面识别的限制：纯黑画面跳过识别。"
+    },
+    {
+      "segmentId": "fixture-010-noise-2-0",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "画面识别的目的是提取课件文字。"
+    },
+    {
+      "segmentId": "fixture-010-noise-1-3",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "语音识别的负责人是演示员1，不负责视频分片。"
+    },
+    {
+      "segmentId": "fixture-010-noise-1-1",
+      "source": "OCR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "语音识别配置面板：并发请求上限为4路。"
+    },
+    {
+      "segmentId": "fixture-010-s2",
+      "source": "OCR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "视频分片配置面板：分片长度为35秒。"
+    },
+    {
+      "segmentId": "fixture-010-noise-1-0",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "语音识别的目的是提取语音文本。"
+    },
+    {
+      "segmentId": "fixture-010-noise-4-2",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "证据切片的限制：不能跨越视频边界。"
+    }
+  ],
+  "fixture-011": [
+    {
+      "segmentId": "fixture-011-noise-4-1",
+      "source": "OCR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "向量检索配置面板：候选片段数量为13条。"
+    },
+    {
+      "segmentId": "fixture-011-noise-1-1",
+      "source": "OCR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "画面识别配置面板：抽帧间隔为9秒。"
+    },
+    {
+      "segmentId": "fixture-011-noise-1-3",
+      "source": "ASR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "画面识别的负责人是演示员1，不负责语音识别。"
+    },
+    {
+      "segmentId": "fixture-011-noise-4-0",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "向量检索的目的是查找语义相关片段。"
+    },
+    {
+      "segmentId": "fixture-011-noise-3-2",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "证据切片的限制：不能跨越视频边界。"
+    },
+    {
+      "segmentId": "fixture-011-noise-2-2",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "字幕校对的限制：不允许新增原音频没有的结论。"
+    },
+    {
+      "segmentId": "fixture-011-noise-1-2",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "画面识别的限制：纯黑画面跳过识别。"
+    },
+    {
+      "segmentId": "fixture-011-noise-3-1",
+      "source": "OCR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "证据切片配置面板：相邻窗口长度为14秒。"
+    },
+    {
+      "segmentId": "fixture-011-noise-3-0",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "证据切片的目的是保留上下文边界。"
+    },
+    {
+      "segmentId": "fixture-011-noise-4-3",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "向量检索的负责人是演示员4，不负责语音识别。"
+    },
+    {
+      "segmentId": "fixture-011-s2",
+      "source": "OCR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "语音识别配置面板：并发请求上限为4路。"
+    },
+    {
+      "segmentId": "fixture-011-s3",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "语音识别的限制：静音片段只记录空文本。"
+    },
+    {
+      "segmentId": "fixture-011-s4",
+      "source": "OCR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "对照模块的配置：图像识别并发上限是7路。"
+    },
+    {
+      "segmentId": "fixture-011-s5",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-011-noise-2-3",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "字幕校对的负责人是演示员2，不负责语音识别。"
+    },
+    {
+      "segmentId": "fixture-011-noise-2-1",
+      "source": "OCR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "字幕校对配置面板：每批字幕数量为16条。"
+    },
+    {
+      "segmentId": "fixture-011-noise-3-3",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "证据切片的负责人是演示员3，不负责语音识别。"
+    },
+    {
+      "segmentId": "fixture-011-noise-1-0",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "画面识别的目的是提取课件文字。"
+    },
+    {
+      "segmentId": "fixture-011-noise-4-2",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "向量检索的限制：只能检索当前视频。"
+    },
+    {
+      "segmentId": "fixture-011-s1",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "语音识别的目的是提取语音文本。"
+    },
+    {
+      "segmentId": "fixture-011-noise-2-0",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "字幕校对的目的是修正专有名词。"
+    }
+  ],
+  "fixture-012": [
+    {
+      "segmentId": "fixture-012-noise-3-2",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "向量检索的限制：只能检索当前视频。"
+    },
+    {
+      "segmentId": "fixture-012-s3",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "画面识别的限制：纯黑画面跳过识别。"
+    },
+    {
+      "segmentId": "fixture-012-noise-1-2",
+      "source": "ASR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "字幕校对的限制：不允许新增原音频没有的结论。"
+    },
+    {
+      "segmentId": "fixture-012-noise-1-3",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "字幕校对的负责人是演示员1，不负责画面识别。"
+    },
+    {
+      "segmentId": "fixture-012-noise-3-0",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "向量检索的目的是查找语义相关片段。"
+    },
+    {
+      "segmentId": "fixture-012-noise-2-1",
+      "source": "OCR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "证据切片配置面板：相邻窗口长度为14秒。"
+    },
+    {
+      "segmentId": "fixture-012-noise-1-0",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "字幕校对的目的是修正专有名词。"
+    },
+    {
+      "segmentId": "fixture-012-noise-3-1",
+      "source": "OCR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "向量检索配置面板：候选片段数量为13条。"
+    },
+    {
+      "segmentId": "fixture-012-noise-2-0",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "证据切片的目的是保留上下文边界。"
+    },
+    {
+      "segmentId": "fixture-012-s4",
+      "source": "OCR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "对照模块的配置：缩略图间隔是30秒。"
+    },
+    {
+      "segmentId": "fixture-012-noise-4-1",
+      "source": "OCR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "词法检索配置面板：返回片段上限为11条。"
+    },
+    {
+      "segmentId": "fixture-012-noise-2-2",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "证据切片的限制：不能跨越视频边界。"
+    },
+    {
+      "segmentId": "fixture-012-noise-2-3",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "证据切片的负责人是演示员2，不负责画面识别。"
+    },
+    {
+      "segmentId": "fixture-012-s2",
+      "source": "OCR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "画面识别配置面板：抽帧间隔为9秒。"
+    },
+    {
+      "segmentId": "fixture-012-noise-4-0",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "词法检索的目的是匹配明确术语。"
+    },
+    {
+      "segmentId": "fixture-012-s5",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-012-noise-1-1",
+      "source": "OCR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "字幕校对配置面板：每批字幕数量为16条。"
+    },
+    {
+      "segmentId": "fixture-012-noise-3-3",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "向量检索的负责人是演示员3，不负责画面识别。"
+    },
+    {
+      "segmentId": "fixture-012-noise-4-2",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "词法检索的限制：无匹配项时返回空数组。"
+    },
+    {
+      "segmentId": "fixture-012-noise-4-3",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "词法检索的负责人是演示员4，不负责画面识别。"
+    },
+    {
+      "segmentId": "fixture-012-s1",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "画面识别的目的是提取课件文字。"
+    }
+  ],
+  "fixture-013": [
+    {
+      "segmentId": "fixture-013-noise-1-0",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "证据切片的目的是保留上下文边界。"
+    },
+    {
+      "segmentId": "fixture-013-noise-3-1",
+      "source": "OCR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "词法检索配置面板：返回片段上限为11条。"
+    },
+    {
+      "segmentId": "fixture-013-noise-1-1",
+      "source": "OCR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "证据切片配置面板：相邻窗口长度为14秒。"
+    },
+    {
+      "segmentId": "fixture-013-noise-3-0",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "词法检索的目的是匹配明确术语。"
+    },
+    {
+      "segmentId": "fixture-013-s2",
+      "source": "OCR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "字幕校对配置面板：每批字幕数量为16条。"
+    },
+    {
+      "segmentId": "fixture-013-noise-2-0",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "向量检索的目的是查找语义相关片段。"
+    },
+    {
+      "segmentId": "fixture-013-noise-3-2",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "词法检索的限制：无匹配项时返回空数组。"
+    },
+    {
+      "segmentId": "fixture-013-noise-4-0",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "结果重排的目的是调整候选证据顺序。"
+    },
+    {
+      "segmentId": "fixture-013-s4",
+      "source": "OCR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "对照模块的配置：摘要每批处理10条。"
+    },
+    {
+      "segmentId": "fixture-013-noise-2-3",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "向量检索的负责人是演示员2，不负责字幕校对。"
+    },
+    {
+      "segmentId": "fixture-013-noise-2-1",
+      "source": "OCR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "向量检索配置面板：候选片段数量为13条。"
+    },
+    {
+      "segmentId": "fixture-013-noise-4-1",
+      "source": "OCR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "结果重排配置面板：重排候选数量为32条。"
+    },
+    {
+      "segmentId": "fixture-013-noise-3-3",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "词法检索的负责人是演示员3，不负责字幕校对。"
+    },
+    {
+      "segmentId": "fixture-013-noise-1-2",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "证据切片的限制：不能跨越视频边界。"
+    },
+    {
+      "segmentId": "fixture-013-noise-4-2",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "结果重排的限制：重排不能新增候选证据。"
+    },
+    {
+      "segmentId": "fixture-013-s1",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "字幕校对的目的是修正专有名词。"
+    },
+    {
+      "segmentId": "fixture-013-s3",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "字幕校对的限制：不允许新增原音频没有的结论。"
+    },
+    {
+      "segmentId": "fixture-013-noise-4-3",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "结果重排的负责人是演示员4，不负责字幕校对。"
+    },
+    {
+      "segmentId": "fixture-013-s5",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-013-noise-1-3",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "证据切片的负责人是演示员1，不负责字幕校对。"
+    },
+    {
+      "segmentId": "fixture-013-noise-2-2",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "向量检索的限制：只能检索当前视频。"
+    }
+  ],
+  "fixture-014": [
+    {
+      "segmentId": "fixture-014-noise-1-3",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "向量检索的负责人是演示员1，不负责证据切片。"
+    },
+    {
+      "segmentId": "fixture-014-noise-2-2",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "词法检索的限制：无匹配项时返回空数组。"
+    },
+    {
+      "segmentId": "fixture-014-noise-1-1",
+      "source": "OCR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "向量检索配置面板：候选片段数量为13条。"
+    },
+    {
+      "segmentId": "fixture-014-noise-4-2",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "问题规划的限制：不得添加用户未问的目标。"
+    },
+    {
+      "segmentId": "fixture-014-noise-1-2",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "向量检索的限制：只能检索当前视频。"
+    },
+    {
+      "segmentId": "fixture-014-noise-2-3",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "词法检索的负责人是演示员2，不负责证据切片。"
+    },
+    {
+      "segmentId": "fixture-014-s4",
+      "source": "OCR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "对照模块的配置：预览窗口长度是8秒。"
+    },
+    {
+      "segmentId": "fixture-014-noise-3-3",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "结果重排的负责人是演示员3，不负责证据切片。"
+    },
+    {
+      "segmentId": "fixture-014-noise-4-3",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "问题规划的负责人是演示员4，不负责证据切片。"
+    },
+    {
+      "segmentId": "fixture-014-s3",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "证据切片的限制：不能跨越视频边界。"
+    },
+    {
+      "segmentId": "fixture-014-noise-4-1",
+      "source": "OCR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "问题规划配置面板：子问题上限为5个。"
+    },
+    {
+      "segmentId": "fixture-014-noise-1-0",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "向量检索的目的是查找语义相关片段。"
+    },
+    {
+      "segmentId": "fixture-014-noise-2-1",
+      "source": "OCR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "词法检索配置面板：返回片段上限为11条。"
+    },
+    {
+      "segmentId": "fixture-014-s1",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "证据切片的目的是保留上下文边界。"
+    },
+    {
+      "segmentId": "fixture-014-noise-3-0",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "结果重排的目的是调整候选证据顺序。"
+    },
+    {
+      "segmentId": "fixture-014-noise-3-1",
+      "source": "OCR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "结果重排配置面板：重排候选数量为32条。"
+    },
+    {
+      "segmentId": "fixture-014-noise-4-0",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "问题规划的目的是拆分复杂问题。"
+    },
+    {
+      "segmentId": "fixture-014-s2",
+      "source": "OCR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "证据切片配置面板：相邻窗口长度为14秒。"
+    },
+    {
+      "segmentId": "fixture-014-noise-2-0",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "词法检索的目的是匹配明确术语。"
+    },
+    {
+      "segmentId": "fixture-014-s5",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-014-noise-3-2",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "结果重排的限制：重排不能新增候选证据。"
+    }
+  ],
+  "fixture-015": [
+    {
+      "segmentId": "fixture-015-noise-4-2",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "证据分配的限制：先为各子问题分配再补充邻居。"
+    },
+    {
+      "segmentId": "fixture-015-s4",
+      "source": "OCR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "对照模块的配置：词法检索候选数量是21条。"
+    },
+    {
+      "segmentId": "fixture-015-noise-4-1",
+      "source": "OCR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "证据分配配置面板：证据总上限为18条。"
+    },
+    {
+      "segmentId": "fixture-015-s1",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "向量检索的目的是查找语义相关片段。"
+    },
+    {
+      "segmentId": "fixture-015-noise-2-1",
+      "source": "OCR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "结果重排配置面板：重排候选数量为32条。"
+    },
+    {
+      "segmentId": "fixture-015-noise-3-1",
+      "source": "OCR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "问题规划配置面板：子问题上限为5个。"
+    },
+    {
+      "segmentId": "fixture-015-noise-2-3",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "结果重排的负责人是演示员2，不负责向量检索。"
+    },
+    {
+      "segmentId": "fixture-015-noise-4-0",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "证据分配的目的是避免子问题遗漏。"
+    },
+    {
+      "segmentId": "fixture-015-noise-1-3",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "词法检索的负责人是演示员1，不负责向量检索。"
+    },
+    {
+      "segmentId": "fixture-015-noise-2-2",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "结果重排的限制：重排不能新增候选证据。"
+    },
+    {
+      "segmentId": "fixture-015-noise-3-2",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "问题规划的限制：不得添加用户未问的目标。"
+    },
+    {
+      "segmentId": "fixture-015-noise-1-2",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "词法检索的限制：无匹配项时返回空数组。"
+    },
+    {
+      "segmentId": "fixture-015-noise-3-0",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "问题规划的目的是拆分复杂问题。"
+    },
+    {
+      "segmentId": "fixture-015-noise-1-0",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "词法检索的目的是匹配明确术语。"
+    },
+    {
+      "segmentId": "fixture-015-s2",
+      "source": "OCR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "向量检索配置面板：候选片段数量为13条。"
+    },
+    {
+      "segmentId": "fixture-015-s5",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-015-noise-3-3",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "问题规划的负责人是演示员3，不负责向量检索。"
+    },
+    {
+      "segmentId": "fixture-015-noise-4-3",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "证据分配的负责人是演示员4，不负责向量检索。"
+    },
+    {
+      "segmentId": "fixture-015-s3",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "向量检索的限制：只能检索当前视频。"
+    },
+    {
+      "segmentId": "fixture-015-noise-2-0",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "结果重排的目的是调整候选证据顺序。"
+    },
+    {
+      "segmentId": "fixture-015-noise-1-1",
+      "source": "OCR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "词法检索配置面板：返回片段上限为11条。"
+    }
+  ],
+  "fixture-016": [
+    {
+      "segmentId": "fixture-016-noise-3-2",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "证据分配的限制：先为各子问题分配再补充邻居。"
+    },
+    {
+      "segmentId": "fixture-016-noise-2-3",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "问题规划的负责人是演示员2，不负责词法检索。"
+    },
+    {
+      "segmentId": "fixture-016-noise-4-0",
+      "source": "ASR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "补充检索的目的是补齐缺失证据。"
+    },
+    {
+      "segmentId": "fixture-016-noise-1-1",
+      "source": "OCR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "结果重排配置面板：重排候选数量为32条。"
+    },
+    {
+      "segmentId": "fixture-016-noise-2-2",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "问题规划的限制：不得添加用户未问的目标。"
+    },
+    {
+      "segmentId": "fixture-016-s3",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "词法检索的限制：无匹配项时返回空数组。"
+    },
+    {
+      "segmentId": "fixture-016-s2",
+      "source": "OCR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "词法检索配置面板：返回片段上限为11条。"
+    },
+    {
+      "segmentId": "fixture-016-noise-4-2",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "补充检索的限制：额度耗尽后不得继续调用。"
+    },
+    {
+      "segmentId": "fixture-016-noise-2-1",
+      "source": "OCR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "问题规划配置面板：子问题上限为5个。"
+    },
+    {
+      "segmentId": "fixture-016-s5",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-016-noise-3-3",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "证据分配的负责人是演示员3，不负责词法检索。"
+    },
+    {
+      "segmentId": "fixture-016-noise-3-0",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "证据分配的目的是避免子问题遗漏。"
+    },
+    {
+      "segmentId": "fixture-016-noise-4-1",
+      "source": "OCR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "补充检索配置面板：修复次数上限为1次。"
+    },
+    {
+      "segmentId": "fixture-016-noise-3-1",
+      "source": "OCR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "证据分配配置面板：证据总上限为18条。"
+    },
+    {
+      "segmentId": "fixture-016-noise-1-0",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "结果重排的目的是调整候选证据顺序。"
+    },
+    {
+      "segmentId": "fixture-016-noise-1-3",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "结果重排的负责人是演示员1，不负责词法检索。"
+    },
+    {
+      "segmentId": "fixture-016-noise-2-0",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "问题规划的目的是拆分复杂问题。"
+    },
+    {
+      "segmentId": "fixture-016-s1",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "词法检索的目的是匹配明确术语。"
+    },
+    {
+      "segmentId": "fixture-016-s4",
+      "source": "OCR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "对照模块的配置：推荐模块上限是19条。"
+    },
+    {
+      "segmentId": "fixture-016-noise-1-2",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "结果重排的限制：重排不能新增候选证据。"
+    },
+    {
+      "segmentId": "fixture-016-noise-4-3",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "补充检索的负责人是演示员4，不负责词法检索。"
+    }
+  ],
+  "fixture-017": [
+    {
+      "segmentId": "fixture-017-noise-3-0",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "补充检索的目的是补齐缺失证据。"
+    },
+    {
+      "segmentId": "fixture-017-noise-4-3",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "引用核验的负责人是演示员4，不负责结果重排。"
+    },
+    {
+      "segmentId": "fixture-017-noise-3-2",
+      "source": "ASR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "补充检索的限制：额度耗尽后不得继续调用。"
+    },
+    {
+      "segmentId": "fixture-017-noise-4-0",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "引用核验的目的是检查引用来源。"
+    },
+    {
+      "segmentId": "fixture-017-noise-4-1",
+      "source": "OCR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "引用核验配置面板：允许时间偏差为5秒。"
+    },
+    {
+      "segmentId": "fixture-017-noise-2-0",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "证据分配的目的是避免子问题遗漏。"
+    },
+    {
+      "segmentId": "fixture-017-noise-2-3",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "证据分配的负责人是演示员2，不负责结果重排。"
+    },
+    {
+      "segmentId": "fixture-017-noise-3-1",
+      "source": "OCR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "补充检索配置面板：修复次数上限为1次。"
+    },
+    {
+      "segmentId": "fixture-017-noise-3-3",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "补充检索的负责人是演示员3，不负责结果重排。"
+    },
+    {
+      "segmentId": "fixture-017-s3",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "结果重排的限制：重排不能新增候选证据。"
+    },
+    {
+      "segmentId": "fixture-017-noise-1-0",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "问题规划的目的是拆分复杂问题。"
+    },
+    {
+      "segmentId": "fixture-017-noise-4-2",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "引用核验的限制：时间吻合不代表语义支持。"
+    },
+    {
+      "segmentId": "fixture-017-noise-2-1",
+      "source": "OCR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "证据分配配置面板：证据总上限为18条。"
+    },
+    {
+      "segmentId": "fixture-017-noise-1-2",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "问题规划的限制：不得添加用户未问的目标。"
+    },
+    {
+      "segmentId": "fixture-017-noise-1-1",
+      "source": "OCR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "问题规划配置面板：子问题上限为5个。"
+    },
+    {
+      "segmentId": "fixture-017-noise-2-2",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "证据分配的限制：先为各子问题分配再补充邻居。"
+    },
+    {
+      "segmentId": "fixture-017-s4",
+      "source": "OCR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "对照模块的配置：最终展示数量是6条。"
+    },
+    {
+      "segmentId": "fixture-017-s2",
+      "source": "OCR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "结果重排配置面板：重排候选数量为32条。"
+    },
+    {
+      "segmentId": "fixture-017-noise-1-3",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "问题规划的负责人是演示员1，不负责结果重排。"
+    },
+    {
+      "segmentId": "fixture-017-s1",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "结果重排的目的是调整候选证据顺序。"
+    },
+    {
+      "segmentId": "fixture-017-s5",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    }
+  ],
+  "fixture-018": [
+    {
+      "segmentId": "fixture-018-noise-1-1",
+      "source": "OCR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "证据分配配置面板：证据总上限为18条。"
+    },
+    {
+      "segmentId": "fixture-018-s2",
+      "source": "OCR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "问题规划配置面板：子问题上限为5个。"
+    },
+    {
+      "segmentId": "fixture-018-noise-3-1",
+      "source": "OCR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "引用核验配置面板：允许时间偏差为5秒。"
+    },
+    {
+      "segmentId": "fixture-018-noise-2-2",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "补充检索的限制：额度耗尽后不得继续调用。"
+    },
+    {
+      "segmentId": "fixture-018-noise-1-3",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "证据分配的负责人是演示员1，不负责问题规划。"
+    },
+    {
+      "segmentId": "fixture-018-noise-4-2",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "追问改写的限制：无法确定指代时必须澄清。"
+    },
+    {
+      "segmentId": "fixture-018-noise-4-1",
+      "source": "OCR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "追问改写配置面板：历史对话轮数为3轮。"
+    },
+    {
+      "segmentId": "fixture-018-s5",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-018-noise-1-2",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "证据分配的限制：先为各子问题分配再补充邻居。"
+    },
+    {
+      "segmentId": "fixture-018-noise-2-1",
+      "source": "OCR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "补充检索配置面板：修复次数上限为1次。"
+    },
+    {
+      "segmentId": "fixture-018-noise-4-3",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "追问改写的负责人是演示员4，不负责问题规划。"
+    },
+    {
+      "segmentId": "fixture-018-noise-3-0",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "引用核验的目的是检查引用来源。"
+    },
+    {
+      "segmentId": "fixture-018-noise-1-0",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "证据分配的目的是避免子问题遗漏。"
+    },
+    {
+      "segmentId": "fixture-018-noise-2-3",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "补充检索的负责人是演示员2，不负责问题规划。"
+    },
+    {
+      "segmentId": "fixture-018-noise-4-0",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "追问改写的目的是补全指代对象。"
+    },
+    {
+      "segmentId": "fixture-018-noise-3-3",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "引用核验的负责人是演示员3，不负责问题规划。"
+    },
+    {
+      "segmentId": "fixture-018-noise-3-2",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "引用核验的限制：时间吻合不代表语义支持。"
+    },
+    {
+      "segmentId": "fixture-018-s1",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "问题规划的目的是拆分复杂问题。"
+    },
+    {
+      "segmentId": "fixture-018-s4",
+      "source": "OCR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "对照模块的配置：报告结论上限是9个。"
+    },
+    {
+      "segmentId": "fixture-018-s3",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "问题规划的限制：不得添加用户未问的目标。"
+    },
+    {
+      "segmentId": "fixture-018-noise-2-0",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "补充检索的目的是补齐缺失证据。"
+    }
+  ],
+  "fixture-019": [
+    {
+      "segmentId": "fixture-019-noise-4-0",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "任务预算的目的是控制任务资源。"
+    },
+    {
+      "segmentId": "fixture-019-noise-4-1",
+      "source": "OCR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "任务预算配置面板：总调用次数上限为12次。"
+    },
+    {
+      "segmentId": "fixture-019-s1",
+      "source": "ASR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "证据分配的目的是避免子问题遗漏。"
+    },
+    {
+      "segmentId": "fixture-019-noise-2-0",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "引用核验的目的是检查引用来源。"
+    },
+    {
+      "segmentId": "fixture-019-s5",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-019-noise-3-0",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "追问改写的目的是补全指代对象。"
+    },
+    {
+      "segmentId": "fixture-019-noise-1-3",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "补充检索的负责人是演示员1，不负责证据分配。"
+    },
+    {
+      "segmentId": "fixture-019-noise-1-0",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "补充检索的目的是补齐缺失证据。"
+    },
+    {
+      "segmentId": "fixture-019-noise-4-3",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "任务预算的负责人是演示员4，不负责证据分配。"
+    },
+    {
+      "segmentId": "fixture-019-noise-3-1",
+      "source": "OCR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "追问改写配置面板：历史对话轮数为3轮。"
+    },
+    {
+      "segmentId": "fixture-019-noise-2-2",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "引用核验的限制：时间吻合不代表语义支持。"
+    },
+    {
+      "segmentId": "fixture-019-s3",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "证据分配的限制：先为各子问题分配再补充邻居。"
+    },
+    {
+      "segmentId": "fixture-019-noise-4-2",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "任务预算的限制：超限后停止新调用。"
+    },
+    {
+      "segmentId": "fixture-019-noise-1-1",
+      "source": "OCR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "补充检索配置面板：修复次数上限为1次。"
+    },
+    {
+      "segmentId": "fixture-019-s4",
+      "source": "OCR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "对照模块的配置：缓存上限是50条。"
+    },
+    {
+      "segmentId": "fixture-019-noise-2-1",
+      "source": "OCR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "引用核验配置面板：允许时间偏差为5秒。"
+    },
+    {
+      "segmentId": "fixture-019-noise-3-3",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "追问改写的负责人是演示员3，不负责证据分配。"
+    },
+    {
+      "segmentId": "fixture-019-noise-3-2",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "追问改写的限制：无法确定指代时必须澄清。"
+    },
+    {
+      "segmentId": "fixture-019-noise-2-3",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "引用核验的负责人是演示员2，不负责证据分配。"
+    },
+    {
+      "segmentId": "fixture-019-s2",
+      "source": "OCR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "证据分配配置面板：证据总上限为18条。"
+    },
+    {
+      "segmentId": "fixture-019-noise-1-2",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "补充检索的限制：额度耗尽后不得继续调用。"
+    }
+  ],
+  "fixture-020": [
+    {
+      "segmentId": "fixture-020-noise-1-3",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "引用核验的负责人是演示员1，不负责补充检索。"
+    },
+    {
+      "segmentId": "fixture-020-s2",
+      "source": "OCR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "补充检索配置面板：修复次数上限为1次。"
+    },
+    {
+      "segmentId": "fixture-020-noise-1-1",
+      "source": "OCR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "引用核验配置面板：允许时间偏差为5秒。"
+    },
+    {
+      "segmentId": "fixture-020-noise-2-3",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "追问改写的负责人是演示员2，不负责补充检索。"
+    },
+    {
+      "segmentId": "fixture-020-noise-3-1",
+      "source": "OCR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "任务预算配置面板：总调用次数上限为12次。"
+    },
+    {
+      "segmentId": "fixture-020-noise-3-3",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "任务预算的负责人是演示员3，不负责补充检索。"
+    },
+    {
+      "segmentId": "fixture-020-noise-2-2",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "追问改写的限制：无法确定指代时必须澄清。"
+    },
+    {
+      "segmentId": "fixture-020-s1",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "补充检索的目的是补齐缺失证据。"
+    },
+    {
+      "segmentId": "fixture-020-s4",
+      "source": "OCR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "对照模块的配置：网络重试上限是3次。"
+    },
+    {
+      "segmentId": "fixture-020-noise-3-2",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "任务预算的限制：超限后停止新调用。"
+    },
+    {
+      "segmentId": "fixture-020-noise-1-0",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "引用核验的目的是检查引用来源。"
+    },
+    {
+      "segmentId": "fixture-020-noise-4-3",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "断点恢复的负责人是演示员4，不负责补充检索。"
+    },
+    {
+      "segmentId": "fixture-020-noise-4-1",
+      "source": "OCR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "断点恢复配置面板：断点保存间隔为20秒。"
+    },
+    {
+      "segmentId": "fixture-020-noise-3-0",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "任务预算的目的是控制任务资源。"
+    },
+    {
+      "segmentId": "fixture-020-noise-2-1",
+      "source": "OCR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "追问改写配置面板：历史对话轮数为3轮。"
+    },
+    {
+      "segmentId": "fixture-020-noise-1-2",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "引用核验的限制：时间吻合不代表语义支持。"
+    },
+    {
+      "segmentId": "fixture-020-noise-4-2",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "断点恢复的限制：输入变化时旧结果失效。"
+    },
+    {
+      "segmentId": "fixture-020-s3",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "补充检索的限制：额度耗尽后不得继续调用。"
+    },
+    {
+      "segmentId": "fixture-020-noise-2-0",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "追问改写的目的是补全指代对象。"
+    },
+    {
+      "segmentId": "fixture-020-s5",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-020-noise-4-0",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "断点恢复的目的是复用已完成阶段。"
+    }
+  ],
+  "fixture-021": [
+    {
+      "segmentId": "fixture-021-s4",
+      "source": "OCR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "对照模块的配置：播放器定位偏差是1秒。"
+    },
+    {
+      "segmentId": "fixture-021-noise-3-1",
+      "source": "OCR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "断点恢复配置面板：断点保存间隔为20秒。"
+    },
+    {
+      "segmentId": "fixture-021-noise-4-3",
+      "source": "ASR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "任务取消的负责人是演示员4，不负责引用核验。"
+    },
+    {
+      "segmentId": "fixture-021-noise-4-2",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "任务取消的限制：已产生费用不能撤回。"
+    },
+    {
+      "segmentId": "fixture-021-s2",
+      "source": "OCR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "引用核验配置面板：允许时间偏差为5秒。"
+    },
+    {
+      "segmentId": "fixture-021-noise-3-3",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "断点恢复的负责人是演示员3，不负责引用核验。"
+    },
+    {
+      "segmentId": "fixture-021-noise-3-2",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "断点恢复的限制：输入变化时旧结果失效。"
+    },
+    {
+      "segmentId": "fixture-021-noise-4-1",
+      "source": "OCR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "任务取消配置面板：检查取消间隔为2秒。"
+    },
+    {
+      "segmentId": "fixture-021-s5",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-021-noise-1-2",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "追问改写的限制：无法确定指代时必须澄清。"
+    },
+    {
+      "segmentId": "fixture-021-noise-2-0",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "任务预算的目的是控制任务资源。"
+    },
+    {
+      "segmentId": "fixture-021-noise-1-1",
+      "source": "OCR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "追问改写配置面板：历史对话轮数为3轮。"
+    },
+    {
+      "segmentId": "fixture-021-noise-2-3",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "任务预算的负责人是演示员2，不负责引用核验。"
+    },
+    {
+      "segmentId": "fixture-021-noise-1-0",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "追问改写的目的是补全指代对象。"
+    },
+    {
+      "segmentId": "fixture-021-noise-4-0",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "任务取消的目的是终止用户不需要的工作。"
+    },
+    {
+      "segmentId": "fixture-021-noise-2-1",
+      "source": "OCR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "任务预算配置面板：总调用次数上限为12次。"
+    },
+    {
+      "segmentId": "fixture-021-noise-1-3",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "追问改写的负责人是演示员1，不负责引用核验。"
+    },
+    {
+      "segmentId": "fixture-021-noise-2-2",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "任务预算的限制：超限后停止新调用。"
+    },
+    {
+      "segmentId": "fixture-021-s3",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "引用核验的限制：时间吻合不代表语义支持。"
+    },
+    {
+      "segmentId": "fixture-021-s1",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "引用核验的目的是检查引用来源。"
+    },
+    {
+      "segmentId": "fixture-021-noise-3-0",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "断点恢复的目的是复用已完成阶段。"
+    }
+  ],
+  "fixture-022": [
+    {
+      "segmentId": "fixture-022-noise-1-1",
+      "source": "OCR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "任务预算配置面板：总调用次数上限为12次。"
+    },
+    {
+      "segmentId": "fixture-022-s3",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "追问改写的限制：无法确定指代时必须澄清。"
+    },
+    {
+      "segmentId": "fixture-022-noise-4-1",
+      "source": "OCR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "消息消费配置面板：单批消息数量为8条。"
+    },
+    {
+      "segmentId": "fixture-022-noise-1-2",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "任务预算的限制：超限后停止新调用。"
+    },
+    {
+      "segmentId": "fixture-022-noise-4-2",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "消息消费的限制：重复消息必须幂等处理。"
+    },
+    {
+      "segmentId": "fixture-022-noise-4-3",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "消息消费的负责人是演示员4，不负责追问改写。"
+    },
+    {
+      "segmentId": "fixture-022-noise-3-3",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "任务取消的负责人是演示员3，不负责追问改写。"
+    },
+    {
+      "segmentId": "fixture-022-s2",
+      "source": "OCR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "追问改写配置面板：历史对话轮数为3轮。"
+    },
+    {
+      "segmentId": "fixture-022-noise-4-0",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "消息消费的目的是执行后台分析任务。"
+    },
+    {
+      "segmentId": "fixture-022-noise-3-1",
+      "source": "OCR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "任务取消配置面板：检查取消间隔为2秒。"
+    },
+    {
+      "segmentId": "fixture-022-noise-2-1",
+      "source": "OCR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "断点恢复配置面板：断点保存间隔为20秒。"
+    },
+    {
+      "segmentId": "fixture-022-noise-3-2",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "任务取消的限制：已产生费用不能撤回。"
+    },
+    {
+      "segmentId": "fixture-022-noise-1-3",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "任务预算的负责人是演示员1，不负责追问改写。"
+    },
+    {
+      "segmentId": "fixture-022-noise-1-0",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "任务预算的目的是控制任务资源。"
+    },
+    {
+      "segmentId": "fixture-022-noise-2-0",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "断点恢复的目的是复用已完成阶段。"
+    },
+    {
+      "segmentId": "fixture-022-noise-2-3",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "断点恢复的负责人是演示员2，不负责追问改写。"
+    },
+    {
+      "segmentId": "fixture-022-noise-3-0",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "任务取消的目的是终止用户不需要的工作。"
+    },
+    {
+      "segmentId": "fixture-022-s4",
+      "source": "OCR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "对照模块的配置：聊天展示历史是20轮。"
+    },
+    {
+      "segmentId": "fixture-022-s1",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "追问改写的目的是补全指代对象。"
+    },
+    {
+      "segmentId": "fixture-022-s5",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-022-noise-2-2",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "断点恢复的限制：输入变化时旧结果失效。"
+    }
+  ],
+  "fixture-023": [
+    {
+      "segmentId": "fixture-023-noise-3-3",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "消息消费的负责人是演示员3，不负责任务预算。"
+    },
+    {
+      "segmentId": "fixture-023-noise-2-1",
+      "source": "OCR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "任务取消配置面板：检查取消间隔为2秒。"
+    },
+    {
+      "segmentId": "fixture-023-noise-2-0",
+      "source": "ASR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "任务取消的目的是终止用户不需要的工作。"
+    },
+    {
+      "segmentId": "fixture-023-noise-4-1",
+      "source": "OCR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "失败重试配置面板：重试次数上限为3次。"
+    },
+    {
+      "segmentId": "fixture-023-noise-1-3",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "断点恢复的负责人是演示员1，不负责任务预算。"
+    },
+    {
+      "segmentId": "fixture-023-noise-1-0",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "断点恢复的目的是复用已完成阶段。"
+    },
+    {
+      "segmentId": "fixture-023-s5",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-023-noise-4-3",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "失败重试的负责人是演示员4，不负责任务预算。"
+    },
+    {
+      "segmentId": "fixture-023-s3",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "任务预算的限制：超限后停止新调用。"
+    },
+    {
+      "segmentId": "fixture-023-noise-3-1",
+      "source": "OCR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "消息消费配置面板：单批消息数量为8条。"
+    },
+    {
+      "segmentId": "fixture-023-noise-3-0",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "消息消费的目的是执行后台分析任务。"
+    },
+    {
+      "segmentId": "fixture-023-noise-1-2",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "断点恢复的限制：输入变化时旧结果失效。"
+    },
+    {
+      "segmentId": "fixture-023-noise-4-2",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "失败重试的限制：参数错误不重试。"
+    },
+    {
+      "segmentId": "fixture-023-noise-2-3",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "任务取消的负责人是演示员2，不负责任务预算。"
+    },
+    {
+      "segmentId": "fixture-023-s1",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "任务预算的目的是控制任务资源。"
+    },
+    {
+      "segmentId": "fixture-023-noise-4-0",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "失败重试的目的是应对临时网络故障。"
+    },
+    {
+      "segmentId": "fixture-023-s4",
+      "source": "OCR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "对照模块的配置：健康检查次数上限是30次。"
+    },
+    {
+      "segmentId": "fixture-023-noise-3-2",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "消息消费的限制：重复消息必须幂等处理。"
+    },
+    {
+      "segmentId": "fixture-023-noise-1-1",
+      "source": "OCR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "断点恢复配置面板：断点保存间隔为20秒。"
+    },
+    {
+      "segmentId": "fixture-023-noise-2-2",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "任务取消的限制：已产生费用不能撤回。"
+    },
+    {
+      "segmentId": "fixture-023-s2",
+      "source": "OCR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "任务预算配置面板：总调用次数上限为12次。"
+    }
+  ],
+  "fixture-024": [
+    {
+      "segmentId": "fixture-024-s5",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-024-noise-4-1",
+      "source": "OCR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "死信处理配置面板：保留时间为7天。"
+    },
+    {
+      "segmentId": "fixture-024-s2",
+      "source": "OCR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "断点恢复配置面板：断点保存间隔为20秒。"
+    },
+    {
+      "segmentId": "fixture-024-noise-1-0",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "任务取消的目的是终止用户不需要的工作。"
+    },
+    {
+      "segmentId": "fixture-024-noise-3-1",
+      "source": "OCR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "失败重试配置面板：重试次数上限为3次。"
+    },
+    {
+      "segmentId": "fixture-024-s3",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "断点恢复的限制：输入变化时旧结果失效。"
+    },
+    {
+      "segmentId": "fixture-024-noise-4-0",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "死信处理的目的是保留多次失败的消息。"
+    },
+    {
+      "segmentId": "fixture-024-s4",
+      "source": "OCR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "对照模块的配置：日志刷新间隔是2秒。"
+    },
+    {
+      "segmentId": "fixture-024-noise-2-3",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "消息消费的负责人是演示员2，不负责断点恢复。"
+    },
+    {
+      "segmentId": "fixture-024-noise-2-1",
+      "source": "OCR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "消息消费配置面板：单批消息数量为8条。"
+    },
+    {
+      "segmentId": "fixture-024-noise-1-1",
+      "source": "OCR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "任务取消配置面板：检查取消间隔为2秒。"
+    },
+    {
+      "segmentId": "fixture-024-s1",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "断点恢复的目的是复用已完成阶段。"
+    },
+    {
+      "segmentId": "fixture-024-noise-3-0",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "失败重试的目的是应对临时网络故障。"
+    },
+    {
+      "segmentId": "fixture-024-noise-1-3",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "任务取消的负责人是演示员1，不负责断点恢复。"
+    },
+    {
+      "segmentId": "fixture-024-noise-3-2",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "失败重试的限制：参数错误不重试。"
+    },
+    {
+      "segmentId": "fixture-024-noise-3-3",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "失败重试的负责人是演示员3，不负责断点恢复。"
+    },
+    {
+      "segmentId": "fixture-024-noise-1-2",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "任务取消的限制：已产生费用不能撤回。"
+    },
+    {
+      "segmentId": "fixture-024-noise-2-2",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "消息消费的限制：重复消息必须幂等处理。"
+    },
+    {
+      "segmentId": "fixture-024-noise-2-0",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "消息消费的目的是执行后台分析任务。"
+    },
+    {
+      "segmentId": "fixture-024-noise-4-3",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "死信处理的负责人是演示员4，不负责断点恢复。"
+    },
+    {
+      "segmentId": "fixture-024-noise-4-2",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "死信处理的限制：人工确认原因后再投递。"
+    }
+  ],
+  "fixture-025": [
+    {
+      "segmentId": "fixture-025-noise-1-1",
+      "source": "OCR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "消息消费配置面板：单批消息数量为8条。"
+    },
+    {
+      "segmentId": "fixture-025-noise-1-2",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "消息消费的限制：重复消息必须幂等处理。"
+    },
+    {
+      "segmentId": "fixture-025-noise-1-0",
+      "source": "ASR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "消息消费的目的是执行后台分析任务。"
+    },
+    {
+      "segmentId": "fixture-025-noise-2-2",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "失败重试的限制：参数错误不重试。"
+    },
+    {
+      "segmentId": "fixture-025-noise-4-0",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "接口限流的目的是防止请求压垮服务。"
+    },
+    {
+      "segmentId": "fixture-025-noise-3-0",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "死信处理的目的是保留多次失败的消息。"
+    },
+    {
+      "segmentId": "fixture-025-s5",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-025-noise-3-2",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "死信处理的限制：人工确认原因后再投递。"
+    },
+    {
+      "segmentId": "fixture-025-noise-1-3",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "消息消费的负责人是演示员1，不负责任务取消。"
+    },
+    {
+      "segmentId": "fixture-025-noise-3-3",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "死信处理的负责人是演示员3，不负责任务取消。"
+    },
+    {
+      "segmentId": "fixture-025-noise-3-1",
+      "source": "OCR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "死信处理配置面板：保留时间为7天。"
+    },
+    {
+      "segmentId": "fixture-025-noise-2-0",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "失败重试的目的是应对临时网络故障。"
+    },
+    {
+      "segmentId": "fixture-025-s1",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "任务取消的目的是终止用户不需要的工作。"
+    },
+    {
+      "segmentId": "fixture-025-s2",
+      "source": "OCR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "任务取消配置面板：检查取消间隔为2秒。"
+    },
+    {
+      "segmentId": "fixture-025-noise-4-3",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "接口限流的负责人是演示员4，不负责任务取消。"
+    },
+    {
+      "segmentId": "fixture-025-noise-2-3",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "失败重试的负责人是演示员2，不负责任务取消。"
+    },
+    {
+      "segmentId": "fixture-025-s3",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "任务取消的限制：已产生费用不能撤回。"
+    },
+    {
+      "segmentId": "fixture-025-noise-2-1",
+      "source": "OCR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "失败重试配置面板：重试次数上限为3次。"
+    },
+    {
+      "segmentId": "fixture-025-noise-4-2",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "接口限流的限制：超限请求返回限流提示。"
+    },
+    {
+      "segmentId": "fixture-025-s4",
+      "source": "OCR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "对照模块的配置：页面刷新间隔是10秒。"
+    },
+    {
+      "segmentId": "fixture-025-noise-4-1",
+      "source": "OCR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "接口限流配置面板：每分钟请求上限为60次。"
+    }
+  ],
+  "fixture-026": [
+    {
+      "segmentId": "fixture-026-noise-1-3",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "失败重试的负责人是演示员1，不负责消息消费。"
+    },
+    {
+      "segmentId": "fixture-026-noise-4-2",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "连接池的限制：获取超时后返回错误。"
+    },
+    {
+      "segmentId": "fixture-026-noise-1-2",
+      "source": "ASR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "失败重试的限制：参数错误不重试。"
+    },
+    {
+      "segmentId": "fixture-026-noise-3-2",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "接口限流的限制：超限请求返回限流提示。"
+    },
+    {
+      "segmentId": "fixture-026-s3",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "消息消费的限制：重复消息必须幂等处理。"
+    },
+    {
+      "segmentId": "fixture-026-noise-3-1",
+      "source": "OCR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "接口限流配置面板：每分钟请求上限为60次。"
+    },
+    {
+      "segmentId": "fixture-026-noise-2-2",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "死信处理的限制：人工确认原因后再投递。"
+    },
+    {
+      "segmentId": "fixture-026-s1",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "消息消费的目的是执行后台分析任务。"
+    },
+    {
+      "segmentId": "fixture-026-noise-4-3",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "连接池的负责人是演示员4，不负责消息消费。"
+    },
+    {
+      "segmentId": "fixture-026-noise-1-1",
+      "source": "OCR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "失败重试配置面板：重试次数上限为3次。"
+    },
+    {
+      "segmentId": "fixture-026-noise-1-0",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "失败重试的目的是应对临时网络故障。"
+    },
+    {
+      "segmentId": "fixture-026-noise-3-3",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "接口限流的负责人是演示员3，不负责消息消费。"
+    },
+    {
+      "segmentId": "fixture-026-s2",
+      "source": "OCR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "消息消费配置面板：单批消息数量为8条。"
+    },
+    {
+      "segmentId": "fixture-026-noise-2-1",
+      "source": "OCR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "死信处理配置面板：保留时间为7天。"
+    },
+    {
+      "segmentId": "fixture-026-noise-3-0",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "接口限流的目的是防止请求压垮服务。"
+    },
+    {
+      "segmentId": "fixture-026-noise-4-0",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "连接池的目的是复用数据库连接。"
+    },
+    {
+      "segmentId": "fixture-026-noise-4-1",
+      "source": "OCR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "连接池配置面板：最大连接数量为25个。"
+    },
+    {
+      "segmentId": "fixture-026-s4",
+      "source": "OCR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "对照模块的配置：日志消费每批是64条。"
+    },
+    {
+      "segmentId": "fixture-026-noise-2-0",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "死信处理的目的是保留多次失败的消息。"
+    },
+    {
+      "segmentId": "fixture-026-noise-2-3",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "死信处理的负责人是演示员2，不负责消息消费。"
+    },
+    {
+      "segmentId": "fixture-026-s5",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    }
+  ],
+  "fixture-027": [
+    {
+      "segmentId": "fixture-027-s3",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "失败重试的限制：参数错误不重试。"
+    },
+    {
+      "segmentId": "fixture-027-noise-2-2",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "接口限流的限制：超限请求返回限流提示。"
+    },
+    {
+      "segmentId": "fixture-027-noise-1-1",
+      "source": "OCR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "死信处理配置面板：保留时间为7天。"
+    },
+    {
+      "segmentId": "fixture-027-noise-3-3",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "连接池的负责人是演示员3，不负责失败重试。"
+    },
+    {
+      "segmentId": "fixture-027-noise-4-3",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "事务回滚的负责人是演示员4，不负责失败重试。"
+    },
+    {
+      "segmentId": "fixture-027-s4",
+      "source": "OCR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "对照模块的配置：数据库连接重试是5次。"
+    },
+    {
+      "segmentId": "fixture-027-noise-1-3",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "死信处理的负责人是演示员1，不负责失败重试。"
+    },
+    {
+      "segmentId": "fixture-027-noise-4-1",
+      "source": "OCR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "事务回滚配置面板：事务超时时间为6秒。"
+    },
+    {
+      "segmentId": "fixture-027-noise-3-1",
+      "source": "OCR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "连接池配置面板：最大连接数量为25个。"
+    },
+    {
+      "segmentId": "fixture-027-noise-3-2",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "连接池的限制：获取超时后返回错误。"
+    },
+    {
+      "segmentId": "fixture-027-noise-2-1",
+      "source": "OCR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "接口限流配置面板：每分钟请求上限为60次。"
+    },
+    {
+      "segmentId": "fixture-027-noise-2-0",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "接口限流的目的是防止请求压垮服务。"
+    },
+    {
+      "segmentId": "fixture-027-s1",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "失败重试的目的是应对临时网络故障。"
+    },
+    {
+      "segmentId": "fixture-027-s2",
+      "source": "OCR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "失败重试配置面板：重试次数上限为3次。"
+    },
+    {
+      "segmentId": "fixture-027-noise-2-3",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "接口限流的负责人是演示员2，不负责失败重试。"
+    },
+    {
+      "segmentId": "fixture-027-noise-1-0",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "死信处理的目的是保留多次失败的消息。"
+    },
+    {
+      "segmentId": "fixture-027-s5",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-027-noise-3-0",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "连接池的目的是复用数据库连接。"
+    },
+    {
+      "segmentId": "fixture-027-noise-4-2",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "事务回滚的限制：任一步失败必须全部回滚。"
+    },
+    {
+      "segmentId": "fixture-027-noise-4-0",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "事务回滚的目的是保持订单库存一致。"
+    },
+    {
+      "segmentId": "fixture-027-noise-1-2",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "死信处理的限制：人工确认原因后再投递。"
+    }
+  ],
+  "fixture-028": [
+    {
+      "segmentId": "fixture-028-noise-4-2",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "日志脱敏的限制：不得记录完整密钥。"
+    },
+    {
+      "segmentId": "fixture-028-noise-1-2",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "接口限流的限制：超限请求返回限流提示。"
+    },
+    {
+      "segmentId": "fixture-028-noise-4-1",
+      "source": "OCR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "日志脱敏配置面板：手机号保留尾数为4位。"
+    },
+    {
+      "segmentId": "fixture-028-noise-2-2",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "连接池的限制：获取超时后返回错误。"
+    },
+    {
+      "segmentId": "fixture-028-noise-1-0",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "接口限流的目的是防止请求压垮服务。"
+    },
+    {
+      "segmentId": "fixture-028-noise-4-0",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "日志脱敏的目的是避免泄露个人信息。"
+    },
+    {
+      "segmentId": "fixture-028-noise-3-0",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "事务回滚的目的是保持订单库存一致。"
+    },
+    {
+      "segmentId": "fixture-028-s1",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "死信处理的目的是保留多次失败的消息。"
+    },
+    {
+      "segmentId": "fixture-028-s2",
+      "source": "OCR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "死信处理配置面板：保留时间为7天。"
+    },
+    {
+      "segmentId": "fixture-028-noise-3-2",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "事务回滚的限制：任一步失败必须全部回滚。"
+    },
+    {
+      "segmentId": "fixture-028-noise-1-1",
+      "source": "OCR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "接口限流配置面板：每分钟请求上限为60次。"
+    },
+    {
+      "segmentId": "fixture-028-s5",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-028-noise-2-1",
+      "source": "OCR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "连接池配置面板：最大连接数量为25个。"
+    },
+    {
+      "segmentId": "fixture-028-noise-3-1",
+      "source": "OCR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "事务回滚配置面板：事务超时时间为6秒。"
+    },
+    {
+      "segmentId": "fixture-028-noise-4-3",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "日志脱敏的负责人是演示员4，不负责死信处理。"
+    },
+    {
+      "segmentId": "fixture-028-s3",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "死信处理的限制：人工确认原因后再投递。"
+    },
+    {
+      "segmentId": "fixture-028-noise-1-3",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "接口限流的负责人是演示员1，不负责死信处理。"
+    },
+    {
+      "segmentId": "fixture-028-s4",
+      "source": "OCR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "对照模块的配置：普通消息保留时间是2天。"
+    },
+    {
+      "segmentId": "fixture-028-noise-2-3",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "连接池的负责人是演示员2，不负责死信处理。"
+    },
+    {
+      "segmentId": "fixture-028-noise-2-0",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "连接池的目的是复用数据库连接。"
+    },
+    {
+      "segmentId": "fixture-028-noise-3-3",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "事务回滚的负责人是演示员3，不负责死信处理。"
+    }
+  ],
+  "fixture-029": [
+    {
+      "segmentId": "fixture-029-noise-4-1",
+      "source": "OCR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "访问审计配置面板：审计记录保留期为90天。"
+    },
+    {
+      "segmentId": "fixture-029-noise-1-0",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "连接池的目的是复用数据库连接。"
+    },
+    {
+      "segmentId": "fixture-029-noise-2-2",
+      "source": "ASR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "事务回滚的限制：任一步失败必须全部回滚。"
+    },
+    {
+      "segmentId": "fixture-029-s1",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "接口限流的目的是防止请求压垮服务。"
+    },
+    {
+      "segmentId": "fixture-029-noise-4-0",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "访问审计的目的是追踪敏感操作。"
+    },
+    {
+      "segmentId": "fixture-029-s2",
+      "source": "OCR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "接口限流配置面板：每分钟请求上限为60次。"
+    },
+    {
+      "segmentId": "fixture-029-s3",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "接口限流的限制：超限请求返回限流提示。"
+    },
+    {
+      "segmentId": "fixture-029-noise-1-2",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "连接池的限制：获取超时后返回错误。"
+    },
+    {
+      "segmentId": "fixture-029-noise-3-1",
+      "source": "OCR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "日志脱敏配置面板：手机号保留尾数为4位。"
+    },
+    {
+      "segmentId": "fixture-029-s5",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-029-noise-4-2",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "访问审计的限制：普通用户不能删除审计记录。"
+    },
+    {
+      "segmentId": "fixture-029-noise-1-1",
+      "source": "OCR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "连接池配置面板：最大连接数量为25个。"
+    },
+    {
+      "segmentId": "fixture-029-noise-3-2",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "日志脱敏的限制：不得记录完整密钥。"
+    },
+    {
+      "segmentId": "fixture-029-noise-4-3",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "访问审计的负责人是演示员4，不负责接口限流。"
+    },
+    {
+      "segmentId": "fixture-029-noise-2-0",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "事务回滚的目的是保持订单库存一致。"
+    },
+    {
+      "segmentId": "fixture-029-s4",
+      "source": "OCR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "对照模块的配置：内部探针每分钟上限是120次。"
+    },
+    {
+      "segmentId": "fixture-029-noise-2-3",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "事务回滚的负责人是演示员2，不负责接口限流。"
+    },
+    {
+      "segmentId": "fixture-029-noise-3-3",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "日志脱敏的负责人是演示员3，不负责接口限流。"
+    },
+    {
+      "segmentId": "fixture-029-noise-3-0",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "日志脱敏的目的是避免泄露个人信息。"
+    },
+    {
+      "segmentId": "fixture-029-noise-1-3",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "连接池的负责人是演示员1，不负责接口限流。"
+    },
+    {
+      "segmentId": "fixture-029-noise-2-1",
+      "source": "OCR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "事务回滚配置面板：事务超时时间为6秒。"
+    }
+  ],
+  "fixture-030": [
+    {
+      "segmentId": "fixture-030-noise-2-1",
+      "source": "OCR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "日志脱敏配置面板：手机号保留尾数为4位。"
+    },
+    {
+      "segmentId": "fixture-030-noise-4-2",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "订单缓存的限制：价格结算必须查询数据库。"
+    },
+    {
+      "segmentId": "fixture-030-s2",
+      "source": "OCR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "连接池配置面板：最大连接数量为25个。"
+    },
+    {
+      "segmentId": "fixture-030-s5",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-030-noise-1-3",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "事务回滚的负责人是演示员1，不负责连接池。"
+    },
+    {
+      "segmentId": "fixture-030-noise-2-2",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "日志脱敏的限制：不得记录完整密钥。"
+    },
+    {
+      "segmentId": "fixture-030-noise-1-0",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "事务回滚的目的是保持订单库存一致。"
+    },
+    {
+      "segmentId": "fixture-030-noise-1-2",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "事务回滚的限制：任一步失败必须全部回滚。"
+    },
+    {
+      "segmentId": "fixture-030-s4",
+      "source": "OCR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "对照模块的配置：线程池最大数量是16个。"
+    },
+    {
+      "segmentId": "fixture-030-noise-3-0",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "访问审计的目的是追踪敏感操作。"
+    },
+    {
+      "segmentId": "fixture-030-noise-2-0",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "日志脱敏的目的是避免泄露个人信息。"
+    },
+    {
+      "segmentId": "fixture-030-noise-4-3",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "订单缓存的负责人是演示员4，不负责连接池。"
+    },
+    {
+      "segmentId": "fixture-030-noise-3-1",
+      "source": "OCR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "访问审计配置面板：审计记录保留期为90天。"
+    },
+    {
+      "segmentId": "fixture-030-s1",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "连接池的目的是复用数据库连接。"
+    },
+    {
+      "segmentId": "fixture-030-noise-3-3",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "访问审计的负责人是演示员3，不负责连接池。"
+    },
+    {
+      "segmentId": "fixture-030-noise-1-1",
+      "source": "OCR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "事务回滚配置面板：事务超时时间为6秒。"
+    },
+    {
+      "segmentId": "fixture-030-s3",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "连接池的限制：获取超时后返回错误。"
+    },
+    {
+      "segmentId": "fixture-030-noise-4-1",
+      "source": "OCR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "订单缓存配置面板：缓存有效期为45秒。"
+    },
+    {
+      "segmentId": "fixture-030-noise-4-0",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "订单缓存的目的是减少商品详情的重复查询。"
+    },
+    {
+      "segmentId": "fixture-030-noise-3-2",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "访问审计的限制：普通用户不能删除审计记录。"
+    },
+    {
+      "segmentId": "fixture-030-noise-2-3",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "日志脱敏的负责人是演示员2，不负责连接池。"
+    }
+  ],
+  "fixture-031": [
+    {
+      "segmentId": "fixture-031-noise-4-3",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "库存扣减的负责人是演示员4，不负责事务回滚。"
+    },
+    {
+      "segmentId": "fixture-031-noise-1-1",
+      "source": "OCR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "日志脱敏配置面板：手机号保留尾数为4位。"
+    },
+    {
+      "segmentId": "fixture-031-s5",
+      "source": "ASR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-031-noise-4-2",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "库存扣减的限制：库存不足时拒绝创建订单。"
+    },
+    {
+      "segmentId": "fixture-031-noise-1-3",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "日志脱敏的负责人是演示员1，不负责事务回滚。"
+    },
+    {
+      "segmentId": "fixture-031-noise-2-1",
+      "source": "OCR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "访问审计配置面板：审计记录保留期为90天。"
+    },
+    {
+      "segmentId": "fixture-031-noise-1-0",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "日志脱敏的目的是避免泄露个人信息。"
+    },
+    {
+      "segmentId": "fixture-031-noise-2-2",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "访问审计的限制：普通用户不能删除审计记录。"
+    },
+    {
+      "segmentId": "fixture-031-noise-2-3",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "访问审计的负责人是演示员2，不负责事务回滚。"
+    },
+    {
+      "segmentId": "fixture-031-s4",
+      "source": "OCR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "对照模块的配置：只读查询超时时间是2秒。"
+    },
+    {
+      "segmentId": "fixture-031-noise-4-1",
+      "source": "OCR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "库存扣减配置面板：单次购买上限为3件。"
+    },
+    {
+      "segmentId": "fixture-031-s3",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "事务回滚的限制：任一步失败必须全部回滚。"
+    },
+    {
+      "segmentId": "fixture-031-noise-3-3",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "订单缓存的负责人是演示员3，不负责事务回滚。"
+    },
+    {
+      "segmentId": "fixture-031-s1",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "事务回滚的目的是保持订单库存一致。"
+    },
+    {
+      "segmentId": "fixture-031-noise-4-0",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "库存扣减的目的是防止超卖。"
+    },
+    {
+      "segmentId": "fixture-031-noise-3-1",
+      "source": "OCR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "订单缓存配置面板：缓存有效期为45秒。"
+    },
+    {
+      "segmentId": "fixture-031-noise-3-0",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "订单缓存的目的是减少商品详情的重复查询。"
+    },
+    {
+      "segmentId": "fixture-031-noise-2-0",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "访问审计的目的是追踪敏感操作。"
+    },
+    {
+      "segmentId": "fixture-031-noise-1-2",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "日志脱敏的限制：不得记录完整密钥。"
+    },
+    {
+      "segmentId": "fixture-031-s2",
+      "source": "OCR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "事务回滚配置面板：事务超时时间为6秒。"
+    },
+    {
+      "segmentId": "fixture-031-noise-3-2",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "订单缓存的限制：价格结算必须查询数据库。"
+    }
+  ],
+  "fixture-032": [
+    {
+      "segmentId": "fixture-032-s5",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-032-noise-2-2",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "订单缓存的限制：价格结算必须查询数据库。"
+    },
+    {
+      "segmentId": "fixture-032-noise-4-1",
+      "source": "OCR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "支付回调配置面板：重试间隔为17秒。"
+    },
+    {
+      "segmentId": "fixture-032-noise-4-2",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "支付回调的限制：同一支付流水只能入账一次。"
+    },
+    {
+      "segmentId": "fixture-032-noise-1-2",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "访问审计的限制：普通用户不能删除审计记录。"
+    },
+    {
+      "segmentId": "fixture-032-noise-3-1",
+      "source": "OCR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "库存扣减配置面板：单次购买上限为3件。"
+    },
+    {
+      "segmentId": "fixture-032-noise-3-0",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "库存扣减的目的是防止超卖。"
+    },
+    {
+      "segmentId": "fixture-032-s4",
+      "source": "OCR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "对照模块的配置：订单号保留尾数是6位。"
+    },
+    {
+      "segmentId": "fixture-032-noise-2-1",
+      "source": "OCR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "订单缓存配置面板：缓存有效期为45秒。"
+    },
+    {
+      "segmentId": "fixture-032-s2",
+      "source": "OCR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "日志脱敏配置面板：手机号保留尾数为4位。"
+    },
+    {
+      "segmentId": "fixture-032-s1",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "日志脱敏的目的是避免泄露个人信息。"
+    },
+    {
+      "segmentId": "fixture-032-noise-4-3",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "支付回调的负责人是演示员4，不负责日志脱敏。"
+    },
+    {
+      "segmentId": "fixture-032-noise-1-1",
+      "source": "OCR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "访问审计配置面板：审计记录保留期为90天。"
+    },
+    {
+      "segmentId": "fixture-032-noise-2-0",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "订单缓存的目的是减少商品详情的重复查询。"
+    },
+    {
+      "segmentId": "fixture-032-noise-3-2",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "库存扣减的限制：库存不足时拒绝创建订单。"
+    },
+    {
+      "segmentId": "fixture-032-noise-4-0",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "支付回调的目的是更新订单支付状态。"
+    },
+    {
+      "segmentId": "fixture-032-noise-1-0",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "访问审计的目的是追踪敏感操作。"
+    },
+    {
+      "segmentId": "fixture-032-s3",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "日志脱敏的限制：不得记录完整密钥。"
+    },
+    {
+      "segmentId": "fixture-032-noise-1-3",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "访问审计的负责人是演示员1，不负责日志脱敏。"
+    },
+    {
+      "segmentId": "fixture-032-noise-2-3",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "订单缓存的负责人是演示员2，不负责日志脱敏。"
+    },
+    {
+      "segmentId": "fixture-032-noise-3-3",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "库存扣减的负责人是演示员3，不负责日志脱敏。"
+    }
+  ],
+  "fixture-033": [
+    {
+      "segmentId": "fixture-033-noise-2-0",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "库存扣减的目的是防止超卖。"
+    },
+    {
+      "segmentId": "fixture-033-noise-1-3",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "订单缓存的负责人是演示员1，不负责访问审计。"
+    },
+    {
+      "segmentId": "fixture-033-s4",
+      "source": "OCR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "对照模块的配置：调试日志保留期是14天。"
+    },
+    {
+      "segmentId": "fixture-033-noise-4-1",
+      "source": "OCR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "退款审核配置面板：人工审核期限为4天。"
+    },
+    {
+      "segmentId": "fixture-033-noise-4-2",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "退款审核的限制：已使用的兑换券不支持退款。"
+    },
+    {
+      "segmentId": "fixture-033-noise-4-0",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "退款审核的目的是核查退款申请。"
+    },
+    {
+      "segmentId": "fixture-033-noise-1-1",
+      "source": "OCR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "订单缓存配置面板：缓存有效期为45秒。"
+    },
+    {
+      "segmentId": "fixture-033-s1",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "访问审计的目的是追踪敏感操作。"
+    },
+    {
+      "segmentId": "fixture-033-noise-3-0",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "支付回调的目的是更新订单支付状态。"
+    },
+    {
+      "segmentId": "fixture-033-noise-2-1",
+      "source": "OCR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "库存扣减配置面板：单次购买上限为3件。"
+    },
+    {
+      "segmentId": "fixture-033-noise-3-2",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "支付回调的限制：同一支付流水只能入账一次。"
+    },
+    {
+      "segmentId": "fixture-033-noise-2-2",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "库存扣减的限制：库存不足时拒绝创建订单。"
+    },
+    {
+      "segmentId": "fixture-033-s3",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "访问审计的限制：普通用户不能删除审计记录。"
+    },
+    {
+      "segmentId": "fixture-033-s5",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-033-noise-1-0",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "订单缓存的目的是减少商品详情的重复查询。"
+    },
+    {
+      "segmentId": "fixture-033-noise-3-3",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "支付回调的负责人是演示员3，不负责访问审计。"
+    },
+    {
+      "segmentId": "fixture-033-s2",
+      "source": "OCR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "访问审计配置面板：审计记录保留期为90天。"
+    },
+    {
+      "segmentId": "fixture-033-noise-4-3",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "退款审核的负责人是演示员4，不负责访问审计。"
+    },
+    {
+      "segmentId": "fixture-033-noise-1-2",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "订单缓存的限制：价格结算必须查询数据库。"
+    },
+    {
+      "segmentId": "fixture-033-noise-3-1",
+      "source": "OCR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "支付回调配置面板：重试间隔为17秒。"
+    },
+    {
+      "segmentId": "fixture-033-noise-2-3",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "库存扣减的负责人是演示员2，不负责访问审计。"
+    }
+  ],
+  "fixture-034": [
+    {
+      "segmentId": "fixture-034-noise-3-0",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "延迟监控的目的是观察慢请求。"
+    },
+    {
+      "segmentId": "fixture-034-noise-4-0",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "报表导出的目的是生成离线统计文件。"
+    },
+    {
+      "segmentId": "fixture-034-noise-4-1",
+      "source": "OCR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "报表导出配置面板：单次导出上限为5000行。"
+    },
+    {
+      "segmentId": "fixture-034-noise-3-1",
+      "source": "OCR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "延迟监控配置面板：告警阈值为900毫秒。"
+    },
+    {
+      "segmentId": "fixture-034-noise-2-2",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "健康探针的限制：失败不能直接删除业务数据。"
+    },
+    {
+      "segmentId": "fixture-034-s2",
+      "source": "OCR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "数据备份配置面板：备份间隔为6小时。"
+    },
+    {
+      "segmentId": "fixture-034-noise-1-2",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "灰度发布的限制：异常率超阈值立即回滚。"
+    },
+    {
+      "segmentId": "fixture-034-noise-3-2",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "延迟监控的限制：只统计完成的请求。"
+    },
+    {
+      "segmentId": "fixture-034-noise-4-3",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "报表导出的负责人是演示员4，不负责数据备份。"
+    },
+    {
+      "segmentId": "fixture-034-s1",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "数据备份的目的是恢复误删数据。"
+    },
+    {
+      "segmentId": "fixture-034-noise-2-3",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "健康探针的负责人是演示员2，不负责数据备份。"
+    },
+    {
+      "segmentId": "fixture-034-noise-1-1",
+      "source": "OCR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "灰度发布配置面板：首批用户比例为5%。"
+    },
+    {
+      "segmentId": "fixture-034-noise-1-0",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "灰度发布的目的是逐步验证新版本。"
+    },
+    {
+      "segmentId": "fixture-034-s4",
+      "source": "OCR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "对照模块的配置：索引快照间隔是2小时。"
+    },
+    {
+      "segmentId": "fixture-034-noise-1-3",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "灰度发布的负责人是演示员1，不负责数据备份。"
+    },
+    {
+      "segmentId": "fixture-034-s5",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-034-noise-3-3",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "延迟监控的负责人是演示员3，不负责数据备份。"
+    },
+    {
+      "segmentId": "fixture-034-noise-4-2",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "报表导出的限制：导出必须检查数据权限。"
+    },
+    {
+      "segmentId": "fixture-034-noise-2-1",
+      "source": "OCR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "健康探针配置面板：探测间隔为15秒。"
+    },
+    {
+      "segmentId": "fixture-034-noise-2-0",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "健康探针的目的是发现服务不可用。"
+    },
+    {
+      "segmentId": "fixture-034-s3",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "数据备份的限制：恢复前必须校验备份完整性。"
+    }
+  ],
+  "fixture-035": [
+    {
+      "segmentId": "fixture-035-s5",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-035-noise-3-1",
+      "source": "OCR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "报表导出配置面板：单次导出上限为5000行。"
+    },
+    {
+      "segmentId": "fixture-035-noise-2-2",
+      "source": "ASR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "延迟监控的限制：只统计完成的请求。"
+    },
+    {
+      "segmentId": "fixture-035-noise-2-3",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "延迟监控的负责人是演示员2，不负责灰度发布。"
+    },
+    {
+      "segmentId": "fixture-035-noise-2-0",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "延迟监控的目的是观察慢请求。"
+    },
+    {
+      "segmentId": "fixture-035-noise-3-0",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "报表导出的目的是生成离线统计文件。"
+    },
+    {
+      "segmentId": "fixture-035-s4",
+      "source": "OCR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "对照模块的配置：全量发布比例是100%。"
+    },
+    {
+      "segmentId": "fixture-035-noise-4-2",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "邮件通知的限制：用户退订后停止发送。"
+    },
+    {
+      "segmentId": "fixture-035-noise-4-0",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "邮件通知的目的是提醒任务完成。"
+    },
+    {
+      "segmentId": "fixture-035-noise-2-1",
+      "source": "OCR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "延迟监控配置面板：告警阈值为900毫秒。"
+    },
+    {
+      "segmentId": "fixture-035-noise-1-3",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "健康探针的负责人是演示员1，不负责灰度发布。"
+    },
+    {
+      "segmentId": "fixture-035-noise-4-1",
+      "source": "OCR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "邮件通知配置面板：发送间隔下限为40秒。"
+    },
+    {
+      "segmentId": "fixture-035-s2",
+      "source": "OCR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "灰度发布配置面板：首批用户比例为5%。"
+    },
+    {
+      "segmentId": "fixture-035-noise-3-3",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "报表导出的负责人是演示员3，不负责灰度发布。"
+    },
+    {
+      "segmentId": "fixture-035-noise-4-3",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "邮件通知的负责人是演示员4，不负责灰度发布。"
+    },
+    {
+      "segmentId": "fixture-035-s1",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "灰度发布的目的是逐步验证新版本。"
+    },
+    {
+      "segmentId": "fixture-035-noise-1-1",
+      "source": "OCR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "健康探针配置面板：探测间隔为15秒。"
+    },
+    {
+      "segmentId": "fixture-035-s3",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "灰度发布的限制：异常率超阈值立即回滚。"
+    },
+    {
+      "segmentId": "fixture-035-noise-1-0",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "健康探针的目的是发现服务不可用。"
+    },
+    {
+      "segmentId": "fixture-035-noise-3-2",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "报表导出的限制：导出必须检查数据权限。"
+    },
+    {
+      "segmentId": "fixture-035-noise-1-2",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "健康探针的限制：失败不能直接删除业务数据。"
+    }
+  ],
+  "fixture-036": [
+    {
+      "segmentId": "fixture-036-noise-1-0",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "延迟监控的目的是观察慢请求。"
+    },
+    {
+      "segmentId": "fixture-036-noise-3-3",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "邮件通知的负责人是演示员3，不负责健康探针。"
+    },
+    {
+      "segmentId": "fixture-036-s1",
+      "source": "ASR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "健康探针的目的是发现服务不可用。"
+    },
+    {
+      "segmentId": "fixture-036-s4",
+      "source": "OCR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "对照模块的配置：指标抓取间隔是30秒。"
+    },
+    {
+      "segmentId": "fixture-036-noise-1-2",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "延迟监控的限制：只统计完成的请求。"
+    },
+    {
+      "segmentId": "fixture-036-noise-3-2",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "邮件通知的限制：用户退订后停止发送。"
+    },
+    {
+      "segmentId": "fixture-036-noise-1-1",
+      "source": "OCR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "延迟监控配置面板：告警阈值为900毫秒。"
+    },
+    {
+      "segmentId": "fixture-036-noise-3-1",
+      "source": "OCR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "邮件通知配置面板：发送间隔下限为40秒。"
+    },
+    {
+      "segmentId": "fixture-036-noise-4-0",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "评论审核的目的是过滤违规内容。"
+    },
+    {
+      "segmentId": "fixture-036-noise-4-2",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "评论审核的限制：申诉内容必须交给人工复核。"
+    },
+    {
+      "segmentId": "fixture-036-noise-2-3",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "报表导出的负责人是演示员2，不负责健康探针。"
+    },
+    {
+      "segmentId": "fixture-036-noise-1-3",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "延迟监控的负责人是演示员1，不负责健康探针。"
+    },
+    {
+      "segmentId": "fixture-036-noise-4-1",
+      "source": "OCR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "评论审核配置面板：待审核批次大小为30条。"
+    },
+    {
+      "segmentId": "fixture-036-s3",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "健康探针的限制：失败不能直接删除业务数据。"
+    },
+    {
+      "segmentId": "fixture-036-s5",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-036-noise-2-2",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "报表导出的限制：导出必须检查数据权限。"
+    },
+    {
+      "segmentId": "fixture-036-noise-4-3",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "评论审核的负责人是演示员4，不负责健康探针。"
+    },
+    {
+      "segmentId": "fixture-036-noise-2-0",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "报表导出的目的是生成离线统计文件。"
+    },
+    {
+      "segmentId": "fixture-036-noise-2-1",
+      "source": "OCR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "报表导出配置面板：单次导出上限为5000行。"
+    },
+    {
+      "segmentId": "fixture-036-s2",
+      "source": "OCR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "健康探针配置面板：探测间隔为15秒。"
+    },
+    {
+      "segmentId": "fixture-036-noise-3-0",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "邮件通知的目的是提醒任务完成。"
+    }
+  ],
+  "fixture-037": [
+    {
+      "segmentId": "fixture-037-s4",
+      "source": "OCR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "对照模块的配置：批处理告警阈值是5秒。"
+    },
+    {
+      "segmentId": "fixture-037-noise-3-1",
+      "source": "OCR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "评论审核配置面板：待审核批次大小为30条。"
+    },
+    {
+      "segmentId": "fixture-037-noise-2-2",
+      "source": "ASR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "邮件通知的限制：用户退订后停止发送。"
+    },
+    {
+      "segmentId": "fixture-037-s3",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "延迟监控的限制：只统计完成的请求。"
+    },
+    {
+      "segmentId": "fixture-037-noise-2-1",
+      "source": "OCR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "邮件通知配置面板：发送间隔下限为40秒。"
+    },
+    {
+      "segmentId": "fixture-037-noise-3-0",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "评论审核的目的是过滤违规内容。"
+    },
+    {
+      "segmentId": "fixture-037-s2",
+      "source": "OCR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "延迟监控配置面板：告警阈值为900毫秒。"
+    },
+    {
+      "segmentId": "fixture-037-noise-2-0",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "邮件通知的目的是提醒任务完成。"
+    },
+    {
+      "segmentId": "fixture-037-noise-3-3",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "评论审核的负责人是演示员3，不负责延迟监控。"
+    },
+    {
+      "segmentId": "fixture-037-noise-1-0",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "报表导出的目的是生成离线统计文件。"
+    },
+    {
+      "segmentId": "fixture-037-noise-1-1",
+      "source": "OCR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "报表导出配置面板：单次导出上限为5000行。"
+    },
+    {
+      "segmentId": "fixture-037-noise-4-3",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "课程签到的负责人是演示员4，不负责延迟监控。"
+    },
+    {
+      "segmentId": "fixture-037-noise-3-2",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "评论审核的限制：申诉内容必须交给人工复核。"
+    },
+    {
+      "segmentId": "fixture-037-noise-1-2",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "报表导出的限制：导出必须检查数据权限。"
+    },
+    {
+      "segmentId": "fixture-037-noise-4-0",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "课程签到的目的是记录到课情况。"
+    },
+    {
+      "segmentId": "fixture-037-noise-2-3",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "邮件通知的负责人是演示员2，不负责延迟监控。"
+    },
+    {
+      "segmentId": "fixture-037-s1",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "延迟监控的目的是观察慢请求。"
+    },
+    {
+      "segmentId": "fixture-037-s5",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-037-noise-4-2",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "课程签到的限制：代签不计为有效签到。"
+    },
+    {
+      "segmentId": "fixture-037-noise-1-3",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "报表导出的负责人是演示员1，不负责延迟监控。"
+    },
+    {
+      "segmentId": "fixture-037-noise-4-1",
+      "source": "OCR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "课程签到配置面板：迟到宽限时间为8分钟。"
+    }
+  ],
+  "fixture-038": [
+    {
+      "segmentId": "fixture-038-noise-1-2",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "邮件通知的限制：用户退订后停止发送。"
+    },
+    {
+      "segmentId": "fixture-038-noise-4-1",
+      "source": "OCR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "会议纪要配置面板：行动项数量上限为10条。"
+    },
+    {
+      "segmentId": "fixture-038-noise-1-1",
+      "source": "OCR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "邮件通知配置面板：发送间隔下限为40秒。"
+    },
+    {
+      "segmentId": "fixture-038-noise-2-2",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "评论审核的限制：申诉内容必须交给人工复核。"
+    },
+    {
+      "segmentId": "fixture-038-noise-4-0",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "会议纪要的目的是汇总会议决定。"
+    },
+    {
+      "segmentId": "fixture-038-noise-2-0",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "评论审核的目的是过滤违规内容。"
+    },
+    {
+      "segmentId": "fixture-038-noise-3-1",
+      "source": "OCR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "课程签到配置面板：迟到宽限时间为8分钟。"
+    },
+    {
+      "segmentId": "fixture-038-s1",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "报表导出的目的是生成离线统计文件。"
+    },
+    {
+      "segmentId": "fixture-038-noise-3-3",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "课程签到的负责人是演示员3，不负责报表导出。"
+    },
+    {
+      "segmentId": "fixture-038-s5",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-038-noise-3-0",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "课程签到的目的是记录到课情况。"
+    },
+    {
+      "segmentId": "fixture-038-noise-1-3",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "邮件通知的负责人是演示员1，不负责报表导出。"
+    },
+    {
+      "segmentId": "fixture-038-noise-4-2",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "会议纪要的限制：未明确负责人时标记待确认。"
+    },
+    {
+      "segmentId": "fixture-038-noise-4-3",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "会议纪要的负责人是演示员4，不负责报表导出。"
+    },
+    {
+      "segmentId": "fixture-038-s2",
+      "source": "OCR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "报表导出配置面板：单次导出上限为5000行。"
+    },
+    {
+      "segmentId": "fixture-038-noise-2-3",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "评论审核的负责人是演示员2，不负责报表导出。"
+    },
+    {
+      "segmentId": "fixture-038-noise-1-0",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "邮件通知的目的是提醒任务完成。"
+    },
+    {
+      "segmentId": "fixture-038-s4",
+      "source": "OCR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "对照模块的配置：页面预览上限是100行。"
+    },
+    {
+      "segmentId": "fixture-038-noise-3-2",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "课程签到的限制：代签不计为有效签到。"
+    },
+    {
+      "segmentId": "fixture-038-s3",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "报表导出的限制：导出必须检查数据权限。"
+    },
+    {
+      "segmentId": "fixture-038-noise-2-1",
+      "source": "OCR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "评论审核配置面板：待审核批次大小为30条。"
+    }
+  ],
+  "fixture-039": [
+    {
+      "segmentId": "fixture-039-noise-1-1",
+      "source": "OCR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "评论审核配置面板：待审核批次大小为30条。"
+    },
+    {
+      "segmentId": "fixture-039-noise-3-1",
+      "source": "OCR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "会议纪要配置面板：行动项数量上限为10条。"
+    },
+    {
+      "segmentId": "fixture-039-noise-1-0",
+      "source": "ASR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "评论审核的目的是过滤违规内容。"
+    },
+    {
+      "segmentId": "fixture-039-noise-4-1",
+      "source": "OCR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "工单分派配置面板：首次响应时限为2小时。"
+    },
+    {
+      "segmentId": "fixture-039-noise-4-3",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "工单分派的负责人是演示员4，不负责邮件通知。"
+    },
+    {
+      "segmentId": "fixture-039-noise-4-2",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "工单分派的限制：未解决不能自动关闭。"
+    },
+    {
+      "segmentId": "fixture-039-s1",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "邮件通知的目的是提醒任务完成。"
+    },
+    {
+      "segmentId": "fixture-039-noise-2-2",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "课程签到的限制：代签不计为有效签到。"
+    },
+    {
+      "segmentId": "fixture-039-s5",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-039-noise-1-2",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "评论审核的限制：申诉内容必须交给人工复核。"
+    },
+    {
+      "segmentId": "fixture-039-noise-3-2",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "会议纪要的限制：未明确负责人时标记待确认。"
+    },
+    {
+      "segmentId": "fixture-039-s4",
+      "source": "OCR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "对照模块的配置：站内提醒间隔是10秒。"
+    },
+    {
+      "segmentId": "fixture-039-s3",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "邮件通知的限制：用户退订后停止发送。"
+    },
+    {
+      "segmentId": "fixture-039-noise-2-1",
+      "source": "OCR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "课程签到配置面板：迟到宽限时间为8分钟。"
+    },
+    {
+      "segmentId": "fixture-039-noise-3-3",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "会议纪要的负责人是演示员3，不负责邮件通知。"
+    },
+    {
+      "segmentId": "fixture-039-noise-1-3",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "评论审核的负责人是演示员1，不负责邮件通知。"
+    },
+    {
+      "segmentId": "fixture-039-noise-3-0",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "会议纪要的目的是汇总会议决定。"
+    },
+    {
+      "segmentId": "fixture-039-noise-4-0",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "工单分派的目的是把问题交给负责人。"
+    },
+    {
+      "segmentId": "fixture-039-noise-2-3",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "课程签到的负责人是演示员2，不负责邮件通知。"
+    },
+    {
+      "segmentId": "fixture-039-s2",
+      "source": "OCR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "邮件通知配置面板：发送间隔下限为40秒。"
+    },
+    {
+      "segmentId": "fixture-039-noise-2-0",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "课程签到的目的是记录到课情况。"
+    }
+  ],
+  "fixture-040": [
+    {
+      "segmentId": "fixture-040-s3",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "评论审核的限制：申诉内容必须交给人工复核。"
+    },
+    {
+      "segmentId": "fixture-040-noise-2-2",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "会议纪要的限制：未明确负责人时标记待确认。"
+    },
+    {
+      "segmentId": "fixture-040-s2",
+      "source": "OCR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "评论审核配置面板：待审核批次大小为30条。"
+    },
+    {
+      "segmentId": "fixture-040-noise-1-0",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "课程签到的目的是记录到课情况。"
+    },
+    {
+      "segmentId": "fixture-040-s1",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "评论审核的目的是过滤违规内容。"
+    },
+    {
+      "segmentId": "fixture-040-noise-3-1",
+      "source": "OCR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "工单分派配置面板：首次响应时限为2小时。"
+    },
+    {
+      "segmentId": "fixture-040-noise-2-0",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "会议纪要的目的是汇总会议决定。"
+    },
+    {
+      "segmentId": "fixture-040-s5",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-040-noise-1-1",
+      "source": "OCR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "课程签到配置面板：迟到宽限时间为8分钟。"
+    },
+    {
+      "segmentId": "fixture-040-noise-1-3",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "课程签到的负责人是演示员1，不负责评论审核。"
+    },
+    {
+      "segmentId": "fixture-040-noise-4-0",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "实验分组的目的是比较两种检索策略。"
+    },
+    {
+      "segmentId": "fixture-040-noise-3-0",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "工单分派的目的是把问题交给负责人。"
+    },
+    {
+      "segmentId": "fixture-040-noise-2-1",
+      "source": "OCR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "会议纪要配置面板：行动项数量上限为10条。"
+    },
+    {
+      "segmentId": "fixture-040-noise-3-3",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "工单分派的负责人是演示员3，不负责评论审核。"
+    },
+    {
+      "segmentId": "fixture-040-noise-2-3",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "会议纪要的负责人是演示员2，不负责评论审核。"
+    },
+    {
+      "segmentId": "fixture-040-noise-3-2",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "工单分派的限制：未解决不能自动关闭。"
+    },
+    {
+      "segmentId": "fixture-040-noise-4-2",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "实验分组的限制：同一用户固定分组。"
+    },
+    {
+      "segmentId": "fixture-040-noise-1-2",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "课程签到的限制：代签不计为有效签到。"
+    },
+    {
+      "segmentId": "fixture-040-noise-4-3",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "实验分组的负责人是演示员4，不负责评论审核。"
+    },
+    {
+      "segmentId": "fixture-040-s4",
+      "source": "OCR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "对照模块的配置：已通过列表每页是20条。"
+    },
+    {
+      "segmentId": "fixture-040-noise-4-1",
+      "source": "OCR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "实验分组配置面板：实验组比例为50%。"
+    }
+  ],
+  "fixture-041": [
+    {
+      "segmentId": "fixture-041-s1",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "课程签到的目的是记录到课情况。"
+    },
+    {
+      "segmentId": "fixture-041-noise-3-3",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "实验分组的负责人是演示员3，不负责课程签到。"
+    },
+    {
+      "segmentId": "fixture-041-s3",
+      "source": "ASR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "课程签到的限制：代签不计为有效签到。"
+    },
+    {
+      "segmentId": "fixture-041-noise-2-3",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "工单分派的负责人是演示员2，不负责课程签到。"
+    },
+    {
+      "segmentId": "fixture-041-noise-2-0",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "工单分派的目的是把问题交给负责人。"
+    },
+    {
+      "segmentId": "fixture-041-s2",
+      "source": "OCR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "课程签到配置面板：迟到宽限时间为8分钟。"
+    },
+    {
+      "segmentId": "fixture-041-noise-1-0",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "会议纪要的目的是汇总会议决定。"
+    },
+    {
+      "segmentId": "fixture-041-s4",
+      "source": "OCR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "对照模块的配置：早退宽限时间是5分钟。"
+    },
+    {
+      "segmentId": "fixture-041-noise-4-1",
+      "source": "OCR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "数据划分配置面板：测试视频数量为17个。"
+    },
+    {
+      "segmentId": "fixture-041-noise-4-0",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "数据划分的目的是隔离开发与最终测试。"
+    },
+    {
+      "segmentId": "fixture-041-noise-4-2",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "数据划分的限制：同一视频不能跨集合。"
+    },
+    {
+      "segmentId": "fixture-041-s5",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-041-noise-2-1",
+      "source": "OCR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "工单分派配置面板：首次响应时限为2小时。"
+    },
+    {
+      "segmentId": "fixture-041-noise-3-1",
+      "source": "OCR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "实验分组配置面板：实验组比例为50%。"
+    },
+    {
+      "segmentId": "fixture-041-noise-1-2",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "会议纪要的限制：未明确负责人时标记待确认。"
+    },
+    {
+      "segmentId": "fixture-041-noise-1-3",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "会议纪要的负责人是演示员1，不负责课程签到。"
+    },
+    {
+      "segmentId": "fixture-041-noise-1-1",
+      "source": "OCR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "会议纪要配置面板：行动项数量上限为10条。"
+    },
+    {
+      "segmentId": "fixture-041-noise-3-2",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "实验分组的限制：同一用户固定分组。"
+    },
+    {
+      "segmentId": "fixture-041-noise-4-3",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "数据划分的负责人是演示员4，不负责课程签到。"
+    },
+    {
+      "segmentId": "fixture-041-noise-3-0",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "实验分组的目的是比较两种检索策略。"
+    },
+    {
+      "segmentId": "fixture-041-noise-2-2",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "工单分派的限制：未解决不能自动关闭。"
+    }
+  ],
+  "fixture-042": [
+    {
+      "segmentId": "fixture-042-s4",
+      "source": "OCR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "对照模块的配置：议题展示上限是12条。"
+    },
+    {
+      "segmentId": "fixture-042-noise-1-3",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "工单分派的负责人是演示员1，不负责会议纪要。"
+    },
+    {
+      "segmentId": "fixture-042-noise-4-1",
+      "source": "OCR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "样本审核配置面板：每题审核人数为2人。"
+    },
+    {
+      "segmentId": "fixture-042-noise-2-1",
+      "source": "OCR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "实验分组配置面板：实验组比例为50%。"
+    },
+    {
+      "segmentId": "fixture-042-noise-2-3",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "实验分组的负责人是演示员2，不负责会议纪要。"
+    },
+    {
+      "segmentId": "fixture-042-noise-4-2",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "样本审核的限制：有分歧时不能直接入正式集。"
+    },
+    {
+      "segmentId": "fixture-042-noise-3-1",
+      "source": "OCR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "数据划分配置面板：测试视频数量为17个。"
+    },
+    {
+      "segmentId": "fixture-042-noise-2-2",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "实验分组的限制：同一用户固定分组。"
+    },
+    {
+      "segmentId": "fixture-042-noise-3-3",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "数据划分的负责人是演示员3，不负责会议纪要。"
+    },
+    {
+      "segmentId": "fixture-042-noise-1-1",
+      "source": "OCR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "工单分派配置面板：首次响应时限为2小时。"
+    },
+    {
+      "segmentId": "fixture-042-noise-2-0",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "实验分组的目的是比较两种检索策略。"
+    },
+    {
+      "segmentId": "fixture-042-noise-1-2",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "工单分派的限制：未解决不能自动关闭。"
+    },
+    {
+      "segmentId": "fixture-042-s5",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-042-noise-3-2",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "数据划分的限制：同一视频不能跨集合。"
+    },
+    {
+      "segmentId": "fixture-042-s3",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "会议纪要的限制：未明确负责人时标记待确认。"
+    },
+    {
+      "segmentId": "fixture-042-noise-3-0",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "数据划分的目的是隔离开发与最终测试。"
+    },
+    {
+      "segmentId": "fixture-042-noise-4-3",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "样本审核的负责人是演示员4，不负责会议纪要。"
+    },
+    {
+      "segmentId": "fixture-042-s2",
+      "source": "OCR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "会议纪要配置面板：行动项数量上限为10条。"
+    },
+    {
+      "segmentId": "fixture-042-noise-4-0",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "样本审核的目的是校验题目与视频一致。"
+    },
+    {
+      "segmentId": "fixture-042-noise-1-0",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "工单分派的目的是把问题交给负责人。"
+    },
+    {
+      "segmentId": "fixture-042-s1",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "会议纪要的目的是汇总会议决定。"
+    }
+  ],
+  "fixture-043": [
+    {
+      "segmentId": "fixture-043-s1",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "工单分派的目的是把问题交给负责人。"
+    },
+    {
+      "segmentId": "fixture-043-s2",
+      "source": "OCR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "工单分派配置面板：首次响应时限为2小时。"
+    },
+    {
+      "segmentId": "fixture-043-noise-2-1",
+      "source": "OCR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "数据划分配置面板：测试视频数量为17个。"
+    },
+    {
+      "segmentId": "fixture-043-noise-1-2",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "实验分组的限制：同一用户固定分组。"
+    },
+    {
+      "segmentId": "fixture-043-noise-3-3",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "样本审核的负责人是演示员3，不负责工单分派。"
+    },
+    {
+      "segmentId": "fixture-043-noise-2-0",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "数据划分的目的是隔离开发与最终测试。"
+    },
+    {
+      "segmentId": "fixture-043-noise-4-1",
+      "source": "OCR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "评测冻结配置面板：冻结版本编号为V3。"
+    },
+    {
+      "segmentId": "fixture-043-noise-2-3",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "数据划分的负责人是演示员2，不负责工单分派。"
+    },
+    {
+      "segmentId": "fixture-043-noise-4-2",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "评测冻结的限制：发现标注错误必须发布新版本。"
+    },
+    {
+      "segmentId": "fixture-043-noise-2-2",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "数据划分的限制：同一视频不能跨集合。"
+    },
+    {
+      "segmentId": "fixture-043-s5",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-043-noise-1-0",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "实验分组的目的是比较两种检索策略。"
+    },
+    {
+      "segmentId": "fixture-043-noise-3-1",
+      "source": "OCR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "样本审核配置面板：每题审核人数为2人。"
+    },
+    {
+      "segmentId": "fixture-043-s4",
+      "source": "OCR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "对照模块的配置：普通咨询响应时限是8小时。"
+    },
+    {
+      "segmentId": "fixture-043-noise-1-1",
+      "source": "OCR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "实验分组配置面板：实验组比例为50%。"
+    },
+    {
+      "segmentId": "fixture-043-noise-3-0",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "样本审核的目的是校验题目与视频一致。"
+    },
+    {
+      "segmentId": "fixture-043-noise-4-3",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "评测冻结的负责人是演示员4，不负责工单分派。"
+    },
+    {
+      "segmentId": "fixture-043-noise-1-3",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "实验分组的负责人是演示员1，不负责工单分派。"
+    },
+    {
+      "segmentId": "fixture-043-noise-4-0",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "评测冻结的目的是防止反复针对测试集调参。"
+    },
+    {
+      "segmentId": "fixture-043-s3",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "工单分派的限制：未解决不能自动关闭。"
+    },
+    {
+      "segmentId": "fixture-043-noise-3-2",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "样本审核的限制：有分歧时不能直接入正式集。"
+    }
+  ],
+  "fixture-044": [
+    {
+      "segmentId": "fixture-044-noise-3-2",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "评测冻结的限制：发现标注错误必须发布新版本。"
+    },
+    {
+      "segmentId": "fixture-044-noise-3-0",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "评测冻结的目的是防止反复针对测试集调参。"
+    },
+    {
+      "segmentId": "fixture-044-noise-2-1",
+      "source": "OCR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "样本审核配置面板：每题审核人数为2人。"
+    },
+    {
+      "segmentId": "fixture-044-noise-1-3",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "数据划分的负责人是演示员1，不负责实验分组。"
+    },
+    {
+      "segmentId": "fixture-044-noise-4-1",
+      "source": "OCR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "文档索引配置面板：索引刷新间隔为11分钟。"
+    },
+    {
+      "segmentId": "fixture-044-s2",
+      "source": "OCR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "实验分组配置面板：实验组比例为50%。"
+    },
+    {
+      "segmentId": "fixture-044-noise-1-1",
+      "source": "OCR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "数据划分配置面板：测试视频数量为17个。"
+    },
+    {
+      "segmentId": "fixture-044-noise-4-2",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "文档索引的限制：已删除文档不应继续返回。"
+    },
+    {
+      "segmentId": "fixture-044-s5",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-044-noise-2-3",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "样本审核的负责人是演示员2，不负责实验分组。"
+    },
+    {
+      "segmentId": "fixture-044-noise-4-0",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "文档索引的目的是定位技术章节。"
+    },
+    {
+      "segmentId": "fixture-044-s4",
+      "source": "OCR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "对照模块的配置：预热流量比例是10%。"
+    },
+    {
+      "segmentId": "fixture-044-noise-4-3",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "文档索引的负责人是演示员4，不负责实验分组。"
+    },
+    {
+      "segmentId": "fixture-044-noise-1-2",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "数据划分的限制：同一视频不能跨集合。"
+    },
+    {
+      "segmentId": "fixture-044-noise-1-0",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "数据划分的目的是隔离开发与最终测试。"
+    },
+    {
+      "segmentId": "fixture-044-noise-2-2",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "样本审核的限制：有分歧时不能直接入正式集。"
+    },
+    {
+      "segmentId": "fixture-044-noise-3-1",
+      "source": "OCR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "评测冻结配置面板：冻结版本编号为V3。"
+    },
+    {
+      "segmentId": "fixture-044-noise-2-0",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "样本审核的目的是校验题目与视频一致。"
+    },
+    {
+      "segmentId": "fixture-044-s1",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "实验分组的目的是比较两种检索策略。"
+    },
+    {
+      "segmentId": "fixture-044-noise-3-3",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "评测冻结的负责人是演示员3，不负责实验分组。"
+    },
+    {
+      "segmentId": "fixture-044-s3",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "实验分组的限制：同一用户固定分组。"
+    }
+  ],
+  "fixture-045": [
+    {
+      "segmentId": "fixture-045-noise-2-1",
+      "source": "OCR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "评测冻结配置面板：冻结版本编号为V3。"
+    },
+    {
+      "segmentId": "fixture-045-s2",
+      "source": "OCR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "数据划分配置面板：测试视频数量为17个。"
+    },
+    {
+      "segmentId": "fixture-045-noise-1-1",
+      "source": "OCR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "样本审核配置面板：每题审核人数为2人。"
+    },
+    {
+      "segmentId": "fixture-045-s3",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "数据划分的限制：同一视频不能跨集合。"
+    },
+    {
+      "segmentId": "fixture-045-noise-4-1",
+      "source": "OCR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "权限校验配置面板：权限缓存时间为25秒。"
+    },
+    {
+      "segmentId": "fixture-045-noise-2-3",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "评测冻结的负责人是演示员2，不负责数据划分。"
+    },
+    {
+      "segmentId": "fixture-045-noise-2-2",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "评测冻结的限制：发现标注错误必须发布新版本。"
+    },
+    {
+      "segmentId": "fixture-045-noise-3-0",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "文档索引的目的是定位技术章节。"
+    },
+    {
+      "segmentId": "fixture-045-noise-3-3",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "文档索引的负责人是演示员3，不负责数据划分。"
+    },
+    {
+      "segmentId": "fixture-045-s5",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-045-noise-3-2",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "文档索引的限制：已删除文档不应继续返回。"
+    },
+    {
+      "segmentId": "fixture-045-noise-4-3",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "权限校验的负责人是演示员4，不负责数据划分。"
+    },
+    {
+      "segmentId": "fixture-045-noise-4-0",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "权限校验的目的是隔离不同用户的资料。"
+    },
+    {
+      "segmentId": "fixture-045-noise-1-3",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "样本审核的负责人是演示员1，不负责数据划分。"
+    },
+    {
+      "segmentId": "fixture-045-noise-1-0",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "样本审核的目的是校验题目与视频一致。"
+    },
+    {
+      "segmentId": "fixture-045-noise-1-2",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "样本审核的限制：有分歧时不能直接入正式集。"
+    },
+    {
+      "segmentId": "fixture-045-noise-3-1",
+      "source": "OCR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "文档索引配置面板：索引刷新间隔为11分钟。"
+    },
+    {
+      "segmentId": "fixture-045-noise-2-0",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "评测冻结的目的是防止反复针对测试集调参。"
+    },
+    {
+      "segmentId": "fixture-045-noise-4-2",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "权限校验的限制：跨用户读取必须拒绝。"
+    },
+    {
+      "segmentId": "fixture-045-s4",
+      "source": "OCR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "对照模块的配置：开发视频数量是33个。"
+    },
+    {
+      "segmentId": "fixture-045-s1",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "数据划分的目的是隔离开发与最终测试。"
+    }
+  ],
+  "fixture-046": [
+    {
+      "segmentId": "fixture-046-noise-2-3",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "文档索引的负责人是演示员2，不负责样本审核。"
+    },
+    {
+      "segmentId": "fixture-046-noise-2-2",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "文档索引的限制：已删除文档不应继续返回。"
+    },
+    {
+      "segmentId": "fixture-046-noise-4-2",
+      "source": "ASR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "临时文件清理的限制：正在运行的任务文件不能删除。"
+    },
+    {
+      "segmentId": "fixture-046-noise-4-3",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "临时文件清理的负责人是演示员4，不负责样本审核。"
+    },
+    {
+      "segmentId": "fixture-046-noise-1-0",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "评测冻结的目的是防止反复针对测试集调参。"
+    },
+    {
+      "segmentId": "fixture-046-noise-3-0",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "权限校验的目的是隔离不同用户的资料。"
+    },
+    {
+      "segmentId": "fixture-046-noise-3-1",
+      "source": "OCR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "权限校验配置面板：权限缓存时间为25秒。"
+    },
+    {
+      "segmentId": "fixture-046-noise-4-0",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "临时文件清理的目的是回收分析中间文件。"
+    },
+    {
+      "segmentId": "fixture-046-s3",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "样本审核的限制：有分歧时不能直接入正式集。"
+    },
+    {
+      "segmentId": "fixture-046-s2",
+      "source": "OCR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "样本审核配置面板：每题审核人数为2人。"
+    },
+    {
+      "segmentId": "fixture-046-noise-4-1",
+      "source": "OCR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "临时文件清理配置面板：文件保留时长为48小时。"
+    },
+    {
+      "segmentId": "fixture-046-s4",
+      "source": "OCR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "对照模块的配置：格式检查人数是1人。"
+    },
+    {
+      "segmentId": "fixture-046-s1",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "样本审核的目的是校验题目与视频一致。"
+    },
+    {
+      "segmentId": "fixture-046-s5",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-046-noise-1-2",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "评测冻结的限制：发现标注错误必须发布新版本。"
+    },
+    {
+      "segmentId": "fixture-046-noise-3-3",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "权限校验的负责人是演示员3，不负责样本审核。"
+    },
+    {
+      "segmentId": "fixture-046-noise-3-2",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "权限校验的限制：跨用户读取必须拒绝。"
+    },
+    {
+      "segmentId": "fixture-046-noise-2-1",
+      "source": "OCR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "文档索引配置面板：索引刷新间隔为11分钟。"
+    },
+    {
+      "segmentId": "fixture-046-noise-1-3",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "评测冻结的负责人是演示员1，不负责样本审核。"
+    },
+    {
+      "segmentId": "fixture-046-noise-1-1",
+      "source": "OCR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "评测冻结配置面板：冻结版本编号为V3。"
+    },
+    {
+      "segmentId": "fixture-046-noise-2-0",
+      "source": "ASR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "文档索引的目的是定位技术章节。"
+    }
+  ],
+  "fixture-047": [
+    {
+      "segmentId": "fixture-047-noise-2-1",
+      "source": "OCR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "权限校验配置面板：权限缓存时间为25秒。"
+    },
+    {
+      "segmentId": "fixture-047-noise-1-2",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "文档索引的限制：已删除文档不应继续返回。"
+    },
+    {
+      "segmentId": "fixture-047-noise-2-0",
+      "source": "ASR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "权限校验的目的是隔离不同用户的资料。"
+    },
+    {
+      "segmentId": "fixture-047-noise-2-2",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "权限校验的限制：跨用户读取必须拒绝。"
+    },
+    {
+      "segmentId": "fixture-047-noise-3-2",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "临时文件清理的限制：正在运行的任务文件不能删除。"
+    },
+    {
+      "segmentId": "fixture-047-s3",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "评测冻结的限制：发现标注错误必须发布新版本。"
+    },
+    {
+      "segmentId": "fixture-047-noise-3-0",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "临时文件清理的目的是回收分析中间文件。"
+    },
+    {
+      "segmentId": "fixture-047-noise-4-1",
+      "source": "OCR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "数据备份配置面板：备份间隔为6小时。"
+    },
+    {
+      "segmentId": "fixture-047-s2",
+      "source": "OCR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "评测冻结配置面板：冻结版本编号为V3。"
+    },
+    {
+      "segmentId": "fixture-047-noise-4-3",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "数据备份的负责人是演示员4，不负责评测冻结。"
+    },
+    {
+      "segmentId": "fixture-047-noise-3-3",
+      "source": "ASR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "临时文件清理的负责人是演示员3，不负责评测冻结。"
+    },
+    {
+      "segmentId": "fixture-047-noise-4-2",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "数据备份的限制：恢复前必须校验备份完整性。"
+    },
+    {
+      "segmentId": "fixture-047-noise-4-0",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "数据备份的目的是恢复误删数据。"
+    },
+    {
+      "segmentId": "fixture-047-noise-2-3",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "权限校验的负责人是演示员2，不负责评测冻结。"
+    },
+    {
+      "segmentId": "fixture-047-noise-3-1",
+      "source": "OCR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "临时文件清理配置面板：文件保留时长为48小时。"
+    },
+    {
+      "segmentId": "fixture-047-s1",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "评测冻结的目的是防止反复针对测试集调参。"
+    },
+    {
+      "segmentId": "fixture-047-noise-1-3",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "文档索引的负责人是演示员1，不负责评测冻结。"
+    },
+    {
+      "segmentId": "fixture-047-noise-1-1",
+      "source": "OCR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "文档索引配置面板：索引刷新间隔为11分钟。"
+    },
+    {
+      "segmentId": "fixture-047-s5",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-047-noise-1-0",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "文档索引的目的是定位技术章节。"
+    },
+    {
+      "segmentId": "fixture-047-s4",
+      "source": "OCR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "对照模块的配置：开发版本编号是V8。"
+    }
+  ],
+  "fixture-048": [
+    {
+      "segmentId": "fixture-048-noise-3-1",
+      "source": "OCR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "数据备份配置面板：备份间隔为6小时。"
+    },
+    {
+      "segmentId": "fixture-048-noise-1-3",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "权限校验的负责人是演示员1，不负责文档索引。"
+    },
+    {
+      "segmentId": "fixture-048-noise-3-3",
+      "source": "ASR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "数据备份的负责人是演示员3，不负责文档索引。"
+    },
+    {
+      "segmentId": "fixture-048-noise-1-0",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "权限校验的目的是隔离不同用户的资料。"
+    },
+    {
+      "segmentId": "fixture-048-noise-4-1",
+      "source": "OCR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "灰度发布配置面板：首批用户比例为5%。"
+    },
+    {
+      "segmentId": "fixture-048-noise-3-0",
+      "source": "ASR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "数据备份的目的是恢复误删数据。"
+    },
+    {
+      "segmentId": "fixture-048-s2",
+      "source": "OCR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "文档索引配置面板：索引刷新间隔为11分钟。"
+    },
+    {
+      "segmentId": "fixture-048-noise-3-2",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "数据备份的限制：恢复前必须校验备份完整性。"
+    },
+    {
+      "segmentId": "fixture-048-noise-1-2",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "权限校验的限制：跨用户读取必须拒绝。"
+    },
+    {
+      "segmentId": "fixture-048-noise-2-0",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "临时文件清理的目的是回收分析中间文件。"
+    },
+    {
+      "segmentId": "fixture-048-noise-2-1",
+      "source": "OCR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "临时文件清理配置面板：文件保留时长为48小时。"
+    },
+    {
+      "segmentId": "fixture-048-s5",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-048-noise-4-0",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "灰度发布的目的是逐步验证新版本。"
+    },
+    {
+      "segmentId": "fixture-048-s3",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "文档索引的限制：已删除文档不应继续返回。"
+    },
+    {
+      "segmentId": "fixture-048-noise-2-2",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "临时文件清理的限制：正在运行的任务文件不能删除。"
+    },
+    {
+      "segmentId": "fixture-048-noise-4-3",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "灰度发布的负责人是演示员4，不负责文档索引。"
+    },
+    {
+      "segmentId": "fixture-048-s1",
+      "source": "ASR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "文档索引的目的是定位技术章节。"
+    },
+    {
+      "segmentId": "fixture-048-noise-4-2",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "灰度发布的限制：异常率超阈值立即回滚。"
+    },
+    {
+      "segmentId": "fixture-048-noise-2-3",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "临时文件清理的负责人是演示员2，不负责文档索引。"
+    },
+    {
+      "segmentId": "fixture-048-s4",
+      "source": "OCR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "对照模块的配置：缓存刷新间隔是4分钟。"
+    },
+    {
+      "segmentId": "fixture-048-noise-1-1",
+      "source": "OCR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "权限校验配置面板：权限缓存时间为25秒。"
+    }
+  ],
+  "fixture-049": [
+    {
+      "segmentId": "fixture-049-noise-2-3",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "数据备份的负责人是演示员2，不负责权限校验。"
+    },
+    {
+      "segmentId": "fixture-049-noise-4-0",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "健康探针的目的是发现服务不可用。"
+    },
+    {
+      "segmentId": "fixture-049-s4",
+      "source": "OCR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "对照模块的配置：会话缓存时间是300秒。"
+    },
+    {
+      "segmentId": "fixture-049-noise-2-2",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "数据备份的限制：恢复前必须校验备份完整性。"
+    },
+    {
+      "segmentId": "fixture-049-noise-1-3",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "临时文件清理的负责人是演示员1，不负责权限校验。"
+    },
+    {
+      "segmentId": "fixture-049-noise-1-1",
+      "source": "OCR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "临时文件清理配置面板：文件保留时长为48小时。"
+    },
+    {
+      "segmentId": "fixture-049-noise-2-0",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "数据备份的目的是恢复误删数据。"
+    },
+    {
+      "segmentId": "fixture-049-noise-1-2",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "临时文件清理的限制：正在运行的任务文件不能删除。"
+    },
+    {
+      "segmentId": "fixture-049-s2",
+      "source": "OCR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "权限校验配置面板：权限缓存时间为25秒。"
+    },
+    {
+      "segmentId": "fixture-049-noise-3-0",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "灰度发布的目的是逐步验证新版本。"
+    },
+    {
+      "segmentId": "fixture-049-noise-2-1",
+      "source": "OCR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "数据备份配置面板：备份间隔为6小时。"
+    },
+    {
+      "segmentId": "fixture-049-s3",
+      "source": "ASR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "权限校验的限制：跨用户读取必须拒绝。"
+    },
+    {
+      "segmentId": "fixture-049-noise-4-2",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "健康探针的限制：失败不能直接删除业务数据。"
+    },
+    {
+      "segmentId": "fixture-049-noise-3-2",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "灰度发布的限制：异常率超阈值立即回滚。"
+    },
+    {
+      "segmentId": "fixture-049-s5",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-049-noise-4-3",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "健康探针的负责人是演示员4，不负责权限校验。"
+    },
+    {
+      "segmentId": "fixture-049-noise-4-1",
+      "source": "OCR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "健康探针配置面板：探测间隔为15秒。"
+    },
+    {
+      "segmentId": "fixture-049-noise-3-3",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "灰度发布的负责人是演示员3，不负责权限校验。"
+    },
+    {
+      "segmentId": "fixture-049-s1",
+      "source": "ASR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "权限校验的目的是隔离不同用户的资料。"
+    },
+    {
+      "segmentId": "fixture-049-noise-1-0",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "临时文件清理的目的是回收分析中间文件。"
+    },
+    {
+      "segmentId": "fixture-049-noise-3-1",
+      "source": "OCR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "灰度发布配置面板：首批用户比例为5%。"
+    }
+  ],
+  "fixture-050": [
+    {
+      "segmentId": "fixture-050-noise-3-2",
+      "source": "ASR",
+      "startMs": 40000,
+      "endMs": 44000,
+      "content": "健康探针的限制：失败不能直接删除业务数据。"
+    },
+    {
+      "segmentId": "fixture-050-noise-1-0",
+      "source": "ASR",
+      "startMs": 80000,
+      "endMs": 84000,
+      "content": "数据备份的目的是恢复误删数据。"
+    },
+    {
+      "segmentId": "fixture-050-noise-3-3",
+      "source": "ASR",
+      "startMs": 120000,
+      "endMs": 124000,
+      "content": "健康探针的负责人是演示员3，不负责临时文件清理。"
+    },
+    {
+      "segmentId": "fixture-050-s1",
+      "source": "ASR",
+      "startMs": 160000,
+      "endMs": 164000,
+      "content": "临时文件清理的目的是回收分析中间文件。"
+    },
+    {
+      "segmentId": "fixture-050-noise-3-0",
+      "source": "ASR",
+      "startMs": 200000,
+      "endMs": 204000,
+      "content": "健康探针的目的是发现服务不可用。"
+    },
+    {
+      "segmentId": "fixture-050-noise-4-1",
+      "source": "OCR",
+      "startMs": 240000,
+      "endMs": 244000,
+      "content": "延迟监控配置面板：告警阈值为900毫秒。"
+    },
+    {
+      "segmentId": "fixture-050-s5",
+      "source": "ASR",
+      "startMs": 280000,
+      "endMs": 284000,
+      "content": "课程安排：下周讨论性能调优，本段没有介绍负责人或上线日期。"
+    },
+    {
+      "segmentId": "fixture-050-noise-4-2",
+      "source": "ASR",
+      "startMs": 320000,
+      "endMs": 324000,
+      "content": "延迟监控的限制：只统计完成的请求。"
+    },
+    {
+      "segmentId": "fixture-050-noise-1-3",
+      "source": "ASR",
+      "startMs": 360000,
+      "endMs": 364000,
+      "content": "数据备份的负责人是演示员1，不负责临时文件清理。"
+    },
+    {
+      "segmentId": "fixture-050-noise-4-3",
+      "source": "ASR",
+      "startMs": 400000,
+      "endMs": 404000,
+      "content": "延迟监控的负责人是演示员4，不负责临时文件清理。"
+    },
+    {
+      "segmentId": "fixture-050-s4",
+      "source": "OCR",
+      "startMs": 440000,
+      "endMs": 444000,
+      "content": "对照模块的配置：最终报告保留时长是30天。"
+    },
+    {
+      "segmentId": "fixture-050-noise-2-1",
+      "source": "OCR",
+      "startMs": 480000,
+      "endMs": 484000,
+      "content": "灰度发布配置面板：首批用户比例为5%。"
+    },
+    {
+      "segmentId": "fixture-050-noise-2-0",
+      "source": "ASR",
+      "startMs": 520000,
+      "endMs": 524000,
+      "content": "灰度发布的目的是逐步验证新版本。"
+    },
+    {
+      "segmentId": "fixture-050-s3",
+      "source": "ASR",
+      "startMs": 560000,
+      "endMs": 564000,
+      "content": "临时文件清理的限制：正在运行的任务文件不能删除。"
+    },
+    {
+      "segmentId": "fixture-050-noise-2-3",
+      "source": "ASR",
+      "startMs": 600000,
+      "endMs": 604000,
+      "content": "灰度发布的负责人是演示员2，不负责临时文件清理。"
+    },
+    {
+      "segmentId": "fixture-050-noise-1-2",
+      "source": "ASR",
+      "startMs": 640000,
+      "endMs": 644000,
+      "content": "数据备份的限制：恢复前必须校验备份完整性。"
+    },
+    {
+      "segmentId": "fixture-050-noise-3-1",
+      "source": "OCR",
+      "startMs": 680000,
+      "endMs": 684000,
+      "content": "健康探针配置面板：探测间隔为15秒。"
+    },
+    {
+      "segmentId": "fixture-050-noise-4-0",
+      "source": "ASR",
+      "startMs": 720000,
+      "endMs": 724000,
+      "content": "延迟监控的目的是观察慢请求。"
+    },
+    {
+      "segmentId": "fixture-050-s2",
+      "source": "OCR",
+      "startMs": 760000,
+      "endMs": 764000,
+      "content": "临时文件清理配置面板：文件保留时长为48小时。"
+    },
+    {
+      "segmentId": "fixture-050-noise-2-2",
+      "source": "ASR",
+      "startMs": 800000,
+      "endMs": 804000,
+      "content": "灰度发布的限制：异常率超阈值立即回滚。"
+    },
+    {
+      "segmentId": "fixture-050-noise-1-1",
+      "source": "OCR",
+      "startMs": 840000,
+      "endMs": 844000,
+      "content": "数据备份配置面板：备份间隔为6小时。"
+    }
+  ]
+}

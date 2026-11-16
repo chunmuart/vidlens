@@ -35,11 +35,13 @@ def overlaps(segment: dict[str, Any], gold: dict[str, Any]) -> bool:
 
 
 def requirements(case: dict[str, Any]) -> list[tuple[str, str, dict[str, Any]]]:
-    return [
-        (str(evidence["evidenceId"]), str(source).upper(), evidence)
-        for evidence in case.get("goldEvidence", [])
-        for source in evidence.get("sources", [])
-    ]
+    result = []
+    for evidence in case.get("goldEvidence", []):
+        # Exact IDs are one fact with alternative supporting passages, possibly
+        # spanning ASR/OCR. Legacy time annotations retain their original semantics.
+        sources = ["ANY"] if evidence.get("segmentIds") else evidence.get("sources", [])
+        result.extend((str(evidence["evidenceId"]), str(source).upper(), evidence) for source in sources)
+    return result
 
 
 def matched_requirements(
@@ -48,10 +50,11 @@ def matched_requirements(
 ) -> set[tuple[str, str]]:
     matched: set[tuple[str, str]] = set()
     for evidence_id, source, gold in required:
-        if any(
-            str(item.get("source", "")).upper() == source and overlaps(item, gold)
-            for item in segments
-        ):
+        if gold.get("segmentIds"):
+            hit = any(str(item.get("segmentId")) in gold["segmentIds"] for item in segments)
+        else:
+            hit = any(str(item.get("source", "")).upper() == source and overlaps(item, gold) for item in segments)
+        if hit:
             matched.add((evidence_id, source))
     return matched
 
